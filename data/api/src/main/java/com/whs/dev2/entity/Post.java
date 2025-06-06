@@ -3,14 +3,12 @@ package com.whs.dev2.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.NoArgsConstructor;
+import java.time.LocalDateTime;
 import com.whs.dev2.entity.common.BaseEntity;
-
 
 @Entity
 @Getter
 @Setter
-@NoArgsConstructor
 @Table(name = "posts")
 public class Post extends BaseEntity {
 
@@ -26,13 +24,17 @@ public class Post extends BaseEntity {
     @Column(nullable = false)
     private String author;
 
-    @Column(nullable = false)
-    private String password;
-
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String fileName;  // 첨부 파일 이름
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user; //user_id와 게시글 id가 같을 때에만 수정 가능하도록 할 것임
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    @Column(nullable = false)
+    private LocalDateTime createdAt = LocalDateTime.now();
+
+    // 공지사항 여부 필드 추가
+    @Column(nullable = false)
+    private boolean notice = false;
 }

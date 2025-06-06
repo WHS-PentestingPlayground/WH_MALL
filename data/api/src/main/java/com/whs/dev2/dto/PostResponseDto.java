@@ -1,7 +1,7 @@
 package com.whs.dev2.dto;
 
 import lombok.Getter;
-import org.whs.dev2.entity.Post;
+import com.whs.dev2.entity.Post;
 
 import java.time.LocalDateTime;
 
