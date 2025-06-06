@@ -7,7 +7,7 @@ networks:
 services:
   web-server:
     build:
-      context: ./data/web
+      context: ./docker/web
       dockerfile: Dockerfile
     ports:
       - "8080:8080"
@@ -23,7 +23,7 @@ services:
 
   api-server:
     build:
-      context: ./data/api
+      context: ./docker/api
       dockerfile: Dockerfile
     ports:
       - "8081:8081"
@@ -32,9 +32,9 @@ services:
     depends_on:
       - db-server
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:oracle:thin:@db-server:1521:XE
-      - SPRING_DATASOURCE_USERNAME=system
-      - SPRING_DATASOURCE_PASSWORD=oracle
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db-server:3306/login_db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=root
     volumes:
       - uploads:/tmp/uploads
 
