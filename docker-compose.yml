@@ -40,15 +40,18 @@ services:
 
   db-server:
     build:
-      context: ./data/db
+      context: ./docker/db
       dockerfile: Dockerfile
     ports:
-      - "1521:1521"
+      - "3306:3306"
     networks:
       - int-net
     volumes:
-      - oracle_data:/u01/app/oracle
+      - mysql_data:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=login_db
 
 volumes:
-  oracle_data:
+  mysql_data:
   uploads: 

@@ -1,22 +1,18 @@
 package com.whs.dev2.controller;
 
+// import com.whs.dev2.dto.UserRequestDto;
+// import com.whs.dev2.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import com.whs.dev2.dto.UserRequestDto;
-import com.whs.dev2.service.UserService;
 
+@RequiredArgsConstructor
 @Controller
 public class UserPageController {
-
-    private final UserService userService;
-
-    public UserPageController(UserService userService) {
-        this.userService = userService;
-    }
+    // private final UserService userService;
 
     @GetMapping("/register")
     public String showRegisterForm() {
@@ -27,13 +23,12 @@ public class UserPageController {
     public String register(@RequestParam String username,
                            @RequestParam String password,
                            @RequestParam(required = false) String email, Model model) {
-        UserRequestDto dto = new UserRequestDto();
-        dto.setUsername(username);
-        dto.setPassword(password);
-        dto.setEmail(email);
-
+        // UserRequestDto dto = new UserRequestDto();
+        // dto.setUsername(username);
+        // dto.setPassword(password);
+        // dto.setEmail(email);
         try {
-            userService.register(dto);
+            // userService.register(dto);
             return "redirect:/login";
         } catch (IllegalArgumentException e) {
             model.addAttribute("error", e.getMessage());
@@ -50,7 +45,8 @@ public class UserPageController {
     public String login(@RequestParam String username,
                         @RequestParam String password,
                         Model model) {
-        boolean result = userService.authenticate(username, password);
+        // boolean result = userService.authenticate(username, password);
+        boolean result = true; // 임시 처리
         if (result) {
             model.addAttribute("username", username);
             return "redirect:/";

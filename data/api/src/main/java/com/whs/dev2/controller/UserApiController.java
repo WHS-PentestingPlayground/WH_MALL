@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-//postman이나 프론트 Ajax로 요청할 수 있는 JSON기반 API
 
 @RestController //JSON응답 반환
 @RequiredArgsConstructor //생성자 자동 생성

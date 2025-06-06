@@ -1,13 +1,18 @@
-FROM openjdk:17-jdk-slim
+#docker/api/Dockerfile
+FROM maven:3.8.4-openjdk-17-slim
 
 WORKDIR /app
 
-# 파일 업로드 디렉토리 생성
+# 소스 코드 복사
+COPY pom.xml .
+COPY src ./src
+
+# Maven으로 빌드
+RUN mvn clean package -DskipTests
+
+# 업로드 디렉토리 생성
 RUN mkdir -p /tmp/uploads && \
     chmod 777 /tmp/uploads
 
-COPY target/*.jar app.jar
-
-EXPOSE 8081
-
-ENTRYPOINT ["java", "-jar", "app.jar"] 
+# JAR 파일 실행
+ENTRYPOINT ["java", "-jar", "target/api-0.0.1-SNAPSHOT.jar"] 
