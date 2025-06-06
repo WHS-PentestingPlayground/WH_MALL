@@ -4,7 +4,7 @@ FROM tomcat:9.0-jdk17
 RUN mkdir -p /var/www/html/uploads && chmod 777 /var/www/html/uploads
 
 # Gradle로 빌드된 WAR 파일을 ROOT.war로 배포
-COPY build/libs/*.war /usr/local/tomcat/webapps/ROOT.war
+COPY build/libs/web-0.0.1-SNAPSHOT.war /usr/local/tomcat/webapps/ROOT.war
 
 EXPOSE 8080
 
