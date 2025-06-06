@@ -7,8 +7,8 @@ networks:
 services:
   web-server:
     build:
-      context: ./docker/web
-      dockerfile: Dockerfile
+      context: ./data/web
+      dockerfile: ../../docker/web/Dockerfile
     ports:
       - "8080:8080"
     networks:
@@ -18,32 +18,35 @@ services:
       - api-server
     volumes:
       - uploads:/var/www/html/uploads
+    env_file:
+      - .env
     environment:
-      - API_SERVER_URL=http://api-server:8081
+      - API_SERVER_URL=${API_SERVER_URL}
 
   api-server:
     build:
-      context: ./docker/api
-      dockerfile: Dockerfile
+      context: ./data/api
+      dockerfile: ../../docker/api/Dockerfile
     ports:
       - "8081:8081"
     networks:
       - int-net
     depends_on:
       - db-server
-    environment:
-      - SPRING_DATASOURCE_URL=jdbc:mysql://db-server:3306/login_db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul
-      - SPRING_DATASOURCE_USERNAME=root
-      - SPRING_DATASOURCE_PASSWORD=root
     volumes:
       - uploads:/tmp/uploads
+    env_file:
+      - .env
+    environment:
+      - SPRING_DATASOURCE_URL=${SPRING_DATASOURCE_URL}
+      - SPRING_DATASOURCE_USERNAME=${SPRING_DATASOURCE_USERNAME}
+      - SPRING_DATASOURCE_PASSWORD=${SPRING_DATASOURCE_PASSWORD}
 
   db-server:
     build:
-      context: ./docker/db
-      dockerfile: Dockerfile
-    ports:
-      - "3306:3306"
+      context: .
+      dockerfile: docker/db/Dockerfile
+    # 외부 포트 노출 차단 (내부망 전용)
     networks:
       - int-net
     volumes:
@@ -54,4 +57,4 @@ services:
 
 volumes:
   mysql_data:
-  uploads: 
+  uploads:

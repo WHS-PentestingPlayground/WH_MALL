@@ -2,8 +2,8 @@
 FROM gradle:8.5-jdk17 AS build
 WORKDIR /app
 
-# build.gradle, settings.gradle, src 복사
-COPY build.gradle settings.gradle ./
+# build.gradle, src 복사
+COPY build.gradle ./
 COPY src ./src
 
 # JAR 빌드
