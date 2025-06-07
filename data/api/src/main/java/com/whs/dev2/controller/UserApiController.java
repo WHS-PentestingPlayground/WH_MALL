@@ -2,6 +2,7 @@ package com.whs.dev2.controller;
 
 import com.whs.dev2.dto.LoginRequestDto;
 import com.whs.dev2.dto.RegisterRequestDto;
+import com.whs.dev2.entity.User;
 import com.whs.dev2.service.UserService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;

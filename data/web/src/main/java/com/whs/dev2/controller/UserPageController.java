@@ -1,58 +1,18 @@
 package com.whs.dev2.controller;
 
-// import com.whs.dev2.dto.UserRequestDto;
-// import com.whs.dev2.service.UserService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
-@RequiredArgsConstructor
 @Controller
 public class UserPageController {
-    // private final UserService userService;
 
     @GetMapping("/register")
     public String showRegisterForm() {
-        return "register";
-    }
-
-    @PostMapping("/register")
-    public String register(@RequestParam String username,
-                           @RequestParam String password,
-                           @RequestParam(required = false) String email, Model model) {
-        // UserRequestDto dto = new UserRequestDto();
-        // dto.setUsername(username);
-        // dto.setPassword(password);
-        // dto.setEmail(email);
-        try {
-            // userService.register(dto);
-            return "redirect:/login";
-        } catch (IllegalArgumentException e) {
-            model.addAttribute("error", e.getMessage());
-            return "register";
-        }
+        return "register"; // 폼 제출 시 /api/users/register 호출
     }
 
     @GetMapping("/login")
     public String showLoginForm() {
-        return "login";
+        return "login"; // 폼 제출 시 /api/users/login 호출
     }
-
-    @PostMapping("/login")
-    public String login(@RequestParam String username,
-                        @RequestParam String password,
-                        Model model) {
-        // boolean result = userService.authenticate(username, password);
-        boolean result = true; // 임시 처리
-        if (result) {
-            model.addAttribute("username", username);
-            return "redirect:/";
-        } else {
-            model.addAttribute("error", "로그인 실패");
-            return "login";
-        }
-    }
-} 
+}
