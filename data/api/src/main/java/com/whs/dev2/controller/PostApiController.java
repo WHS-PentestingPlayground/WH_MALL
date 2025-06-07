@@ -29,7 +29,7 @@ public class PostApiController {
         return ResponseEntity.ok(postService.getPost(id));
     }
 
-    @PostMapping(consumes = "multipart/form-data") // 🔥 중요: JSON → multipart/form-data
+    @PostMapping(consumes = "multipart/form-data")
     public ResponseEntity<?> createPost(
             @RequestPart("title") String title,
             @RequestPart("content") String content,

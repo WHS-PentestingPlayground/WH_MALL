@@ -50,6 +50,13 @@ springBoot {
     mainClass = 'com.whs.dev2.WebApplication'
 }
 
+bootJar {
+    enabled = false
+}
+bootWar {
+    enabled = true
+}
+
 tasks.named('test') {
     useJUnitPlatform()
 }
