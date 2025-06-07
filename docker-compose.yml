@@ -46,14 +46,20 @@ services:
     build:
       context: .
       dockerfile: docker/db/Dockerfile
-    # 외부 포트 노출 차단 (내부망 전용)
+    container_name: net_robotics_db
     networks:
       - int-net
+    ports:
+      - "3307:3306"
     volumes:
       - mysql_data:/var/lib/mysql
+      - ./data/db:/docker-entrypoint-initdb.d
     environment:
       - MYSQL_ROOT_PASSWORD=root
       - MYSQL_DATABASE=login_db
+      - MYSQL_USER=user
+      - MYSQL_PASSWORD=password
+    restart: always
 
 volumes:
   mysql_data:

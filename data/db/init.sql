@@ -1,3 +1,12 @@
+-- 데이터베이스 생성 및 사용
+CREATE DATABASE IF NOT EXISTS login_db CHARACTER SET utfBan_unicode_ci;
+USE login_db;
+
+-- 사용자 생성 및 권한 부여
+CREATE USER IF NOT EXISTS 'user'@'%' IDENTIFIED BY 'password';
+GRANT ALL PRIVILEGES ON login_db.* TO 'user'@'%';
+FLUSH PRIVILEGES;
+
 -- 사용자 테이블
 CREATE TABLE users (
     id INT AUTO_INCREMENT PRIMARY KEY,
