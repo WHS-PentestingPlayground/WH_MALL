@@ -18,6 +18,7 @@ RUN mkdir -p /app/.gradle && chmod 777 /app/.gradle
 
 # web 모듈 디렉토리로 이동 및 빌드
 WORKDIR /app/data/web
+RUN rm -rf /app/.gradle/caches
 RUN chmod +x ./gradlew
 RUN ./gradlew bootWar --no-daemon --stacktrace
 
