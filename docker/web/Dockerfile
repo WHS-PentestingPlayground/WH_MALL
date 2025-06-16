@@ -1,7 +1,7 @@
 #docker/web/Dockerfile
 
 # 1단계: Gradle 빌드
-FROM gradle:8.5-jdk17 AS build
+FROM gradle:7.6-jdk11 AS build
 WORKDIR /app
 
 # Gradle 설정
@@ -25,7 +25,7 @@ RUN ./gradlew bootWar --no-daemon --stacktrace
 RUN ls -la build/libs/
 
 # 2단계: 톰캣 이미지로 배포
-FROM tomcat:10.1-jdk17
+FROM tomcat:9.0.80-jdk11
 
 # 파일 업로드 디렉토리 생성
 RUN mkdir -p /var/www/html/uploads && chmod 777 /var/www/html/uploads

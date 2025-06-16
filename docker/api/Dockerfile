@@ -1,7 +1,7 @@
 #docker/api/Dockerfile
 
 # 1단계: Gradle 빌드
-FROM gradle:8.5-jdk17 AS build
+FROM gradle:7.6-jdk11 AS build
 WORKDIR /app
 
 # Gradle 멀티모듈 프로젝트 구조 복사
@@ -27,7 +27,7 @@ RUN ./gradlew bootJar --no-daemon --stacktrace
 RUN ls -la build/libs/
 
 # 2단계: 실행용 경량 이미지
-FROM openjdk:17-jdk-slim
+FROM openjdk:11-jdk-slim
 WORKDIR /app
 
 # 빌드된 JAR 복사

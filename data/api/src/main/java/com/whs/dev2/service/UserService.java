@@ -5,6 +5,7 @@ import com.whs.dev2.dto.RegisterRequestDto;
 import com.whs.dev2.entity.User;
 import com.whs.dev2.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final BCryptPasswordEncoder passwordEncoder;
 
     @Transactional
     public void register(RegisterRequestDto dto) {
@@ -23,20 +25,24 @@ public class UserService {
 
         User user = new User();
         user.setUsername(dto.getUsername());
-        user.setPassword(dto.getPassword());
+        user.setPassword(passwordEncoder.encode(dto.getPassword()));
         user.setEmail(dto.getEmail());
         userRepository.save(user);
     }
 
-    public boolean login(LoginRequestDto dto) {
-        User user = userRepository.findByUsername(dto.getUsername())
+    public User authenticate(String username, String password) {
+        User user = userRepository.findByUsername(username)
                 .orElse(null);
         
         if (user == null) {
-            return false;
+            return null;
         }
 
-        return user.getPassword().equals(dto.getPassword());
+        if (!passwordEncoder.matches(password, user.getPassword())) {
+            return null;
+        }
+
+        return user;
     }
 
     public User findByUsername(String username) {

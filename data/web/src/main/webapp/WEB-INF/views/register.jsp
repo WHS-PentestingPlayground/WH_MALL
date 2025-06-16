@@ -14,10 +14,8 @@
 <div class="login-section">
     <div class="login-container">
         <h2 class="form-title">회원가입</h2>
-        <% if (request.getAttribute("error") != null) { %>
-        <div class="error-message">${error}</div>
-        <% } %>
-        <form action="/register" method="post">
+        <div id="errorMessage" class="error-message" style="display:none;"></div>
+        <form id="registerForm">
             <div class="form-group">
                 <label for="username" class="form-label">아이디</label>
                 <input type="text" id="username" name="username" class="form-input" required>
@@ -38,5 +36,43 @@
         <a href="/login" class="form-link">로그인으로 돌아가기</a>
     </div>
 </div>
+
+<script>
+    document.getElementById('registerForm').addEventListener('submit', function(event) {
+        event.preventDefault(); // 기본 폼 제출 방지
+
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+        const email = document.getElementById('email').value;
+        const errorMessageDiv = document.getElementById('errorMessage');
+
+        fetch('/api/users/register', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ username, password, email })
+        })
+        .then(response => {
+            if (response.ok) {
+                alert('회원가입이 완료되었습니다. 로그인 페이지로 이동합니다.');
+                window.location.href = '/login';
+            } else if (response.status === 400) {
+                return response.json().then(data => {
+                    errorMessageDiv.textContent = data.message || '회원가입 실패: 입력 값을 확인하세요.';
+                    errorMessageDiv.style.display = 'block';
+                });
+            } else {
+                errorMessageDiv.textContent = '회원가입 중 오류가 발생했습니다.';
+                errorMessageDiv.style.display = 'block';
+            }
+        })
+        .catch(error => {
+            console.error('Fetch error:', error);
+            errorMessageDiv.textContent = '네트워크 오류가 발생했습니다.';
+            errorMessageDiv.style.display = 'block';
+        });
+    });
+</script>
 </body>
 </html>

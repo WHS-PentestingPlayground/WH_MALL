@@ -17,21 +17,80 @@
         </div>
 
         <!-- 오른쪽: 유저 메뉴 -->
-        <div class="header-user-menu">
-            <c:choose>
-                <c:when test="${empty sessionScope.user}">
-                    <a href="/login" class="header-user-link">로그인</a>
-                    <a href="/register" class="header-user-link">회원가입</a>
-                </c:when>
-                <c:otherwise>
-                    <span class="header-username">
-                        ${sessionScope.user.username}님
-                    </span>
-                    <form action="/logout" method="post" class="header-logout-form">
-                        <button type="submit" class="header-logout-btn">로그아웃</button>
-                    </form>
-                </c:otherwise>
-            </c:choose>
+        <div class="header-user-menu" id="userMenu">
+            <!-- 로그인/회원가입 또는 사용자 정보/로그아웃 버튼이 JavaScript에 의해 동적으로 로드됩니다. -->
         </div>
     </nav>
 </header>
+
+<script>
+    const apiServerUrl = "${apiServerUrl}";
+
+    document.addEventListener('DOMContentLoaded', function() {
+        checkLoginStatus();
+    });
+
+    function checkLoginStatus() {
+        const token = localStorage.getItem('jwtToken');
+        const userMenu = document.getElementById('userMenu');
+
+        if (token) {
+            // 토큰이 있으면 사용자 정보를 가져옵니다.
+            fetch(`${apiServerUrl}/api/users/me`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': 'Bearer ' + token
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    // 토큰이 유효하지 않으면 (예: 만료) 토큰을 제거합니다.
+                    localStorage.removeItem('jwtToken');
+                    return Promise.reject('Unauthorized');
+                }
+            })
+            .then(data => {
+                userMenu.innerHTML = `
+                    <span class="header-username">${data.username}님</span>
+                    <button type="button" class="header-logout-btn" onclick="logout()">로그아웃</button>
+                `;
+            })
+            .catch(error => {
+                console.error('Failed to fetch user data:', error);
+                userMenu.innerHTML = `
+                    <a href="/login" class="header-user-link">로그인</a>
+                    <a href="/register" class="header-user-link">회원가입</a>
+                `;
+            });
+        } else {
+            // 토큰이 없으면 로그인/회원가입 버튼을 표시합니다.
+            userMenu.innerHTML = `
+                <a href="/login" class="header-user-link">로그인</a>
+                <a href="/register" class="header-user-link">회원가입</a>
+            `;
+        }
+    }
+
+    function logout() {
+        fetch(`${apiServerUrl}/api/users/logout`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + localStorage.getItem('jwtToken')
+            }
+        })
+        .then(response => {
+            if (response.ok) {
+                localStorage.removeItem('jwtToken');
+                window.location.href = '/'; // 메인 페이지로 리다이렉트
+            } else {
+                console.error('Logout failed');
+            }
+        })
+        .catch(error => {
+            console.error('Error during logout:', error);
+        });
+    }
+</script>
