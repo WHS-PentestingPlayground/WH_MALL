@@ -52,21 +52,24 @@ function loadPosts() {
         .then(posts => {
             const tbody = document.getElementById('postListBody');
             document.getElementById('totalCount').textContent = posts.length;
-            
-            tbody.innerHTML = posts.map((post, index) => `
-                <tr>
-                    <td>${posts.length - index}</td>
-                    <td>
-                        <a href="/board/posts/${post.id}" class="post-title-link">
-                            ${post.title}
-                            ${post.fileName ? '📎' : ''}
-                        </a>
-                    </td>
-                    <td>${post.author}</td>
-                    <td>${new Date(post.createdAt).toLocaleDateString('ko-KR')}</td>
-                    <td>${post.viewCount != null ? post.viewCount : 0}</td>
-                </tr>
-            `).join('');
+
+            tbody.innerHTML = posts.map((post, index) => {
+                const createdAt = new Date(post.createdAt).toLocaleDateString('ko-KR');
+                return `
+                    <tr>
+                        <td>${posts.length - index}</td>
+                        <td>
+                            <a href="/board/posts/${post.id}" class="post-title-link">
+                                ${post.title}
+                                ${post.fileName ? '📎' : ''}
+                            </a>
+                        </td>
+                        <td>${post.author}</td>
+                        <td>${createdAt}</td>
+                        <td>${post.viewCount != null ? post.viewCount : 0}</td>
+                    </tr>
+                `;
+            }).join('');
         })
         .catch(error => {
             console.error('Error loading posts:', error);
