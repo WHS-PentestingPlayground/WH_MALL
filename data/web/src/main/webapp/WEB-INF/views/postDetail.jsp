@@ -60,7 +60,7 @@ document.addEventListener('DOMContentLoaded', function() {
     currentPostId = pathParts[pathParts.length - 1];
 
     // 사용자 정보 가져오기
-    fetch('http://localhost:8081/api/users/me', {
+    fetch('/api/users/me', {
         headers: {
             'Authorization': 'Bearer ' + token
         }
@@ -77,7 +77,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function loadPostDetail() {
-    fetch(`http://localhost:8081/api/post/${currentPostId}`)
+    fetch(`/api/posts/${currentPostId}`)
         .then(response => response.json())
         .then(post => {
             document.getElementById('postTitle').textContent = post.title;
@@ -116,7 +116,7 @@ function deletePost() {
     }
 
     const token = localStorage.getItem('jwtToken');
-    fetch(`http://localhost:8081/api/post/${currentPostId}`, {
+    fetch(`/api/posts/${currentPostId}`, {
         method: 'DELETE',
         headers: {
             'Authorization': 'Bearer ' + token

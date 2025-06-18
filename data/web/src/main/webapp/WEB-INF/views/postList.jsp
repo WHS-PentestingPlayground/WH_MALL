@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <!DOCTYPE html>
 <html lang="ko">
@@ -46,7 +47,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function loadPosts() {
-    fetch('http://localhost:8081/api/posts')
+    fetch('/api/posts')
         .then(response => response.json())
         .then(posts => {
             const tbody = document.getElementById('postListBody');
@@ -62,8 +63,8 @@ function loadPosts() {
                         </a>
                     </td>
                     <td>${post.author}</td>
-                    <td>${new Date(post.createdAt).toLocaleDateString()}</td>
-                    <td>${post.viewCount || 0}</td>
+                    <td>${new Date(post.createdAt).toLocaleDateString('ko-KR')}</td>
+                    <td>${post.viewCount != null ? post.viewCount : 0}</td>
                 </tr>
             `).join('');
         })

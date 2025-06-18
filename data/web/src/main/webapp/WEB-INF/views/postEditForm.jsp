@@ -59,7 +59,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const postId = document.getElementById('postId').value;
 
     // 사용자 정보 가져오기
-    fetch('http://localhost:8081/api/users/me', {
+    fetch('/api/users/me', {
         headers: {
             'Authorization': 'Bearer ' + token
         }
@@ -83,7 +83,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function loadPostData(postId) {
     const token = localStorage.getItem('jwtToken');
-    fetch(`http://localhost:8081/api/posts/${postId}`, {
+    fetch(`/api/posts/${postId}`, {
         headers: {
             'Authorization': 'Bearer ' + token
         }
@@ -113,32 +113,30 @@ document.getElementById('editPostForm').addEventListener('submit', function(e) {
     const formData = new FormData();
     formData.append('title', document.getElementById('title').value);
     formData.append('content', document.getElementById('content').value);
-    
+
     const fileInput = document.getElementById('file');
     if (fileInput.files.length > 0) {
         formData.append('file', fileInput.files[0]);
     }
 
-    fetch(`http://localhost:8081/api/posts/${postId}`, {
-        method: 'PUT',
+    fetch(`/api/posts/${postId}/edit`, {
+        method: 'POST',
         headers: {
             'Authorization': 'Bearer ' + token
         },
         body: formData
     })
     .then(response => {
-        if (!response.ok) {
-            throw new Error('Failed to update post');
-        }
-        return response.json();
+        if (!response.ok) return response.text().then(msg => { throw new Error(msg); });
+        return response.text();
     })
-    .then(data => {
+    .then(() => {
         alert('게시글이 수정되었습니다.');
         window.location.href = `/board/posts/${postId}`;
     })
     .catch(error => {
         console.error('Error:', error);
-        alert('게시글 수정에 실패했습니다.');
+        alert('게시글 수정에 실패했습니다.\n' + error.message);
     });
 });
 </script>

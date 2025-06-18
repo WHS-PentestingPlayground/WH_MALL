@@ -24,7 +24,6 @@
 </header>
 
 <script>
-    const apiServerUrl = "${apiServerUrl}";
 
     document.addEventListener('DOMContentLoaded', function() {
         checkLoginStatus();
@@ -36,7 +35,7 @@
 
         if (token) {
             // 토큰이 있으면 사용자 정보를 가져옵니다.
-            fetch(`${apiServerUrl}/api/users/me`, {
+            fetch(`/api/users/me`, {
                 method: 'GET',
                 headers: {
                     'Authorization': 'Bearer ' + token
@@ -74,7 +73,7 @@
     }
 
     function logout() {
-        fetch(`${apiServerUrl}/api/users/logout`, {
+        fetch(`/api/users/logout`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

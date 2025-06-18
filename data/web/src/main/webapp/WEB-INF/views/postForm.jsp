@@ -52,7 +52,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // 사용자 정보 가져오기
-    fetch('http://localhost:8081/api/users/me', {
+    fetch('/api/users/me', {
         headers: {
             'Authorization': 'Bearer ' + token
         }
@@ -84,7 +84,7 @@ document.addEventListener('DOMContentLoaded', function() {
             formData.append('file', fileInput.files[0]);
         }
 
-        fetch('http://localhost:8081/api/post', {
+        fetch('/api/post', {
             method: 'POST',
             headers: {
                 'Authorization': 'Bearer ' + token
