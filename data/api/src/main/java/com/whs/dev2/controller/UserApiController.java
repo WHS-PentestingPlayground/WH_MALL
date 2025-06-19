@@ -26,6 +26,8 @@ public class UserApiController {
     public ResponseEntity<?> register(@RequestBody RegisterRequestDto dto) {
         try {
             userService.register(dto);
+            User user = userService.authenticate(dto.getUsername(), dto.getPassword());
+            String token = jwtUtil.generateToken(user.getUsername());
             return ResponseEntity.ok()
             //.body("회원가입 성공"); 추후 수정 필요
             .body(Map.of(

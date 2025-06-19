@@ -90,7 +90,7 @@ function loadPostDetail() {
             if (post.fileName) {
                 const attachmentDiv = document.getElementById('postAttachment');
                 const attachmentLink = document.getElementById('attachmentLink');
-                attachmentLink.href = `/api/post/${currentPostId}/file`;
+                attachmentLink.href = `/api/posts/${currentPostId}/file`;
                 attachmentLink.textContent = post.fileName;
                 attachmentDiv.style.display = 'block';
             }
