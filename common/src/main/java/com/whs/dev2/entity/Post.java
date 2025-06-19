@@ -35,9 +35,14 @@ public class Post extends BaseEntity {
     @Column(nullable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
 
-    // 공지사항 여부 필드 추가
-    @Column(nullable = false)
-    private boolean notice = false;
+    @Column(nullable = true)
+    private String encryptedFileName; // 암호화된 파일명
+
+    @Column(columnDefinition = "TEXT", nullable = true)
+    private String encryptedFileData; // 암호화된 파일 데이터
+
+    
+    
 
 
 

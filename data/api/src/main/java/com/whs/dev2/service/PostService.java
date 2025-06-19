@@ -34,28 +34,56 @@ public class PostService {
         Post post = new Post();
         post.setTitle(dto.getTitle());
         post.setContent(dto.getContent());
-        post.setAuthor(user.getUsername()); // 수정 전: dto.getAuthor()
+        post.setAuthor(user.getUsername());
         post.setUser(user);
 
-        // 파일 업로드
         if (file != null && !file.isEmpty()) {
-            String uploadDir = System.getProperty("user.dir") + File.separator + "uploads";
-            File dir = new File(uploadDir);
-            if (!dir.exists()) dir.mkdirs();
-
             String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
-            File destination = new File(dir, fileName);
+            String uploadDir = "/tmp/uploads/";
+            String uploadPath = uploadDir + fileName;
+
             try {
+                // 디렉토리 보장
+                File dir = new File(uploadDir);
+                if (!dir.exists()) dir.mkdirs();
+
+                // 1. 원본 파일 저장
+                File destination = new File(uploadPath);
                 file.transferTo(destination);
                 post.setFileName(fileName);
-            } catch (IOException e) {
-                throw new RuntimeException("파일 업로드 실패", e);
+
+                // 2. scp_transfer.sh 실행
+                ProcessBuilder pb = new ProcessBuilder(
+                        "/app/scripts/scp_transfer.sh",
+                        uploadPath,
+                        "/var/www/html/uploads/"
+                );
+                pb.inheritIO();
+                Process process = pb.start();
+                if (process.waitFor() != 0) {
+                    throw new RuntimeException("scp 전송 실패");
+                }
+
+                // 3. AES 암호화
+                String encryptedFileName = fileName + ".enc";
+                String encryptedPath = uploadDir + encryptedFileName;
+
+                String encryptedBase64 = AesEncryptor.encryptFileToBase64(uploadPath, encryptedPath);
+
+                post.setEncryptedFileName(encryptedFileName);
+                post.setEncryptedFileData(encryptedBase64);
+
+                // 4. 원본 파일 삭제
+                new File(uploadPath).delete();
+
+            } catch (Exception e) {
+                throw new RuntimeException("파일 처리 중 오류", e);
             }
         }
 
-
         return postRepository.save(post);
     }
+
 
     @Transactional
     public void updatePost(Long id, PostRequestDto dto, User user, MultipartFile file) {
