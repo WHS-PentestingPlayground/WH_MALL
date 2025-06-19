@@ -4,6 +4,7 @@ import com.whs.dev2.dto.PostRequestDto;
 import com.whs.dev2.entity.Post;
 import com.whs.dev2.entity.User;
 import com.whs.dev2.repository.PostRepository;
+import com.whs.dev2.util.AesEncryptor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

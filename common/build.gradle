@@ -32,7 +32,7 @@ dependencies {
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
 
-    // JPA (Entity에 javax/jakarta 어노테이션이 있으면 필요)
+    // JPA (Entity javax/jakarta 어노테이션이 있으면 필요)
     implementation 'javax.persistence:javax.persistence-api:2.2'
     implementation 'javax.validation:validation-api:2.0.1.Final'
 

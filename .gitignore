@@ -1,2 +1,31 @@
-**/build/
+# 빌드/IDE
+/build/
+/.gradle/
+**/.gradle/
 .idea/
+*.iml
+*.class
+
+# 로그/캐시
+*.log
+*.tmp
+*.swp
+
+# 시스템 파일
+.DS_Store
+Thumbs.db
+
+# 보안 키
+/data/api/src/main/resources/scripts/id_rsa
+/data/api/src/main/resources/scripts/id_rsa.pub
+*.key
+*.pem
+*.crt
+
+# 환경 변수
+.env
+
+# 업로드/실습 파일
+uploads/
+tmp/
+var/www/html/uploads/
