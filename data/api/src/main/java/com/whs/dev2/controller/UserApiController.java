@@ -26,7 +26,13 @@ public class UserApiController {
     public ResponseEntity<?> register(@RequestBody RegisterRequestDto dto) {
         try {
             userService.register(dto);
-            return ResponseEntity.ok().body("회원가입이 완료되었습니다.");
+            return ResponseEntity.ok()
+            //.body("회원가입 성공"); 추후 수정 필요
+            .body(Map.of(
+                "message", "회원가입이 완료되었습니다.",
+                "token", token,
+                "username", user.getUsername()
+            ));
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }

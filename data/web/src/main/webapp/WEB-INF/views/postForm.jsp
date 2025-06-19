@@ -84,7 +84,7 @@ document.addEventListener('DOMContentLoaded', function() {
             formData.append('file', fileInput.files[0]);
         }
 
-        fetch('/api/posts', {
+        fetch('/api/posts/create-with-file', {
             method: 'POST',
             headers: {
                 'Authorization': 'Bearer ' + token
