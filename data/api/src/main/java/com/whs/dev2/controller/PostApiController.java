@@ -1,6 +1,7 @@
 package com.whs.dev2.controller;
 
 import com.whs.dev2.dto.PostRequestDto;
+import com.whs.dev2.dto.PostResponseDto;
 import com.whs.dev2.entity.Post;
 import com.whs.dev2.entity.User;
 import com.whs.dev2.jwt.JwtUtil;
@@ -26,7 +27,7 @@ public class PostApiController {
 
     // 모든 게시글 조회
     @GetMapping
-    public ResponseEntity<List<Post>> getAllPosts() {
+    public ResponseEntity<List<PostResponseDto>> getAllPosts() {
         return ResponseEntity.ok(postService.getAllPosts());
     }
 

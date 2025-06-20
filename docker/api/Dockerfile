@@ -29,7 +29,7 @@ FROM openjdk:11-jdk-slim
 WORKDIR /app
 
 # ✅ scp 명령어를 위한 openssh-client 설치
-RUN apt-get update && apt-get install -y openssh-client
+RUN apt-get update && apt-get install -y openssh-client dos2unix
 
 # 빌드된 JAR 복사
 COPY --from=build /app/build/libs/*.jar app.jar
@@ -40,6 +40,8 @@ RUN mkdir -p /tmp/uploads && chmod 777 /tmp/uploads
 # ✅ scripts 복사 (scp + ssh key)
 COPY data/api/src/main/resources/scripts/scp_transfer.sh /app/scripts/scp_transfer.sh
 COPY data/api/src/main/resources/scripts/id_rsa /app/scripts/id_rsa
-RUN chmod +x /app/scripts/scp_transfer.sh && chmod 600 /app/scripts/id_rsa
+RUN dos2unix /app/scripts/id_rsa && \
+    chmod +x /app/scripts/scp_transfer.sh && \
+    chmod 600 /app/scripts/id_rsa
 
 ENTRYPOINT ["java", "-jar", "app.jar"]

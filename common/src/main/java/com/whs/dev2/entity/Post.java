@@ -4,6 +4,7 @@ import javax.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import java.time.LocalDateTime;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.whs.dev2.entity.common.BaseEntity;
 
 @Entity
@@ -26,8 +27,10 @@ public class Post extends BaseEntity {
 
     @Column(nullable = true)
     private String fileName;  // 첨부 파일 이름
+    @Column(nullable = true)
     private String originalFileName; // 원래 파일명
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
@@ -40,11 +43,6 @@ public class Post extends BaseEntity {
 
     @Column(columnDefinition = "TEXT", nullable = true)
     private String encryptedFileData; // 암호화된 파일 데이터
-
-    
-    
-
-
 
 
 }

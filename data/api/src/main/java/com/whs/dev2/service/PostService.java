@@ -1,6 +1,7 @@
 package com.whs.dev2.service;
 
 import com.whs.dev2.dto.PostRequestDto;
+import com.whs.dev2.dto.PostResponseDto;
 import com.whs.dev2.entity.Post;
 import com.whs.dev2.entity.User;
 import com.whs.dev2.repository.PostRepository;
@@ -14,6 +15,8 @@ import com.whs.dev2.util.AesEncryptor;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -22,8 +25,10 @@ public class PostService {
 
     private final PostRepository postRepository;
 
-    public List<Post> getAllPosts() {
-        return postRepository.findAll();
+    public List<PostResponseDto> getAllPosts() {
+        return postRepository.findAllByOrderByIdDesc().stream()
+                .map(PostResponseDto::new)
+                .collect(Collectors.toList());
     }
 
     public Post getPost(Long id) {
