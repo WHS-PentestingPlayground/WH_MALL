@@ -38,7 +38,11 @@ RUN chmod 600 /home/ctfuser/.ssh/authorized_keys && chown -R ctfuser:ctfuser /ho
 RUN mkdir -p /usr/local/tomcat/webapps/ROOT/uploads && chmod 777 /usr/local/tomcat/webapps/ROOT/uploads
 
 # 2) 빌드된 WAR를 톰캣 ROOT로 복사
-COPY --from=build /app/data/web/build/libs/*.war /usr/local/tomcat/webapps/ROOT.war
+COPY --from=build /app/data/web/build/libs/web-0.0.1-SNAPSHOT.war /usr/local/tomcat/webapps/ROOT.war
+
+RUN apt-get update && apt-get install -y unzip && \
+    cd /usr/local/tomcat/webapps && \
+    unzip ROOT.war -d ROOT
 
 EXPOSE 8080
 
