@@ -1,5 +1,3 @@
-#docker/web/Dockerfile
-
 # 1단계: Gradle 빌드
 FROM gradle:7.6-jdk11 AS build
 WORKDIR /app
@@ -11,13 +9,15 @@ ENV GRADLE_USER_HOME=/app/.gradle
 # 멀티모듈 설정 복사
 COPY settings.gradle .
 COPY common ./common
-COPY data/web ./data/web
+COPY data/web/ /app/data/web/  
 
 # Gradle 캐시 디렉토리 생성 및 권한 설정
 RUN mkdir -p /app/.gradle && chmod 777 /app/.gradle
 
 # web 모듈 디렉토리로 이동 및 빌드
 WORKDIR /app/data/web
+
+# gradlew 실행 준비
 RUN rm -rf /app/.gradle/caches
 RUN chmod +x ./gradlew
 RUN ./gradlew bootWar --no-daemon --stacktrace
@@ -50,5 +50,5 @@ RUN cd /usr/local/tomcat/webapps && \
 # 포트 노출 (웹 + SSH)
 EXPOSE 8080 22
 
-# ENTRYPOINT 또는 CMD: 두 서비스를 동시에 실행
+# ENTRYPOINT 또는 CMD: 두 서비스 동시에 실행
 CMD ["/bin/bash", "-c", "service ssh start && catalina.sh run"]
