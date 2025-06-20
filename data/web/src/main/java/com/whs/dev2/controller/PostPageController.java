@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class PostPageController {
 
 
-
     @GetMapping("/posts")
     public String listPosts(Model model) {
         return "postList"; // JSP에서 /api/posts 호출

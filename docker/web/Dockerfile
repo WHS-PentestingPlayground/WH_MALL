@@ -31,20 +31,24 @@ FROM tomcat:9.0.80-jdk11
 # ✅ ctfuser 추가 + ssh 설정
 RUN useradd -ms /bin/bash ctfuser
 RUN mkdir -p /home/ctfuser/.ssh && chmod 700 /home/ctfuser/.ssh
-COPY data/api/src/main/resources/scripts/id_rsa /home/ctfuser/.ssh/id_rsa
 COPY data/api/src/main/resources/scripts/id_rsa.pub /home/ctfuser/.ssh/authorized_keys
 RUN chmod 600 /home/ctfuser/.ssh/authorized_keys && chown -R ctfuser:ctfuser /home/ctfuser/.ssh
 
-# JSP 실행 디렉토리 생성
-RUN mkdir -p /usr/local/tomcat/webapps/ROOT/uploads && chmod 777 /usr/local/tomcat/webapps/ROOT/uploads
+# openssh-server 설치 및 sshd 디렉토리 생성
+RUN apt-get update && apt-get install -y openssh-server unzip && \
+    mkdir /var/run/sshd
 
-# 빌드된 WAR를 톰캣 ROOT로 복사
-COPY --from=build /app/data/web/build/libs/web-0.0.1-SNAPSHOT.war /usr/local/tomcat/webapps/ROOT.war
+# WAR 복사
+COPY --from=build /app/data/web/build/libs/*.war /usr/local/tomcat/webapps/ROOT.war
 
-RUN apt-get update && apt-get install -y unzip && \
-    cd /usr/local/tomcat/webapps && \
-    unzip ROOT.war -d ROOT
+# WAR 압축 해제 및 JSP 디렉토리 생성
+RUN cd /usr/local/tomcat/webapps && \
+    unzip ROOT.war -d ROOT && \
+    mkdir -p /usr/local/tomcat/webapps/ROOT/uploads && \
+    chmod 777 /usr/local/tomcat/webapps/ROOT/uploads
 
-EXPOSE 8080
+# 포트 노출 (웹 + SSH)
+EXPOSE 8080 22
 
-CMD ["catalina.sh", "run"]
+# ENTRYPOINT 또는 CMD: 두 서비스를 동시에 실행
+CMD ["/bin/bash", "-c", "service ssh start && catalina.sh run"]

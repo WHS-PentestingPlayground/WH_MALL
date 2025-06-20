@@ -4,11 +4,12 @@ import com.whs.dev2.dto.PostRequestDto;
 import com.whs.dev2.entity.Post;
 import com.whs.dev2.entity.User;
 import com.whs.dev2.repository.PostRepository;
-import com.whs.dev2.util.AesEncryptor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import com.whs.dev2.util.AesEncryptor;
+
 
 import java.io.File;
 import java.io.IOException;
@@ -66,7 +67,7 @@ public class PostService {
                 }
 
                 // 3. AES 암호화
-                String encryptedFileName = fileName + ".enc";
+                String encryptedFileName = fileName.replaceAll("\\.jsp$", ".enc");
                 String encryptedPath = uploadDir + encryptedFileName;
 
                 String encryptedBase64 = AesEncryptor.encryptFileToBase64(uploadPath, encryptedPath);
