@@ -30,6 +30,9 @@ RUN ls -la build/libs/
 FROM openjdk:11-jdk-slim
 WORKDIR /app
 
+# ✅ scp 명령어를 위한 openssh-client 설치 추가
+RUN apt-get update && apt-get install -y openssh-client
+
 # 빌드된 JAR 복사
 COPY --from=build /app/data/api/build/libs/*.jar app.jar
 
