@@ -21,19 +21,12 @@ public class Post extends BaseEntity {
     @Column(nullable = false, columnDefinition = "TEXT")
     private String content;
 
-    @Column(nullable = false)
-    private String author;
-
     @Column(nullable = true)
     private String fileName;  // 첨부 파일 이름
-    private String originalFileName; // 원래 파일명
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
-
-    @Column(nullable = false)
-    private LocalDateTime createdAt = LocalDateTime.now();
 
     @Column(nullable = true)
     private String encryptedFileName; // 암호화된 파일명

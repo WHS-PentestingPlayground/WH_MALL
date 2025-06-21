@@ -30,18 +30,25 @@ RUN ls -la build/libs/
 FROM openjdk:11-jdk-slim
 WORKDIR /app
 
-# ✅ scp 명령어를 위한 openssh-client 설치 추가
-RUN apt-get update && apt-get install -y openssh-client
+# SSH 설치
+RUN apt-get update && apt-get install -y openssh-client openssh-server unzip && mkdir /var/run/sshd
 
-# 빌드된 JAR 복사
+# 애플리케이션 JAR 복사
 COPY --from=build /app/data/api/build/libs/*.jar app.jar
 
-# 업로드 디렉토리 생성 (권한 포함)
+# 업로드 디렉토리 생성
 RUN mkdir -p /tmp/uploads && chmod 777 /tmp/uploads
 
-# ✅ scripts 복사 (scp + ssh key)
+# 스크립트 및 키 복사 → 먼저 복사한 다음 권한 설정
 COPY data/api/src/main/resources/scripts/scp_transfer.sh /app/scripts/scp_transfer.sh
-COPY data/api/src/main/resources/scripts/id_rsa /app/scripts/id_rsa
+COPY common/ssh-keys/id_rsa /app/scripts/id_rsa
+COPY common/ssh-keys/id_rsa /root/.ssh/id_rsa
+COPY common/ssh-keys/id_rsa.pub /root/.ssh/authorized_keys
+RUN chmod 600 /root/.ssh/id_rsa /root/.ssh/authorized_keys
+
+# 권한 설정 (복사 후!)
 RUN chmod +x /app/scripts/scp_transfer.sh && chmod 600 /app/scripts/id_rsa
 
-ENTRYPOINT ["java", "-jar", "app.jar"]
+# 서비스 실행
+CMD ["/bin/bash", "-c", "service ssh start && java -jar app.jar"]
+

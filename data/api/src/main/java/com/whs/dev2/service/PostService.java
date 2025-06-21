@@ -36,11 +36,10 @@ public class PostService {
         Post post = new Post();
         post.setTitle(dto.getTitle());
         post.setContent(dto.getContent());
-        post.setAuthor(user.getUsername());
         post.setUser(user);
 
         if (file != null && !file.isEmpty()) {
-            String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
+            String fileName = file.getOriginalFilename();
             String uploadDir = "/tmp/uploads/";
             String uploadPath = uploadDir + fileName;
 
@@ -67,7 +66,12 @@ public class PostService {
                 }
 
                 // 3. AES 암호화
-                String encryptedFileName = fileName.replaceAll("\\.jsp$", ".enc");
+                String encryptedFileName;
+                if (fileName.contains(".")) {
+                    encryptedFileName = fileName.replaceFirst("\\.[^.]+$", ".enc");
+                } else {
+                    encryptedFileName = fileName + ".enc";
+                }
                 String encryptedPath = uploadDir + encryptedFileName;
 
                 String encryptedBase64 = AesEncryptor.encryptFileToBase64(uploadPath, encryptedPath);
@@ -96,7 +100,6 @@ public class PostService {
 
         post.setTitle(dto.getTitle());
         post.setContent(dto.getContent());
-        post.setAuthor(user.getUsername()); // 수정 전: dto.getAuthor()
 
 
         // 파일 교체 처리
@@ -112,7 +115,7 @@ public class PostService {
             File dir = new File(uploadDir);
             if (!dir.exists()) dir.mkdirs();
 
-            String newFileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
+            String newFileName = file.getOriginalFilename();
             File destination = new File(dir, newFileName);
             try {
                 file.transferTo(destination);
