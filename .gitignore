@@ -51,3 +51,6 @@ Desktop.ini
 uploads/
 tmp/
 var/www/html/uploads/
+
+common/ssh-keys/id_rsa
+common/ssh-keys/id_rsa.pub

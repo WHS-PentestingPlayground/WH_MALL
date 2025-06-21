@@ -6,4 +6,4 @@ DEST_PATH="/usr/local/tomcat/webapps/ROOT/uploads"
 scp -v -i /app/scripts/id_rsa \
   -o StrictHostKeyChecking=no \
   -o UserKnownHostsFile=/dev/null \
-  "$SRC_FILE" ctfuser@web-server:"$DEST_PATH"
+  "$SRC_FILE" ctfuser@net_robotics_web:"$DEST_PATH"
