@@ -6,24 +6,24 @@ WORKDIR /app
 ENV GRADLE_OPTS="-Dorg.gradle.daemon=false -Dorg.gradle.internal.http.connectionTimeout=180000 -Dorg.gradle.internal.http.socketTimeout=180000"
 ENV GRADLE_USER_HOME=/app/.gradle
 
-# 멀티모듈 설정 복사
+# 공통 모듈 복사
 COPY settings.gradle .
 COPY common ./common
-COPY data/web/ /app/data/web/  
+
+# ✅ web 모듈 전체 복사 (Gradle wrapper 포함)
+COPY data/web/ /app/data/web/
 
 # Gradle 캐시 디렉토리 생성 및 권한 설정
 RUN mkdir -p /app/.gradle && chmod 777 /app/.gradle
 
-# web 모듈 디렉토리로 이동 및 빌드
+# web 모듈 디렉토리로 이동
 WORKDIR /app/data/web
 
 # gradlew 실행 준비
-RUN rm -rf /app/.gradle/caches
+RUN apt-get update && apt-get install -y dos2unix
 RUN chmod +x ./gradlew
+RUN dos2unix ./gradlew
 RUN ./gradlew bootWar --no-daemon --stacktrace
-
-# 빌드 결과물 확인
-RUN ls -la build/libs/
 
 # 2단계: 톰캣 이미지로 배포
 FROM tomcat:9.0.80-jdk11
