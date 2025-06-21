@@ -49,7 +49,10 @@ public class UserApiController {
                 String token = jwtUtil.generateToken(user.getUsername());
                 return ResponseEntity.ok()
                     .header("Authorization", "Bearer " + token)
-                    .body("로그인 성공");
+                    .body(Map.of(
+                        "message", "로그인 성공",
+                        "username", user.getUsername()
+                    ));
             }
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("아이디 또는 비밀번호가 올바르지 않습니다.");
         } catch (Exception e) {

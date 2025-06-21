@@ -15,12 +15,14 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Map;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Slf4j
 @Controller
@@ -30,6 +32,7 @@ public class ApiProxyController {
     private String apiServerUrl;
 
     private final RestTemplate restTemplate = new RestTemplate();
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     @RequestMapping("/api/**")
     public ResponseEntity<byte[]> proxy(HttpServletRequest request) throws URISyntaxException, IOException {
@@ -52,6 +55,15 @@ public class ApiProxyController {
                 headers.put(headerName, Collections.list(request.getHeaders(headerName)));
             }
         }
+
+        // Add JWT token from session if it exists and there's no Authorization header from the client
+        HttpSession session = request.getSession(false); // Don't create a new session if one doesn't exist
+        if (session != null && session.getAttribute("jwt_token") != null && !headers.containsKey(HttpHeaders.AUTHORIZATION)) {
+            String token = (String) session.getAttribute("jwt_token");
+            headers.set(HttpHeaders.AUTHORIZATION, token);
+            log.info("Added JWT token from session to forwarded headers for user: {}", session.getAttribute("user"));
+        }
+
         log.info("Forwarding headers: {}", headers);
 
         HttpEntity<?> entity;
@@ -104,6 +116,33 @@ public class ApiProxyController {
         try {
             ResponseEntity<byte[]> responseEntity = restTemplate.exchange(new URI(uri), method, entity, byte[].class);
             log.info("Received response with status: {}", responseEntity.getStatusCode());
+
+            String requestUri = request.getRequestURI();
+            if (responseEntity.getStatusCode() == HttpStatus.OK) {
+                if (requestUri.equals("/api/users/login")) {
+                    try {
+                        log.info("Processing successful login response.");
+                        Map<String, Object> responseBody = objectMapper.readValue(responseEntity.getBody(), Map.class);
+                        String username = (String) responseBody.get("username");
+                        String authHeader = responseEntity.getHeaders().getFirst(HttpHeaders.AUTHORIZATION);
+
+                        if (username != null && authHeader != null) {
+                            HttpSession newSession = request.getSession(true); // Create a new session
+                            newSession.setAttribute("user", username);
+                            newSession.setAttribute("jwt_token", authHeader);
+                            log.info("User '{}' and JWT token set in session.", username);
+                        } else {
+                            log.warn("Username or Auth Header not found in login response body.");
+                        }
+                    } catch (IOException e) {
+                        log.error("Failed to parse login response body", e);
+                    }
+                } else if (requestUri.equals("/api/users/logout")) {
+                    log.info("Processing logout response.");
+                    request.getSession().invalidate();
+                    log.info("Session invalidated.");
+                }
+            }
             return responseEntity;
         } catch (HttpClientErrorException e) {
             log.error("Error from API server: {} - {}", e.getStatusCode(), e.getResponseBodyAsString());

@@ -35,7 +35,7 @@ public class PostApiController {
     @GetMapping("/{id}")
     public ResponseEntity<?> getPost(@PathVariable Long id) {
         try {
-            Post post = postService.getPost(id);
+            PostResponseDto post = postService.getPost(id);
             return ResponseEntity.ok(post);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("게시글을 찾을 수 없습니다.");
@@ -56,7 +56,7 @@ public class PostApiController {
         dto.setAuthor(user.getUsername());
 
         try {
-            Post post = postService.createPost(dto, user, null);
+            PostResponseDto post = postService.createPost(dto, user, null);
             return ResponseEntity.ok(post);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("게시글 생성 중 오류 발생");
@@ -82,7 +82,7 @@ public class PostApiController {
         dto.setAuthor(user.getUsername());
 
         try {
-            Post post = postService.createPost(dto, user, file);
+            PostResponseDto post = postService.createPost(dto, user, file);
             return ResponseEntity.ok(post);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("게시글 생성 중 오류 발생");

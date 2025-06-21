@@ -31,13 +31,13 @@ public class PostService {
                 .collect(Collectors.toList());
     }
 
-    public Post getPost(Long id) {
-        return postRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("게시글을 찾을 수 없습니다."));
+    public PostResponseDto getPost(Long id) {
+        Post post = findPostById(id);
+        return new PostResponseDto(post);
     }
 
     @Transactional
-    public Post createPost(PostRequestDto dto, User user, MultipartFile file) {
+    public PostResponseDto createPost(PostRequestDto dto, User user, MultipartFile file) {
         Post post = new Post();
         post.setTitle(dto.getTitle());
         post.setContent(dto.getContent());
@@ -88,13 +88,14 @@ public class PostService {
             }
         }
 
-        return postRepository.save(post);
+        Post savedPost = postRepository.save(post);
+        return new PostResponseDto(savedPost);
     }
 
 
     @Transactional
     public void updatePost(Long id, PostRequestDto dto, User user, MultipartFile file) {
-        Post post = getPost(id);
+        Post post = findPostById(id);
         if (!post.getUser().getId().equals(user.getId())) {
             throw new IllegalArgumentException("게시글을 수정할 권한이 없습니다.");
         }
@@ -130,7 +131,7 @@ public class PostService {
 
     @Transactional
     public void deletePost(Long id, User user) {
-        Post post = getPost(id);
+        Post post = findPostById(id);
         if (!post.getUser().getId().equals(user.getId())) {
             throw new IllegalArgumentException("게시글을 삭제할 권한이 없습니다.");
         }
@@ -145,5 +146,8 @@ public class PostService {
         postRepository.delete(post);
     }
 
-
+    private Post findPostById(Long id) {
+        return postRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("게시글을 찾을 수 없습니다."));
+    }
 }
