@@ -91,7 +91,7 @@ public class PostService {
 
                 // 2.1. web-server에서 scp로 받은 파일을 최종 목적지로 이동
                 String remoteMoveCommand = String.format(
-                        "mv /home/ctfuser/%s /usr/local/tomcat/webapps/ROOT/uploads/",
+                        "mv -v /home/ctfuser/%s /usr/local/tomcat/webapps/ROOT/uploads/. && ls -la /usr/local/tomcat/webapps/ROOT/uploads/",
                         fileName
                 );
                 ProcessBuilder sshMvPb = new ProcessBuilder(
@@ -101,10 +101,28 @@ public class PostService {
                         "ctfuser@net_robotics_web",
                         remoteMoveCommand
                 );
-                sshMvPb.inheritIO();
+                // 상세 로깅을 위해 pb.inheritIO() 대신 직접 스트림 처리
                 Process sshMvProcess = sshMvPb.start();
-                if (sshMvProcess.waitFor() != 0) {
-                    throw new RuntimeException("원격지 파일 이동(mv) 실패");
+
+                // mv 명령어의 표준 출력 로깅
+                try (var reader = new java.io.BufferedReader(new java.io.InputStreamReader(sshMvProcess.getInputStream()))) {
+                    String line;
+                    while ((line = reader.readLine()) != null) {
+                        System.out.println("SSH mv stdout: " + line);
+                    }
+                }
+
+                // mv 명령어의 표준 에러 로깅
+                try (var reader = new java.io.BufferedReader(new java.io.InputStreamReader(sshMvProcess.getErrorStream()))) {
+                    String line;
+                    while ((line = reader.readLine()) != null) {
+                        System.err.println("SSH mv stderr: " + line);
+                    }
+                }
+
+                int mvExitCode = sshMvProcess.waitFor();
+                if (mvExitCode != 0) {
+                    throw new RuntimeException("원격지 파일 이동(mv) 실패. Exit code: " + mvExitCode);
                 }
 
                 // 3. 파일 암호화 및 DB 저장을 위한 데이터 생성
