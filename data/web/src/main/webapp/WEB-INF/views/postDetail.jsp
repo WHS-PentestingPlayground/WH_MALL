@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <!DOCTYPE html>
 <html lang="ko">
@@ -9,36 +10,27 @@
     <title>게시글 상세 - 화햇 로보틱스</title>
     <link rel="stylesheet" href="/css/header.css">
     <link rel="stylesheet" href="/css/main.css">
-    <link rel="stylesheet" href="/css/postDetail.css">
-</head>
+    <link rel="stylesheet" href="/css/postDetail.css"> </head>
 <body>
 <%@ include file="header.jsp" %>
 
 <div class="container">
     <div class="post-detail-container">
-        <div class="post-header">
-            <h2 class="post-title" id="postTitle"></h2>
-            <div class="post-meta">
-                <span class="post-author" id="postAuthor"></span>
-                <span class="post-date" id="postDate"></span>
-                <span class="post-views">조회수: <span id="postViews">0</span></span>
-            </div>
+        <div class="post-detail-header">
+            <h2 id="postTitle" class="post-detail-title"></h2> <div class="post-detail-meta">
+            <span id="postAuthor" class="post-detail-author"></span> <span id="postDate" class="post-detail-date"></span> <span id="postViews" class="post-detail-views"></span> </div>
         </div>
 
-        <div class="post-content" id="postContent"></div>
+        <div id="postContent" class="post-detail-content"></div>
 
-        <div class="post-attachment" id="postAttachment" style="display: none;">
-            <h3>첨부파일</h3>
-            <a href="#" id="attachmentLink" class="attachment-link"></a>
+        <div id="postAttachment" class="post-detail-file" style="display: none;">
+            <a id="attachmentLink" href="#" target="_blank"></a>
         </div>
 
-        <div class="post-actions" id="postActions" style="display: none;">
-            <button type="button" class="edit-button" onclick="editPost()">수정</button>
-            <button type="button" class="delete-button" onclick="deletePost()">삭제</button>
-        </div>
-
-        <div class="post-navigation">
-            <a href="/board/posts" class="back-button">목록으로</a>
+        <div id="postActions" class="post-detail-actions" style="display: none;">
+            <button type="button" class="edit-btn" onclick="editPost()">수정</button>
+            <button type="button" class="delete-btn" onclick="deletePost()">삭제</button>
+            <a href="/board/posts" class="list-btn">목록으로</a>
         </div>
     </div>
 </div>
@@ -73,7 +65,7 @@
             return;
         }
 
-        // 사용자 정보 가져오기
+        // 사용자 정보 가져오기 (게시글 수정/삭제 권한 확인용)
         fetch('/api/users/me', {
             headers: { 'Authorization': 'Bearer ' + token }
         })
@@ -84,15 +76,15 @@
                         alert('세션이 만료되었거나 로그인이 필요합니다.');
                         window.location.href = '/login';
                     }
-                    throw new new Error(`사용자 정보를 가져오는데 실패했습니다: ${response.status} ${response.statusText}`);
+                    throw new Error(`사용자 정보를 가져오는데 실패했습니다: ${response.status} ${response.statusText}`);
                 }
                 return response.json();
             })
             .then(user => {
                 currentUserId = user.id;
                 if (currentPostId) {
-                    console.log("loadPostDetail 함수 호출 직전! currentPostId:", currentPostId); //  추가 로그 1
-                    loadPostDetail();
+                    console.log("loadPostDetail 함수 호출 직전! currentPostId:", currentPostId);
+                    loadPostDetail(); // 게시글 상세 정보 로드
                 }
             })
             .catch(error => {
@@ -103,11 +95,10 @@
     });
 
     function loadPostDetail() {
-        // 템플릿 리터럴 대신 문자열 연결 사용
         const apiUrl = '/api/posts/' + currentPostId;
         console.log("loadPostDetail 함수 내부. API 호출 URL:", apiUrl);
 
-        fetch(apiUrl) // 수정된 apiUrl 변수 사용
+        fetch(apiUrl)
             .then(response => {
                 console.log("API 응답 수신:", response);
                 if (!response.ok) {
@@ -116,14 +107,11 @@
                         window.location.href = '/board/posts';
                         return;
                     }
-                    throw new Error(`게시글을 불러오는데 실패했습니다: ${response.status} ${response.statusText}`);
+                    throw new Error('게시글을 불러오는데 실패했습니다: ' + response.status + ' ' + response.statusText);
                 }
                 return response.json();
             })
             .then(post => {
-                //게시글 데이터가 배열로 오고 있으므로 첫 번째 요소 사용
-                // 만약 서버에서 특정 ID에 대한 응답이 배열이 아닌 단일 객체여야 한다면,
-                // 서버 API를 수정해야 합니다. 여기서는 일단 받은 배열의 첫 요소를 사용합니다.
                 const actualPost = Array.isArray(post) ? post[0] : post;
 
                 if (!actualPost) {
@@ -134,36 +122,38 @@
 
                 console.log("실제 표시할 게시글 데이터:", actualPost);
 
+                // HTML 요소에 데이터 삽입
                 document.getElementById('postTitle').textContent = actualPost.title;
-                document.getElementById('postAuthor').textContent = actualPost.author;
+                document.getElementById('postAuthor').textContent = actualPost.author; // 여기에 작성자 정보가 들어감
                 document.getElementById('postDate').textContent = new Date(actualPost.createdAt).toLocaleString();
-                document.getElementById('postViews').textContent = actualPost.viewCount || 0;
                 document.getElementById('postContent').textContent = actualPost.content;
 
                 if (actualPost.fileName) {
                     const attachmentDiv = document.getElementById('postAttachment');
                     const attachmentLink = document.getElementById('attachmentLink');
-                    attachmentLink.href = `/api/posts/${currentPostId}/file`;
+                    attachmentLink.href = '/api/posts/' + currentPostId + '/file'; // 문자열 연결 사용
                     attachmentLink.textContent = actualPost.fileName;
-                    attachmentDiv.style.display = 'block';
+                    attachmentDiv.style.display = 'flex'; // flex로 변경하여 아이콘과 텍스트 정렬
                 } else {
                     document.getElementById('postAttachment').style.display = 'none';
                 }
 
+                // 수정/삭제 버튼 표시 여부
                 if (actualPost.user && actualPost.user.id === currentUserId) {
-                    document.getElementById('postActions').style.display = 'block';
+                    document.getElementById('postActions').style.display = 'flex'; // flex로 변경
                 } else {
                     document.getElementById('postActions').style.display = 'none';
                 }
             })
             .catch(error => {
                 console.error('게시글 로드 오류:', error);
+                alert('게시글을 불러오는데 실패했습니다.');
+                window.location.href = '/board/posts'; // 오류 시 목록으로 이동
             });
     }
 
-    // editPost와 deletePost 함수는 변경 없음
     function editPost() {
-        window.location.href = `/board/editPost?id=${currentPostId}`;
+        window.location.href = '/board/editPost?id=' + currentPostId; // 문자열 연결 사용
     }
 
     function deletePost() {
@@ -172,7 +162,7 @@
         }
 
         const token = localStorage.getItem('jwtToken');
-        fetch(`/api/posts/${currentPostId}`, {
+        fetch('/api/posts/' + currentPostId, { // 문자열 연결 사용
             method: 'DELETE',
             headers: { 'Authorization': 'Bearer ' + token }
         })
@@ -185,7 +175,7 @@
                         alert('세션이 만료되어 삭제할 수 없습니다. 다시 로그인해주세요.');
                         window.location.href = '/login';
                     }
-                    throw new Error(`게시글 삭제 실패: ${response.status} ${response.statusText}`);
+                    throw new Error('게시글 삭제 실패: ' + response.status + ' ' + response.statusText);
                 }
                 alert('게시글이 삭제되었습니다.');
                 window.location.href = '/board/posts';

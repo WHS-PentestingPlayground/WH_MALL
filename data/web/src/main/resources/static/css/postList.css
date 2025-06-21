@@ -1,19 +1,24 @@
+/* postList.css */
+
+/* 전체 컨테이너 및 섹션 스타일 */
 .board-container {
     background: #ffffff;
     border-radius: 12px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
-    padding: 2.5rem;
-    margin: 2rem auto;
-    max-width: 1000px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08); /* 부드러운 그림자 */
+    padding: 2.5rem; /* 내부 여백 */
+    margin: 2rem auto; /* 중앙 정렬, 상하 여백 */
+    max-width: 1000px; /* 컨테이너 최대 너비 */
+    animation: fadeIn 0.8s ease-out; /* 페이지 로드 시 페이드인 효과 */
 }
 
+/* 게시판 헤더 */
 .board-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 2rem;
     padding-bottom: 1rem;
-    border-bottom: 1px solid #e0e0e0;
+    border-bottom: 1px solid #e0e0e0; /* 하단 구분선 */
 }
 
 .board-title {
@@ -26,12 +31,14 @@
     gap: 0.6rem;
 }
 
-.board-title::before {
-    content: "🤖";
-    font-size: 2.2rem;
-    color: #007bff;
-}
+/*!* 타이틀 앞 아이콘 *!*/
+/*.board-title::before {*/
+/*    content: "🤖"; !* 로봇 이모지 *!*/
+/*    font-size: 2.2rem;*/
+/*    color: #007bff; !* 강조 색상 *!*/
+/*}*/
 
+/* 새 글 작성 버튼 */
 .new-post-btn {
     background-color: #007bff;
     color: white;
@@ -39,7 +46,7 @@
     border-radius: 8px;
     text-decoration: none;
     font-weight: 600;
-    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease; /* 호버 애니메이션 */
     display: flex;
     align-items: center;
     gap: 0.5rem;
@@ -51,68 +58,87 @@
     box-shadow: 0 4px 10px rgba(0, 123, 255, 0.25);
 }
 
+/* 새 글 작성 버튼 앞 아이콘 */
 .new-post-btn::before {
-    content: "✏️";
+    content: "✏️"; /* 연필 이모지 */
     font-size: 1.1rem;
 }
 
+/* 게시글 목록 테이블 스타일 */
 .post-list {
-    display: grid;
-    gap: 1.2rem;
+    margin-top: 20px; /* 테이블 상단 여백 */
 }
 
-.post-item {
-    background: #f8f9fa;
-    border-radius: 8px;
-    padding: 1.5rem;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-    border: 1px solid #e9ecef;
+.post-list table {
+    width: 100%;
+    border-collapse: collapse; /* 테이블 셀 간격 제거 */
+    border: 1px solid #e0e0e0; /* 전체 테이블 테두리 */
+    border-radius: 8px; /* 테이블 전체 둥근 모서리 */
+    overflow: hidden; /* 둥근 모서리 적용을 위해 필요 */
 }
 
-.post-item:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+.post-list thead th {
+    background-color: #f8f9fa; /* 헤더 배경색 */
+    color: #495057; /* 헤더 텍스트 색상 */
+    font-weight: 600;
+    font-size: 1.05em;
+    padding: 15px 20px;
+    text-align: left;
+    border-bottom: 1px solid #e0e0e0;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
-.post-title {
+.post-list tbody tr {
+    transition: background-color 0.3s ease; /* 행 호버 애니메이션 */
+}
+
+.post-list tbody tr:hover {
+    background-color: #f5f5f5; /* 행 호버 시 배경색 */
+}
+
+.post-list tbody td {
+    padding: 15px 20px;
+    border-bottom: 1px solid #eee; /* 셀 하단 테두리 */
+    color: #343a40;
+    font-size: 1em;
+}
+
+.post-list tbody tr:last-child td {
+    border-bottom: none; /* 마지막 행 하단 테두리 제거 */
+}
+
+/* 게시글 제목 링크 */
+.post-title-link {
     color: #343a40;
     text-decoration: none;
-    font-weight: 600;
-    font-size: 1.2rem;
-    display: block;
-    margin-bottom: 0.6rem;
+    font-weight: 500;
+    transition: color 0.2s ease;
+    display: block; /* 링크가 셀 전체를 클릭 가능하게 */
 }
 
-.post-title:hover {
-    color: #007bff;
+.post-title-link:hover {
+    color: #007bff; /* 호버 시 색상 변경 */
     text-decoration: underline;
 }
 
-.post-meta {
-    display: flex;
-    align-items: center;
-    gap: 1.5rem;
+/* 첨부파일 아이콘 */
+.file-icon {
+    margin-left: 5px;
     color: #6c757d;
-    font-size: 0.9rem;
+    font-size: 0.9em;
 }
 
-.post-author {
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
-}
-
-.post-author::before {
-    content: "👤";
-    font-size: 1rem;
-    color: #6c757d;
-}
-
+/* 게시글이 없는 경우 메시지 */
 .empty-message {
     text-align: center;
     padding: 3rem;
     color: #6c757d;
     font-size: 1.1rem;
+    background: #f0f2f5; /* 배경색 추가 */
+    border-radius: 8px;
+    box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.05); /* 내부 그림자 */
+    margin-top: 2rem;
 }
 
 .empty-message::before {
@@ -121,4 +147,104 @@
     display: block;
     margin-bottom: 1.2rem;
     color: #ced4da;
-} 
+}
+
+/* 페이드인 애니메이션 */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+    .board-container {
+        padding: 1.5rem;
+        margin: 1rem auto;
+        border-radius: 8px;
+        box-shadow: none;
+    }
+
+    .board-title {
+        font-size: 1.8rem;
+    }
+
+    .board-title::before {
+        font-size: 2rem;
+    }
+
+    .new-post-btn {
+        padding: 0.6rem 1rem;
+        font-size: 0.9em;
+    }
+
+    /* 모바일 테이블 스택 */
+    .post-list table, .post-list thead, .post-list tbody, .post-list th, .post-list td, .post-list tr {
+        display: block; /* 모든 테이블 요소를 블록 레벨로 변경 */
+    }
+
+    .post-list thead {
+        /* 시각적으로 헤더 숨기기 */
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+    }
+
+    .post-list tr {
+        border: 1px solid #e0e0e0;
+        margin-bottom: 15px;
+        border-radius: 8px;
+        overflow: hidden; /* 둥근 모서리 적용 */
+        box-shadow: 0 2px 8px rgba(0,0,0,0.05); /* 카드처럼 보이도록 그림자 추가 */
+    }
+
+    .post-list td {
+        border-bottom: 1px solid #eee;
+        text-align: right; /* 값은 오른쪽 정렬 */
+        padding-left: 50%; /* 레이블을 위한 공간 확보 */
+        position: relative; /* 레이블 위치 지정을 위해 */
+    }
+
+    .post-list td:last-child {
+        border-bottom: none; /* 마지막 셀의 하단 테두리 제거 */
+    }
+
+    .post-list td:before {
+        /* 가상 요소로 레이블 표시 */
+        content: attr(data-label);
+        position: absolute;
+        left: 15px; /* 왼쪽 여백 */
+        width: calc(50% - 30px); /* 공간 계산 */
+        padding-right: 10px;
+        white-space: nowrap;
+        text-align: left; /* 레이블은 왼쪽 정렬 */
+        font-weight: 600;
+        color: #555;
+    }
+
+    /* 각 셀에 대한 레이블 정의 (JavaScript에서 data-label 추가 필요) */
+    .post-list td:nth-of-type(1):before { content: "번호"; }
+    .post-list td:nth-of-type(2):before { content: "제목"; }
+    .post-list td:nth-of-type(3):before { content: "작성자"; }
+    .post-list td:nth-of-type(4):before { content: "작성일"; }
+
+    .post-title-link {
+        padding-right: 15px; /* 제목 링크가 레이블과 겹치지 않게 */
+        white-space: normal; /* 긴 제목 여러 줄 표시 */
+        text-align: right;
+    }
+}
+
+@media (max-width: 480px) {
+    .board-container {
+        padding: 1rem;
+    }
+
+    .board-title {
+        font-size: 1.5rem;
+    }
+
+    .new-post-btn {
+        font-size: 0.8em;
+        padding: 0.5rem 0.8rem;
+    }
+}
