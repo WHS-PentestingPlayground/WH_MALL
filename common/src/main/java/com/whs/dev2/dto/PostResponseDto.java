@@ -13,12 +13,14 @@ public class PostResponseDto {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private String fileName;
+    private String author;
 
     public PostResponseDto(Post post) {
         this.id = post.getId();
         this.title = post.getTitle();
         this.content = post.getContent();
         this.createdAt = post.getCreatedAt();
+        this.author = post.getUser().getUsername();
         this.updatedAt = post.getUpdatedAt() != null ? post.getUpdatedAt() : post.getCreatedAt();
         this.fileName = post.getFileName();
     }

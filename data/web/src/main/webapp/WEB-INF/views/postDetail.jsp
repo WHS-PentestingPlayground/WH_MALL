@@ -44,96 +44,157 @@
 </div>
 
 <script>
-let currentPostId = null;
-let currentUserId = null;
+    let currentPostId = null;
+    let currentUserId = null;
 
-document.addEventListener('DOMContentLoaded', function() {
-    const token = localStorage.getItem('jwtToken');
-    if (!token) {
-        alert('로그인이 필요합니다.');
-        window.location.href = '/login';
-        return;
-    }
-
-    // URL에서 게시글 ID 가져오기
-    const pathParts = window.location.pathname.split('/');
-    currentPostId = pathParts[pathParts.length - 1];
-
-    // 사용자 정보 가져오기
-    fetch('/api/users/me', {
-        headers: {
-            'Authorization': 'Bearer ' + token
+    document.addEventListener('DOMContentLoaded', function() {
+        const token = localStorage.getItem('jwtToken');
+        if (!token) {
+            alert('로그인 후 이용 가능합니다.');
+            window.location.href = '/login';
+            return;
         }
-    })
-    .then(response => response.json())
-    .then(user => {
-        currentUserId = user.id;
-        loadPostDetail();
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        alert('사용자 정보를 가져오는데 실패했습니다.');
-    });
-});
 
-function loadPostDetail() {
-    fetch(`/api/posts/${currentPostId}`)
-        .then(response => response.json())
-        .then(post => {
-            document.getElementById('postTitle').textContent = post.title;
-            document.getElementById('postAuthor').textContent = post.author;
-            document.getElementById('postDate').textContent = new Date(post.createdAt).toLocaleString();
-            document.getElementById('postViews').textContent = post.viewCount || 0;
-            document.getElementById('postContent').textContent = post.content;
+        const pathParts = window.location.pathname.split('/');
+        const cleanedPathParts = pathParts.filter(part => part !== '');
 
-            // 첨부파일이 있는 경우
-            if (post.fileName) {
-                const attachmentDiv = document.getElementById('postAttachment');
-                const attachmentLink = document.getElementById('attachmentLink');
-                attachmentLink.href = `/api/posts/${currentPostId}/file`;
-                attachmentLink.textContent = post.fileName;
-                attachmentDiv.style.display = 'block';
+        if (cleanedPathParts.length > 0) {
+            currentPostId = cleanedPathParts[cleanedPathParts.length - 1];
+            if (isNaN(currentPostId)) {
+                console.error("URL에 유효한 게시글 ID가 없습니다:", currentPostId);
+                alert('잘못된 접근입니다. 게시글 ID가 필요합니다.');
+                window.location.href = '/board/posts';
+                return;
             }
+        } else {
+            console.error("URL에 게시글 ID가 없습니다. 올바른 형식: /board/posts/{id}");
+            alert('잘못된 접근입니다. 게시글 ID가 필요합니다.');
+            window.location.href = '/board/posts';
+            return;
+        }
 
-            // 작성자인 경우에만 수정/삭제 버튼 표시
-            if (post.user && post.user.id === currentUserId) {
-                document.getElementById('postActions').style.display = 'block';
-            }
+        // 사용자 정보 가져오기
+        fetch('/api/users/me', {
+            headers: { 'Authorization': 'Bearer ' + token }
         })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('게시글을 불러오는데 실패했습니다.');
-        });
-}
+            .then(response => {
+                if (!response.ok) {
+                    if (response.status === 401) {
+                        localStorage.removeItem('jwtToken');
+                        alert('세션이 만료되었거나 로그인이 필요합니다.');
+                        window.location.href = '/login';
+                    }
+                    throw new new Error(`사용자 정보를 가져오는데 실패했습니다: ${response.status} ${response.statusText}`);
+                }
+                return response.json();
+            })
+            .then(user => {
+                currentUserId = user.id;
+                if (currentPostId) {
+                    console.log("loadPostDetail 함수 호출 직전! currentPostId:", currentPostId); //  추가 로그 1
+                    loadPostDetail();
+                }
+            })
+            .catch(error => {
+                console.error('사용자 정보 로드 오류:', error);
+                alert('사용자 정보를 가져오는데 실패했습니다. 로그인이 필요할 수 있습니다.');
+                window.location.href = '/login';
+            });
+    });
 
-function editPost() {
-    window.location.href = `/board/editPost?id=${currentPostId}`;
-}
+    function loadPostDetail() {
+        // 템플릿 리터럴 대신 문자열 연결 사용
+        const apiUrl = '/api/posts/' + currentPostId;
+        console.log("loadPostDetail 함수 내부. API 호출 URL:", apiUrl);
 
-function deletePost() {
-    if (!confirm('정말로 이 게시글을 삭제하시겠습니까?')) {
-        return;
+        fetch(apiUrl) // 수정된 apiUrl 변수 사용
+            .then(response => {
+                console.log("API 응답 수신:", response);
+                if (!response.ok) {
+                    if (response.status === 404) {
+                        alert('요청하신 게시글을 찾을 수 없습니다.');
+                        window.location.href = '/board/posts';
+                        return;
+                    }
+                    throw new Error(`게시글을 불러오는데 실패했습니다: ${response.status} ${response.statusText}`);
+                }
+                return response.json();
+            })
+            .then(post => {
+                //게시글 데이터가 배열로 오고 있으므로 첫 번째 요소 사용
+                // 만약 서버에서 특정 ID에 대한 응답이 배열이 아닌 단일 객체여야 한다면,
+                // 서버 API를 수정해야 합니다. 여기서는 일단 받은 배열의 첫 요소를 사용합니다.
+                const actualPost = Array.isArray(post) ? post[0] : post;
+
+                if (!actualPost) {
+                    alert('게시글 데이터를 불러오는데 실패했습니다. 데이터가 비어있거나 올바른 형식이 아닙니다.');
+                    window.location.href = '/board/posts';
+                    return;
+                }
+
+                console.log("실제 표시할 게시글 데이터:", actualPost);
+
+                document.getElementById('postTitle').textContent = actualPost.title;
+                document.getElementById('postAuthor').textContent = actualPost.author;
+                document.getElementById('postDate').textContent = new Date(actualPost.createdAt).toLocaleString();
+                document.getElementById('postViews').textContent = actualPost.viewCount || 0;
+                document.getElementById('postContent').textContent = actualPost.content;
+
+                if (actualPost.fileName) {
+                    const attachmentDiv = document.getElementById('postAttachment');
+                    const attachmentLink = document.getElementById('attachmentLink');
+                    attachmentLink.href = `/api/posts/${currentPostId}/file`;
+                    attachmentLink.textContent = actualPost.fileName;
+                    attachmentDiv.style.display = 'block';
+                } else {
+                    document.getElementById('postAttachment').style.display = 'none';
+                }
+
+                if (actualPost.user && actualPost.user.id === currentUserId) {
+                    document.getElementById('postActions').style.display = 'block';
+                } else {
+                    document.getElementById('postActions').style.display = 'none';
+                }
+            })
+            .catch(error => {
+                console.error('게시글 로드 오류:', error);
+            });
     }
 
-    const token = localStorage.getItem('jwtToken');
-    fetch(`/api/posts/${currentPostId}`, {
-        method: 'DELETE',
-        headers: {
-            'Authorization': 'Bearer ' + token
+    // editPost와 deletePost 함수는 변경 없음
+    function editPost() {
+        window.location.href = `/board/editPost?id=${currentPostId}`;
+    }
+
+    function deletePost() {
+        if (!confirm('정말로 이 게시글을 삭제하시겠습니까?')) {
+            return;
         }
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Failed to delete post');
-        }
-        alert('게시글이 삭제되었습니다.');
-        window.location.href = '/board/posts';
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        alert('게시글 삭제에 실패했습니다.');
-    });
-}
+
+        const token = localStorage.getItem('jwtToken');
+        fetch(`/api/posts/${currentPostId}`, {
+            method: 'DELETE',
+            headers: { 'Authorization': 'Bearer ' + token }
+        })
+            .then(response => {
+                if (!response.ok) {
+                    if (response.status === 403) { alert('게시글을 삭제할 권한이 없습니다.'); }
+                    else if (response.status === 404) { alert('삭제할 게시글을 찾을 수 없습니다.'); }
+                    else if (response.status === 401) {
+                        localStorage.removeItem('jwtToken');
+                        alert('세션이 만료되어 삭제할 수 없습니다. 다시 로그인해주세요.');
+                        window.location.href = '/login';
+                    }
+                    throw new Error(`게시글 삭제 실패: ${response.status} ${response.statusText}`);
+                }
+                alert('게시글이 삭제되었습니다.');
+                window.location.href = '/board/posts';
+            })
+            .catch(error => {
+                console.error('게시글 삭제 오류:', error);
+                alert('게시글 삭제에 실패했습니다.');
+            });
+    }
 </script>
 </body>
 </html>
