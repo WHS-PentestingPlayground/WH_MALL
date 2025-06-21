@@ -15,7 +15,6 @@ import com.whs.dev2.util.AesEncryptor;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -45,6 +44,8 @@ public class PostService {
 
         if (file != null && !file.isEmpty()) {
             String fileName = file.getOriginalFilename();
+            validateFileName(fileName);
+
             String uploadDir = "/tmp/uploads/";
             String uploadPath = uploadDir + fileName;
 
@@ -122,6 +123,7 @@ public class PostService {
             if (!dir.exists()) dir.mkdirs();
 
             String newFileName = file.getOriginalFilename();
+            validateFileName(newFileName);
             File destination = new File(dir, newFileName);
             try {
                 file.transferTo(destination);
@@ -152,5 +154,11 @@ public class PostService {
     private Post findPostById(Long id) {
         return postRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("게시글을 찾을 수 없습니다."));
+    }
+
+    private void validateFileName(String fileName) {
+        if (fileName == null || !fileName.matches("^[a-zA-Z0-9._-]+$")) {
+            throw new IllegalArgumentException("허용되지 않은 파일명입니다.");
+        }
     }
 }
