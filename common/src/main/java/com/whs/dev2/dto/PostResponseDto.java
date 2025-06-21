@@ -19,7 +19,6 @@ public class PostResponseDto {
         this.id = post.getId();
         this.title = post.getTitle();
         this.content = post.getContent();
-        this.author = post.getAuthor();
         this.createdAt = post.getCreatedAt();
         this.updatedAt = post.getUpdatedAt() != null ? post.getUpdatedAt() : post.getCreatedAt();
         this.fileName = post.getFileName();

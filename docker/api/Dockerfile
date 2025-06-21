@@ -32,7 +32,7 @@ WORKDIR /app
 RUN apt-get update && apt-get install -y openssh-client dos2unix openssh-server unzip && mkdir /var/run/sshd
 
 # 애플리케이션 JAR 복사
-COPY --from=build /app/data/api/build/libs/*.jar app.jar
+COPY --from=build /app/build/libs/*.jar app.jar
 
 # 업로드 디렉토리 생성
 RUN mkdir -p /tmp/uploads && chmod 777 /tmp/uploads
