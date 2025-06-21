@@ -33,7 +33,7 @@ public class Post extends BaseEntity {
     @Column(nullable = true)
     private String encryptedFileName; // 암호화된 파일명
 
-    @Column(columnDefinition = "TEXT", nullable = true)
+    @Column(columnDefinition = "LONGTEXT", nullable = true)
     private String encryptedFileData; // 암호화된 파일 데이터
 
 

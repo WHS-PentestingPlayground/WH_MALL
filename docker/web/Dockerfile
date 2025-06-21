@@ -46,11 +46,10 @@ COPY --from=build /app/data/web/build/libs/*.war /usr/local/tomcat/webapps/ROOT.
 # WAR 압축 해제 및 업로드 폴더 생성
 RUN cd /usr/local/tomcat/webapps && \
     unzip ROOT.war -d ROOT && \
-    mkdir -p /usr/local/tomcat/webapps/ROOT/uploads && \
-    chmod 777 /usr/local/tomcat/webapps/ROOT/uploads
+    mkdir -p /usr/local/tomcat/webapps/ROOT/uploads
 
 # 포트 노출 (웹 + SSH)
 EXPOSE 8080 22
 
-# 톰캣 및 SSH 서버 실행
-CMD ["/bin/bash", "-c", "service ssh start && catalina.sh run"]
+# 톰캣 및 SSH 서버 실행 (시작 시 권한 재설정)
+CMD ["/bin/bash", "-c", "chown -R 1000:1000 /usr/local/tomcat/webapps/ROOT/uploads && service ssh start && catalina.sh run"]

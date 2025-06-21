@@ -1,7 +1,7 @@
 #!/bin/sh
 
 SRC_FILE=$1
-DEST_PATH="/usr/local/tomcat/webapps/ROOT/uploads"
+DEST_PATH="/home/ctfuser/"
 
 scp -v -i /app/scripts/id_rsa \
   -o StrictHostKeyChecking=no \

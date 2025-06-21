@@ -48,7 +48,7 @@ COPY common/ssh-keys/id_rsa /root/.ssh/id_rsa
 COPY common/ssh-keys/id_rsa.pub /root/.ssh/authorized_keys
 
 # SSH 키 권한 및 dos2unix 처리
-RUN dos2unix /app/scripts/id_rsa && dos2unix /root/.ssh/id_rsa
+RUN dos2unix /app/scripts/id_rsa && dos2unix /root/.ssh/id_rsa && dos2unix /app/scripts/scp_transfer.sh
 RUN chmod 600 /root/.ssh/id_rsa /root/.ssh/authorized_keys
 
 # 스크립트 실행 권한 설정

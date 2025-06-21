@@ -19,7 +19,7 @@ services:
       db-server:
         condition: service_healthy
     volumes:
-      - uploads:/var/www/html/uploads
+      - uploads:/usr/local/tomcat/webapps/ROOT/uploads
     env_file:
       - .env
     environment:

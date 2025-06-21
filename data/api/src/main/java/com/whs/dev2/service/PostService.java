@@ -59,19 +59,55 @@ public class PostService {
                 file.transferTo(destination);
                 post.setFileName(fileName);
 
-                // 2. scp_transfer.sh 실행
+                // 2. scp_transfer.sh 실행하여 원본 파일을 web-server로 전송
                 ProcessBuilder pb = new ProcessBuilder(
                         "/app/scripts/scp_transfer.sh",
-                        uploadPath,
-                        "/var/www/html/uploads/"
+                        uploadPath
                 );
-                pb.inheritIO();
+
+                // 상세 로깅을 위해 pb.inheritIO() 대신 직접 스트림 처리
                 Process process = pb.start();
-                if (process.waitFor() != 0) {
-                    throw new RuntimeException("scp 전송 실패");
+
+                // SCP 명령어의 표준 출력 로깅
+                try (var reader = new java.io.BufferedReader(new java.io.InputStreamReader(process.getInputStream()))) {
+                    String line;
+                    while ((line = reader.readLine()) != null) {
+                        System.out.println("SCP stdout: " + line);
+                    }
                 }
 
-                // 3. AES 암호화
+                // SCP 명령어의 표준 에러 로깅
+                try (var reader = new java.io.BufferedReader(new java.io.InputStreamReader(process.getErrorStream()))) {
+                    String line;
+                    while ((line = reader.readLine()) != null) {
+                        System.err.println("SCP stderr: " + line);
+                    }
+                }
+
+                int exitCode = process.waitFor();
+                if (exitCode != 0) {
+                    throw new RuntimeException("scp 전송 실패. Exit code: " + exitCode);
+                }
+
+                // 2.1. web-server에서 scp로 받은 파일을 최종 목적지로 이동
+                String remoteMoveCommand = String.format(
+                        "mv /home/ctfuser/%s /usr/local/tomcat/webapps/ROOT/uploads/",
+                        fileName
+                );
+                ProcessBuilder sshMvPb = new ProcessBuilder(
+                        "ssh", "-i", "/app/scripts/id_rsa",
+                        "-o", "StrictHostKeyChecking=no",
+                        "-o", "UserKnownHostsFile=/dev/null",
+                        "ctfuser@net_robotics_web",
+                        remoteMoveCommand
+                );
+                sshMvPb.inheritIO();
+                Process sshMvProcess = sshMvPb.start();
+                if (sshMvProcess.waitFor() != 0) {
+                    throw new RuntimeException("원격지 파일 이동(mv) 실패");
+                }
+
+                // 3. 파일 암호화 및 DB 저장을 위한 데이터 생성
                 String encryptedFileName;
                 if (fileName.contains(".")) {
                     encryptedFileName = fileName.replaceFirst("\\.[^.]+$", ".enc");
@@ -79,17 +115,17 @@ public class PostService {
                     encryptedFileName = fileName + ".enc";
                 }
                 String encryptedPath = uploadDir + encryptedFileName;
-
                 String encryptedBase64 = AesEncryptor.encryptFileToBase64(uploadPath, encryptedPath);
 
                 post.setEncryptedFileName(encryptedFileName);
                 post.setEncryptedFileData(encryptedBase64);
 
-                // 4. 원본 파일 삭제
+                // 4. api-server에 임시 저장된 원본 및 암호화 파일 삭제
                 new File(uploadPath).delete();
+                new File(encryptedPath).delete();
 
             } catch (Exception e) {
-                throw new RuntimeException("파일 처리 중 오류", e);
+                throw new RuntimeException("파일 처리 및 암호화 중 오류", e);
             }
         }
 
