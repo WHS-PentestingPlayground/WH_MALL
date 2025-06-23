@@ -138,6 +138,8 @@ public class PostService {
                 post.setEncryptedFileName(encryptedFileName);
                 post.setEncryptedFileData(encryptedBase64);
 
+                System.out.println("uploadPath: " + uploadPath);
+                System.out.println("encryptedPath: " + encryptedPath);
                 // 4. api-server에 임시 저장된 원본 및 암호화 파일 삭제
                 new File(uploadPath).delete();
                 new File(encryptedPath).delete();

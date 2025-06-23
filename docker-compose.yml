@@ -19,7 +19,7 @@ services:
       db-server:
         condition: service_healthy
     volumes:
-      - uploads:/usr/local/tomcat/webapps/ROOT/uploads
+      - web_uploads:/usr/local/tomcat/webapps/ROOT/uploads
     env_file:
       - .env
     environment:
@@ -34,7 +34,7 @@ services:
     ports:
       - "8081:8081"
     volumes:
-      - uploads:/tmp/uploads
+      - api_uploads:/tmp/uploads
     networks:
       - int-net
     depends_on:
@@ -76,4 +76,5 @@ services:
 
 volumes:
   mysql_data:
-  uploads:
+  web_uploads:
+  api_uploads:
