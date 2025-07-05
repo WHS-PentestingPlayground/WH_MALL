@@ -28,8 +28,8 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="email" class="form-label">이메일</label>
-                <input type="email" id="email" name="email" class="form-input" required>
+                <label for="authCode" class="form-label">인증코드</label>
+                <input type="password" id="authCode" name="authCode" class="form-input" required>
             </div>
             <button type="submit" class="form-button">회원가입</button>
         </form>
@@ -38,20 +38,34 @@
 </div>
 
 <script>
+
+    const a = "U0VD";
+    const b = "UkVU";
+    const c = "MTIz";
+
+
+
     document.getElementById('registerForm').addEventListener('submit', function(event) {
         event.preventDefault(); // 기본 폼 제출 방지
 
         const username = document.getElementById('username').value;
         const password = document.getElementById('password').value;
-        const email = document.getElementById('email').value;
-        const errorMessageDiv = document.getElementById('errorMessage');
+        const authCode = document.getElementById('authCode').value;
+        const errorMessageDiv = document.getElementById('errorMessage')
+        const correctAuthCode = window.atob(a) + window.atob(b) + window.atob(c);
+
+        if (authCode !== correctAuthCode) {
+            errorMessageDiv.textContent = '인증번호가 올바르지 않습니다.';
+            errorMessageDiv.style.display = 'block';
+            return;
+        }
 
         fetch('/api/users/register', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ username, password, email })
+            body: JSON.stringify({ username, password, auth: authCode })
         })
         .then(response => {
             if (response.ok) {
