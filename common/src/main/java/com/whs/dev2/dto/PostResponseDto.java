@@ -2,6 +2,7 @@ package com.whs.dev2.dto;
 
 import lombok.Getter;
 import com.whs.dev2.entity.Post;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
@@ -9,6 +10,7 @@ import java.time.LocalDateTime;
 public class PostResponseDto {
     private Long id;
     private String title;
+    @Setter
     private String content;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
@@ -24,4 +26,5 @@ public class PostResponseDto {
         this.updatedAt = post.getUpdatedAt() != null ? post.getUpdatedAt() : post.getCreatedAt();
         this.fileName = post.getFileName();
     }
+
 }

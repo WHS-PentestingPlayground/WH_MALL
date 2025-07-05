@@ -27,6 +27,18 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework:spring-webmvc:5.3.29'
+    implementation 'org.springframework:spring-context-support:5.3.29'
+    // @PostConstruct 사용을 위한 의존성 (Spring Boot 2.x에 맞춰 javax로 변경)
+    implementation 'javax.annotation:javax.annotation-api:1.3.2'
+
+    // FreeMarker 템플릿 엔진 의존성 (SSTI 핵심)
+    // 기존 'org.springframework.boot:spring-boot-starter-freemarker'를 제거하고
+    // FreeMarker 라이브러리 자체를 명시적으로 추가합니다.
+    implementation 'org.freemarker:freemarker:2.3.32'
+
+    // FreeMarker RCE 페이로드에서 IOUtils를 사용하려면 commons-io 추가 (권장)
+    implementation 'commons-io:commons-io:2.11.0'
 
     // JWT 의존성
     implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
@@ -51,7 +63,6 @@ dependencies {
 springBoot {
     mainClass = 'com.whs.dev2.ApiApplication'
 }
-
 
 tasks.named('test') {
     useJUnitPlatform()
