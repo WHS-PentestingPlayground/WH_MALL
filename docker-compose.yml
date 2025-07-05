@@ -1,7 +1,6 @@
-version: '3.8'
-
+#docker-compose.yml
 networks:
-  dmz-net:
+  ext-net:
   int-net:
 
 services:
@@ -9,38 +8,46 @@ services:
     build:
       context: .
       dockerfile: docker/web/Dockerfile
+    container_name: net_robotics_web
     ports:
       - "8080:8080"
+      - "2222:22"
     networks:
-      - dmz-net
+      - ext-net
       - int-net
     depends_on:
-      - api-server
+      db-server:
+        condition: service_healthy
     volumes:
-      - uploads:/var/www/html/uploads
+      - web_uploads:/usr/local/tomcat/webapps/ROOT/uploads
     env_file:
       - .env
     environment:
       - API_SERVER_URL=${API_SERVER_URL}
+    restart: always
 
   api-server:
     build:
       context: .
       dockerfile: docker/api/Dockerfile
+    container_name: net_robotics_api
     ports:
       - "8081:8081"
+    volumes:
+      - api_uploads:/tmp/uploads
     networks:
       - int-net
     depends_on:
-      - db-server
-    volumes:
-      - uploads:/tmp/uploads
+      db-server:
+        condition: service_healthy
     env_file:
       - .env
     environment:
       - SPRING_DATASOURCE_URL=${SPRING_DATASOURCE_URL}
       - SPRING_DATASOURCE_USERNAME=${SPRING_DATASOURCE_USERNAME}
       - SPRING_DATASOURCE_PASSWORD=${SPRING_DATASOURCE_PASSWORD}
+      - JWT_SECRET=${JWT_SECRET}
+    restart: always
 
   db-server:
     build:
@@ -55,12 +62,19 @@ services:
       - mysql_data:/var/lib/mysql
       - ./data/db:/docker-entrypoint-initdb.d
     environment:
-      - MYSQL_ROOT_PASSWORD=root
-      - MYSQL_DATABASE=login_db
-      - MYSQL_USER=user
-      - MYSQL_PASSWORD=password
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${DB_NAME}
+      - MYSQL_USER=${DB_USER}
+      - MYSQL_PASSWORD=${DB_PASSWORD}
     restart: always
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u$$MYSQL_USER", "-p$$MYSQL_PASSWORD"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
 
 volumes:
   mysql_data:
-  uploads:
+  web_uploads:
+  api_uploads:

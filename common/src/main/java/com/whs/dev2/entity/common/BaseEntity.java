@@ -1,28 +1,39 @@
 package com.whs.dev2.entity.common;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.MappedSuperclass;
+import javax.persistence.Column;
+import javax.persistence.MappedSuperclass;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import lombok.Getter;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
-@MappedSuperclass
 @Getter
+@Setter
+@MappedSuperclass
 public abstract class BaseEntity {
 
-    @CreationTimestamp // INSERT 시 자동 생성
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
 
-    @UpdateTimestamp // UPDATE 시 자동 갱신
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
     // Soft delete 처리를 위한 필드
     @Column(name = "deleted_at")
     private LocalDateTime deletedAt;
+
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        this.updatedAt = LocalDateTime.now();
+    }
 
     // 삭제 시 호출: 현재 시간으로 deleted_at 설정
     public void markDeleted() {

@@ -24,19 +24,23 @@ public class UserService {
         User user = new User();
         user.setUsername(dto.getUsername());
         user.setPassword(dto.getPassword());
-        user.setEmail(dto.getEmail());
+        user.setAuth(dto.getAuth());
         userRepository.save(user);
     }
 
-    public boolean login(LoginRequestDto dto) {
-        User user = userRepository.findByUsername(dto.getUsername())
+    public User authenticate(String username, String password) {
+        User user = userRepository.findByUsername(username)
                 .orElse(null);
         
         if (user == null) {
-            return false;
+            return null;
         }
 
-        return user.getPassword().equals(dto.getPassword());
+        if (!password.equals(user.getPassword())) {
+            return null;
+        }
+
+        return user;
     }
 
     public User findByUsername(String username) {

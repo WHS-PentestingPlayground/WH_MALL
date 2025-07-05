@@ -1,11 +1,11 @@
 package com.whs.dev2.entity;
 
-import jakarta.persistence.*;
-import com.whs.dev2.entity.common.BaseEntity;
+import javax.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
+import java.time.LocalDateTime;
+import com.whs.dev2.entity.common.BaseEntity;
 
 @Entity
 @Getter
@@ -25,5 +25,5 @@ public class User extends BaseEntity {
     private String password;
 
     @Column(nullable = false)
-    private String email;
+    private String auth;
 }

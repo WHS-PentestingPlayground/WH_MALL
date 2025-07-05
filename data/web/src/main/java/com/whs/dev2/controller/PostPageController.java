@@ -1,7 +1,6 @@
 package com.whs.dev2.controller;
 
-import com.whs.dev2.entity.User;
-import jakarta.servlet.http.HttpSession;
+import com.whs.dev2.dto.PostRequestDto;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,31 +12,27 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequestMapping("/board")
 public class PostPageController {
 
+
     @GetMapping("/posts")
-    public String listPosts() {
-        return "postList";
+    public String listPosts(Model model) {
+        return "postList"; // JSP에서 /api/posts 호출
     }
 
     @GetMapping("/newPost")
-    public String showNewPostForm(HttpSession session, Model model) {
-        User user = (User) session.getAttribute("user");
-        if (user == null) return "redirect:/login";
-        model.addAttribute("loginUserId", user.getId());
-        model.addAttribute("loginUsername", user.getUsername());
-        return "postForm";
+    public String showNewPostForm(Model model) {
+        model.addAttribute("postRequestDto", new PostRequestDto());
+        return "postForm"; // JSP에서 /api/posts 호출
     }
 
     @GetMapping("/posts/{id}")
     public String showPostDetail(@PathVariable Long id, Model model) {
-        model.addAttribute("postId", id); // JS에서 API 호출
-        return "postDetail";
+        model.addAttribute("postId", id);
+        return "postDetail"; // JSP에서 /api/posts/{id} 호출
     }
 
     @GetMapping("/editPost")
-    public String showEditPostForm(@RequestParam("id") Long id, Model model, HttpSession session) {
-        User loginUser = (User) session.getAttribute("user");
-        if (loginUser == null) return "redirect:/login";
-        model.addAttribute("postId", id); // JS로 API에서 불러옴
-        return "postEditForm";
+    public String showEditPostForm(@RequestParam("id") Long id, Model model) {
+        model.addAttribute("postId", id);
+        return "postEditForm"; // JSP에서 /api/posts/{id} 호출
     }
 }

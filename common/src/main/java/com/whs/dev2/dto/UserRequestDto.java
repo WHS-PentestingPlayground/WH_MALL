@@ -9,5 +9,5 @@ import com.whs.dev2.entity.User;
 public class UserRequestDto {
     private String username;
     private String password;
-    private String email;
+    private String auth;
 }

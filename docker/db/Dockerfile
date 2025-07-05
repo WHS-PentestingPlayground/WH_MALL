@@ -1,11 +1,6 @@
 #docker/db/Dockerfile
 FROM mysql:8.0
 
-ENV MYSQL_ROOT_PASSWORD=root
-ENV MYSQL_DATABASE=login_db
-ENV MYSQL_USER=user
-ENV MYSQL_PASSWORD=password
-
 # 문자셋 설정
 ENV LANG=C.UTF-8
 

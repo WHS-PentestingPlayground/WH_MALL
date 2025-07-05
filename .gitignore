@@ -1,2 +1,56 @@
-**/build/
+# 빌드/IDE
+# Gradle
+.gradle/
+build/
+bin/
+out/
+
+# IntelliJ
 .idea/
+*.iml
+*.ipr
+*.iws
+
+# Eclipse
+.project
+.classpath
+.settings/
+
+# VSCode
+.vscode/
+
+# Build artifacts
+#*.class
+#*.jar
+#*.war
+#*.ear
+
+# 로그/캐시
+*.log
+*.tmp
+*.swp
+hs_err_pid*
+
+# 시스템 파일
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# 보안 키
+#/data/api/src/main/resources/scripts/id_rsa
+#/data/api/src/main/resources/scripts/id_rsa.pub
+#*.key
+#*.pem
+#*.crt
+
+# 환경 변수
+#.env
+
+# 업로드/실습 파일
+uploads/
+tmp/
+var/www/html/uploads/
+
+#common/ssh-keys/id_rsa
+#common/ssh-keys/id_rsa.pub
