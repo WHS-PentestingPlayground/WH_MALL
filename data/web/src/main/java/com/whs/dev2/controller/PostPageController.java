@@ -29,10 +29,4 @@ public class PostPageController {
         model.addAttribute("postId", id);
         return "postDetail"; // JSP에서 /api/posts/{id} 호출
     }
-
-    @GetMapping("/editPost")
-    public String showEditPostForm(@RequestParam("id") Long id, Model model) {
-        model.addAttribute("postId", id);
-        return "postEditForm"; // JSP에서 /api/posts/{id} 호출
-    }
 }

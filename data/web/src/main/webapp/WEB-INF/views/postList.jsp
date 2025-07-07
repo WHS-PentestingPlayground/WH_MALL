@@ -17,8 +17,9 @@
 <div class="container">
     <div class="board-container">
         <div class="board-header">
-            <h2 class="board-title">게시판</h2>
-            <div class="post-list-count">전체 <span id="totalCount">0</span>개</div> <a href="/board/newPost" class="new-post-btn">새 글 작성</a>
+            <h2 class="board-title">공지사항</h2>
+            <div class="post-list-count">전체 <span id="totalCount">0</span>개</div>
+            <a href="/board/newPost" id="btnNewPost" class="new-post-btn">새 글 작성</a>
         </div>
 
         <div class="post-list">
@@ -37,19 +38,34 @@
         </div>
 
         <div class="empty-message" id="emptyMessage" style="display: none;">
-            아직 게시글이 없습니다. 첫 번째 글을 작성해 보세요!
+            아직 공지사항이 없습니다. 첫 번째 글을 작성해 보세요!
         </div>
     </div>
 </div>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', () => {
+        /* ① 토큰 존재 확인 */
         const token = localStorage.getItem('jwtToken');
         if (!token) {
             alert('로그인이 필요합니다.');
-            window.location.href = '/login';
-            return;
+            return location.href = '/login';
         }
+
+        /* ② role 판별 → admin 이 아니면 버튼 숨김 */
+        try {
+            /* Base64URL → 표준 Base64 보정 후 디코딩 */
+            const base64 = token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
+            const payload = JSON.parse(atob(base64));
+            if (payload.role !== 'admin') {
+                const btn = document.getElementById('btnNewPost');
+                if (btn) btn.style.display = 'none';
+            }
+        } catch (e) {
+            console.warn('JWT 파싱 오류', e);
+        }
+
+        /* ③ 공지사항 목록 로드 */
         loadPosts();
     });
 
@@ -57,7 +73,7 @@
         const token = localStorage.getItem('jwtToken');
         const apiUrl = '/api/posts';
 
-        console.log("게시글 목록 API 호출 URL:", apiUrl);
+        console.log("공지사항 목록 API 호출 URL:", apiUrl);
 
         fetch(apiUrl, {
             headers: {
@@ -72,12 +88,12 @@
                         alert('인증이 만료되었거나 유효하지 않습니다. 다시 로그인해주세요.');
                         window.location.href = '/login';
                     }
-                    throw new Error('게시글을 불러오는데 실패했습니다: ' + response.status + ' ' + response.statusText);
+                    throw new Error('공지사항을 불러오는데 실패했습니다: ' + response.status + ' ' + response.statusText);
                 }
                 return response.json();
             })
             .then(posts => {
-                console.log('서버로부터 받은 게시글 데이터:', posts);
+                console.log('서버로부터 받은 공지사항 데이터:', posts);
 
                 const tbody = document.getElementById('postListBody');
                 const totalCountElement = document.getElementById('totalCount'); // 전체 개수 엘리먼트
@@ -85,8 +101,8 @@
 
                 if (!Array.isArray(posts)) {
                     console.error('서버 응답이 배열이 아닙니다:', posts);
-                    alert('잘못된 게시글 데이터 형식입니다.');
-                    tbody.innerHTML = '<tr><td colspan="4">게시글을 불러올 수 없습니다.</td></tr>';
+                    alert('잘못된 공지사항 데이터 형식입니다.');
+                    tbody.innerHTML = '<tr><td colspan="4">공지사항을 불러올 수 없습니다.</td></tr>';
                     totalCountElement.textContent = 0;
                     emptyMessage.style.display = 'none'; // 오류 시 빈 메시지는 숨김
                     return;
@@ -99,7 +115,7 @@
                     emptyMessage.style.display = 'block'; // 빈 메시지 표시
                     return;
                 } else {
-                    emptyMessage.style.display = 'none'; // 게시글이 있으면 빈 메시지 숨김
+                    emptyMessage.style.display = 'none'; // 공지사항이 있으면 빈 메시지 숨김
                 }
 
                 tbody.innerHTML = ''; // 기존 내용 초기화
@@ -126,8 +142,8 @@
             })
             .catch(error => {
                 console.error('Error loading posts:', error);
-                alert('게시글을 불러오는데 실패했습니다.');
-                document.getElementById('postListBody').innerHTML = '<tr><td colspan="4">게시글을 불러오는 중 오류가 발생했습니다.</td></tr>';
+                alert('공지사항을 불러오는데 실패했습니다.');
+                document.getElementById('postListBody').innerHTML = '<tr><td colspan="4">공지사항을 불러오는 중 오류가 발생했습니다.</td></tr>';
                 document.getElementById('totalCount').textContent = 0;
                 document.getElementById('emptyMessage').style.display = 'none'; // 오류 시 빈 메시지는 숨김
             });

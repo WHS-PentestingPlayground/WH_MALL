@@ -21,7 +21,7 @@
         <div class="cta-buttons">
             <a href="/board/posts" class="cta-button primary">
                 <span class="button-icon">📝</span>
-                게시판
+                공지사항
             </a>
             <c:choose>
                 <c:when test="${empty sessionScope.user}">
@@ -34,12 +34,6 @@
                         회원가입
                     </a>
                 </c:when>
-                <c:otherwise>
-                    <a href="/board/newPost" class="cta-button secondary">
-                        <span class="button-icon">✏️</span>
-                        글쓰기
-                    </a>
-                </c:otherwise>
             </c:choose>
         </div>
     </div>

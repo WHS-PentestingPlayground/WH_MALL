@@ -1,54 +1,77 @@
 package com.whs.dev2.jwt;
 
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
-import org.springframework.beans.factory.annotation.Value;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;   // ⭐ 로그용 import
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
+import java.nio.charset.StandardCharsets;
 import java.security.Key;
+import java.util.Base64;
 import java.util.Date;
 
 @Component
 public class JwtUtil {
 
-    @Value("${jwt.secret}")
-    private String secret;
+    /* ---------- 고정 HMAC 키 ---------- */
+    private static final String RAW_KEY =
+            "this_is_a_very_long_secret_key_for_hmac_sha512_that_is_at_least_64_bytes_long!!";
+    private static final byte[]  KEY_BYTES = RAW_KEY.getBytes(StandardCharsets.UTF_8);
+    private static final Key     HMAC_KEY  = Keys.hmacShaKeyFor(KEY_BYTES);
+    private static final String  JWK_B64   =
+            Base64.getUrlEncoder().withoutPadding().encodeToString(KEY_BYTES);
+    private static final long    EXPIRATION = 3_600_000;   // 1h
 
-    @Value("${jwt.expiration}")
-    private long expiration;
+    /* ---------- Logger ---------- */
+    private static final Logger log = LoggerFactory.getLogger(JwtUtil.class);  // ⭐
 
-    private Key key;
-
-    @PostConstruct
-    public void init() {
-        this.key = Keys.hmacShaKeyFor(secret.getBytes());
-    }
-
-    // JWT 토큰 생성
+    /* ---------- 토큰 발급 ---------- */
     public String generateToken(String username) {
         Date now = new Date();
-        Date expiryDate = new Date(now.getTime() + expiration);
-
         return Jwts.builder()
+                .setHeaderParam("alg", "HS512")
+                .setHeaderParam("typ", "JWT")
+                .setHeaderParam("jwk", JWK_B64)
                 .setSubject(username)
+                .claim("role", "user")
                 .setIssuedAt(now)
-                .setExpiration(expiryDate)
-                .signWith(key, SignatureAlgorithm.HS512)
+                .setExpiration(new Date(now.getTime() + EXPIRATION))
+                .signWith(HMAC_KEY, SignatureAlgorithm.HS512)
                 .compact();
     }
 
-    // JWT 토큰 유효성 검증 및 사용자 이름 추출
+    /* ---------- 토큰 검증 ---------- */
     public String validateAndExtractUsername(String token) {
         try {
-            return Jwts.parserBuilder().setSigningKey(key).build()
+            return Jwts.parserBuilder()
+                    .setSigningKeyResolver(new SigningKeyResolverAdapter() {
+                        @Override
+                        public Key resolveSigningKey(JwsHeader header, Claims claims) {
+                            Object jwk = header.get("jwk");
+
+                            /* ⭐ ① JWK 값/길이 로그 */
+                            log.info("[JWT] header.jwk = {}, decodedLen = {}",
+                                    jwk, jwk == null ? 0
+                                            : Base64.getUrlDecoder().decode(jwk.toString()).length);
+
+                            if (jwk == null)
+                                throw new JwtException("missing jwk header");
+
+                            byte[] decoded = Base64.getUrlDecoder().decode(jwk.toString());
+                            return Keys.hmacShaKeyFor(decoded);
+                        }
+                    })
+                    .build()
                     .parseClaimsJws(token)
                     .getBody()
                     .getSubject();
-        } catch (Exception e) {
-            // 토큰 검증 실패 시 null 반환
-            return null;
+
+        } catch (Exception ex) {
+            /* ⭐ ② 검증 실패 사유 로그 */
+            log.warn("[JWT] validation failed → {} : {}", ex.getClass().getSimpleName(),
+                    ex.getMessage());
+            return null;   // → 컨트롤러/필터에서 401 처리
         }
     }
-} 
+}

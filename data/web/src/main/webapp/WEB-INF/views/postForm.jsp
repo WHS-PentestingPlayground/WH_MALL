@@ -50,6 +50,18 @@ document.addEventListener('DOMContentLoaded', function() {
         window.location.href = '/login';
         return;
     }
+    try {
+        const base64 = token.split('.')[1].replace(/-/g,'+').replace(/_/g,'/');
+        const payload = JSON.parse(atob(base64));
+        if (payload.role !== 'admin') {             // admin이 아니면
+            alert('권한이 없습니다.');
+            return location.href = '/board/posts';  // 메인 or 목록 페이지
+        }
+    } catch (e) {
+        console.warn('JWT 파싱 오류', e);
+        alert('로그인 정보가 올바르지 않습니다.');
+        return location.href = '/login';
+    }
 
     // 사용자 정보 가져오기
     fetch('/api/users/me', {
@@ -98,12 +110,12 @@ document.addEventListener('DOMContentLoaded', function() {
             return response.json();
         })
         .then(data => {
-            alert('게시글이 등록되었습니다.');
+            alert('공지사항이 등록되었습니다.');
             window.location.href = '/board/posts';
         })
         .catch(error => {
             console.error('Error:', error);
-            alert('게시글 등록에 실패했습니다.');
+            alert('공지사항 등록에 실패했습니다.');
         });
     });
 });
