@@ -33,6 +33,10 @@
                 <span class="button-icon">📝</span>
                 게시판
             </a>
+            <a href="/products" class="cta-button secondary">
+                <span class="button-icon">🛍️</span>
+                제품 소개
+            </a>
             <c:choose>
                 <c:when test="${empty sessionScope.user}">
                     <a href="/login" class="cta-button secondary">

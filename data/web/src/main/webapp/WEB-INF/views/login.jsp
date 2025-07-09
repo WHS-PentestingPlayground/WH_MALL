@@ -49,7 +49,15 @@
                     const token = response.headers.get('Authorization');
                     if (token && token.startsWith('Bearer ')) {
                         localStorage.setItem('jwtToken', token.substring(7));
-                        window.location.href = '/'; // 로그인 성공 후 메인 페이지로 이동
+                        
+                        // 저장된 returnUrl이 있으면 해당 페이지로, 없으면 메인 페이지로 이동
+                        const returnUrl = localStorage.getItem('returnUrl');
+                        if (returnUrl) {
+                            localStorage.removeItem('returnUrl'); // 사용 후 삭제
+                            window.location.href = returnUrl;
+                        } else {
+                            window.location.href = '/';
+                        }
                     } else {
                         errorMessageDiv.textContent = '로그인 실패: 토큰이 발급되지 않았습니다.';
                         errorMessageDiv.style.display = 'block';
