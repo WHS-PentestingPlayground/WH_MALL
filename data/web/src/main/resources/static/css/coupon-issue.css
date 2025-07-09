@@ -1,0 +1,267 @@
+/* 쿠폰 발급 페이지 스타일 */
+.coupon-issue-container {
+    max-width: 520px;
+    margin: 60px auto;
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 0 8px 32px rgba(26, 42, 108, 0.12);
+    padding: 2.5rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.coupon-issue-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #1a2a6c 0%, #d72660 50%, #1a2a6c 100%);
+}
+
+/* 헤더 섹션 */
+.coupon-header {
+    margin-bottom: 2rem;
+}
+
+.coupon-issue-image {
+    width: 200px;
+    height: auto;
+    margin-bottom: 1.5rem;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(26, 42, 108, 0.15);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.coupon-issue-image:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 30px rgba(26, 42, 108, 0.25);
+}
+
+.coupon-issue-title {
+    font-size: 1.8rem;
+    color: #1a2a6c;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    letter-spacing: -0.02em;
+}
+
+.coupon-issue-desc {
+    font-size: 1.1rem;
+    color: #666;
+    margin-bottom: 0;
+    line-height: 1.6;
+    font-weight: 400;
+}
+
+.coupon-issue-desc strong {
+    color: #d72660;
+    font-weight: 600;
+}
+
+/* 쿠폰 상세 정보 */
+.coupon-details {
+    background: linear-gradient(135deg, #f8f9ff 0%, #f0f4ff 100%);
+    border-radius: 16px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    border: 1px solid #e8f0ff;
+}
+
+.coupon-info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+}
+
+.coupon-benefit {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.discount-amount {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #d72660;
+}
+
+.discount-text {
+    font-size: 1rem;
+    color: #666;
+    font-weight: 500;
+}
+
+.coupon-conditions {
+    text-align: left;
+    flex: 1;
+}
+
+.coupon-conditions p {
+    margin: 0.5rem 0;
+    font-size: 0.95rem;
+    color: #555;
+    line-height: 1.4;
+}
+
+
+
+/* 버튼 스타일 */
+.coupon-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.issue-btn {
+    background: linear-gradient(135deg, #d72660 0%, #e74c3c 100%);
+    color: #fff;
+    padding: 1rem 2rem;
+    border: none;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(215, 38, 96, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+.issue-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s;
+}
+
+.issue-btn:hover::before {
+    left: 100%;
+}
+
+.issue-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(215, 38, 96, 0.4);
+}
+
+.issue-btn:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.home-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    background: linear-gradient(135deg, #1a2a6c 0%, #2a3a7c 100%);
+    color: #fff;
+    padding: 0.9rem 2rem;
+    border-radius: 12px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(26, 42, 108, 0.2);
+    position: relative;
+    overflow: hidden;
+}
+
+.home-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s;
+}
+
+.home-btn:hover::before {
+    left: 100%;
+}
+
+.home-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(26, 42, 108, 0.3);
+    background: linear-gradient(135deg, #2a3a7c 0%, #3a4a8c 100%);
+}
+
+
+
+
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+    .coupon-issue-container {
+        margin: 40px 1rem;
+        padding: 2rem 1.5rem;
+        border-radius: 16px;
+    }
+    
+    .coupon-issue-title {
+        font-size: 1.5rem;
+    }
+    
+    .coupon-issue-desc {
+        font-size: 1rem;
+    }
+    
+    .coupon-issue-image {
+        width: 160px;
+    }
+    
+    .coupon-info {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .discount-amount {
+        font-size: 1.8rem;
+    }
+    
+    .coupon-conditions {
+        text-align: center;
+    }
+    
+    .issue-btn, .home-btn {
+        padding: 0.9rem 1.5rem;
+        font-size: 1rem;
+    }
+    
+    .modal-content {
+        padding: 1.5rem;
+        margin: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .coupon-issue-container {
+        margin: 20px 0.5rem;
+        padding: 1.5rem 1rem;
+    }
+    
+    .coupon-issue-title {
+        font-size: 1.3rem;
+    }
+    
+    .coupon-issue-image {
+        width: 140px;
+    }
+    
+    .discount-amount {
+        font-size: 1.6rem;
+    }
+    
+
+} 
