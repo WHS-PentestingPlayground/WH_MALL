@@ -18,6 +18,16 @@
         <h1 class="hero-title">WHS Dev2</h1>
         <p class="hero-subtitle">혁신적인 개발 플랫폼에 오신 것을 환영합니다</p>
 
+        <!-- 쿠폰 배너 시작 -->
+        <a href="/coupon-issue" class="coupon-banner">
+            <img src="/img/vip-coupon.png" alt="VIP 쿠폰 배너" class="coupon-banner-img" />
+            <div class="coupon-banner-text">
+                <strong>WHS 쇼핑몰 쿠폰 VIP 특별 이벤트!</strong><br/>
+                지금 바로 쿠폰을 발급받고 다양한 혜택을 누리세요.
+            </div>
+        </a>
+        <!-- 쿠폰 배너 끝 -->
+
         <div class="cta-buttons">
             <a href="/board/posts" class="cta-button primary">
                 <span class="button-icon">📝</span>
