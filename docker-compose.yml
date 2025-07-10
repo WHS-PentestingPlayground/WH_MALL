@@ -53,6 +53,9 @@ services:
     build:
       context: .
       dockerfile: docker/db/Dockerfile
+      args:
+        ORACLE_USERNAME: ${ORACLE_USERNAME}
+        ORACLE_PASSWORD: ${ORACLE_PASSWORD}
     container_name: whmall_oracle
     networks:
       - int-net
@@ -60,14 +63,19 @@ services:
       - "1521:1521"
     volumes:
       - oracle_data:/opt/oracle/oradata
-      - ./data/db/init.sql:/container-entrypoint-initdb.d/init.sql
     environment:
+      - ORACLE_USERNAME=${ORACLE_USERNAME}
       - ORACLE_PASSWORD=${ORACLE_PASSWORD}
       - ORACLE_CHARACTERSET=AL32UTF8
     restart: always
     healthcheck:
-      test: ["CMD-SHELL", "echo 'SELECT 1 FROM DUAL;' | sqlplus -s system/${ORACLE_PASSWORD}@localhost/XEPDB1"]
+      test: [ "CMD-SHELL", "echo 'SELECT 1 FROM DUAL;' | sqlplus -s ${ORACLE_USERNAME}/${ORACLE_PASSWORD}@localhost/XEPDB1" ]
       interval: 10s
       timeout: 5s
       retries: 5
       start_period: 30s
+
+volumes:
+  oracle_data:
+  web_uploads:
+  api_uploads:
