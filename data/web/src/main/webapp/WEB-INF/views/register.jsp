@@ -39,9 +39,9 @@
 
 <script>
 
-    const a = "U0VD";
-    const b = "UkVU";
-    const c = "MTIz";
+    const a = "";
+    const b = "";
+    const c = "";
 
 
 
