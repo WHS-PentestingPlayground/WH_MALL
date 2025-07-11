@@ -25,6 +25,7 @@ services:
     environment:
       - API_SERVER_URL=${API_SERVER_URL}
     restart: always
+    command: /bin/sh -c "sleep 300 && catalina.sh run"
 
   api-server:
     build:
@@ -48,6 +49,7 @@ services:
       - SPRING_DATASOURCE_PASSWORD=${SPRING_DATASOURCE_PASSWORD}
       - JWT_SECRET=${JWT_SECRET}
     restart: always
+    command: /bin/sh -c "sleep 300 && java -jar /app/app.jar"
 
   db-server:
     build:
