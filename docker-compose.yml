@@ -28,7 +28,6 @@ services:
       - SPRING_DATASOURCE_USERNAME=${SPRING_DATASOURCE_USERNAME}
       - SPRING_DATASOURCE_PASSWORD=${SPRING_DATASOURCE_PASSWORD}
     restart: always
-    command: /bin/sh -c "sleep 20 && catalina.sh run"
 
   api-server:
     build:
@@ -52,7 +51,6 @@ services:
       - SPRING_DATASOURCE_PASSWORD=${SPRING_DATASOURCE_PASSWORD}
       - JWT_SECRET=${JWT_SECRET}
     restart: always
-    command: /bin/sh -c "sleep 20 && java -jar /app/app.jar"
 
   db-server:
     build:
@@ -71,7 +69,7 @@ services:
       - ORACLE_PASSWORD=${ORACLE_PASSWORD}
     restart: always
     healthcheck:
-      test: [ "CMD-SHELL", "echo 'SET PAGESIZE 0 FEEDBACK OFF VERIFY OFF HEADING OFF ECHO OFF; SELECT 1 FROM v$pdbs WHERE name=\'FREEPDB1\' AND open_mode=\'READ WRITE\'; EXIT;' | sqlplus -s system/${ORACLE_PASSWORD}@localhost/freepdb1 | grep 1" ]
+      test: [ "CMD-SHELL", "echo 'SET PAGESIZE 0 FEEDBACK OFF VERIFY OFF HEADING OFF ECHO OFF; SELECT 1 FROM v$pdbs WHERE name=\'FREEPDB1\' AND open_mode=\'READ WRITE\'; EXIT;' | sqlplus -s ${SPRING_DATASOURCE_USERNAME}/${SPRING_DATASOURCE_PASSWORD}@localhost/freepdb1 | grep 1" ]
       interval: 10s
       timeout: 5s
       retries: 5
