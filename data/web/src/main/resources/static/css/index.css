@@ -2,9 +2,9 @@ body {
     margin: 0;
     padding: 0;
     font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
-    background: #f8f9fa;
+    background: #fff;
     min-height: 100vh;
-    color: #333;
+    color: #222;
 }
 
 .main-content {
@@ -15,7 +15,7 @@ body {
 .hero-section {
     text-align: center;
     padding: 6rem 2rem;
-    background: #fff;
+    background: linear-gradient(135deg, #fff 60%, #f7f3e8 100%);
     position: relative;
     overflow: hidden;
 }
@@ -32,8 +32,9 @@ body {
 }
 
 .hero-title {
+    background: none !important;
     font-size: 3.5rem;
-    color: #1a2a6c;
+    color: #222;
     margin: 0 0 1.5rem;
     font-weight: 700;
     letter-spacing: -0.02em;
@@ -43,7 +44,7 @@ body {
 
 .hero-subtitle {
     font-size: 1.25rem;
-    color: #666;
+    color: #555;
     margin: 0 0 3rem;
     font-weight: 500;
     position: relative;
@@ -74,26 +75,28 @@ body {
 }
 
 .cta-button.primary {
-    background: #1a2a6c;
-    color: white;
+    background: linear-gradient(90deg, #ffe082 0%, #ffd700 100%);
+    color: #222;
+    border: none;
     box-shadow: 0 4px 15px rgba(26, 42, 108, 0.2);
 }
 
 .cta-button.primary:hover {
     transform: translateY(-2px);
     box-shadow: 0 6px 20px rgba(26, 42, 108, 0.3);
-    background: #2a3a7c;
+    background: linear-gradient(90deg, #ffd700 0%, #ffe082 100%);
+    color: #111;
 }
 
 .cta-button.secondary {
-    background: white;
-    color: #1a2a6c;
-    border: 2px solid #1a2a6c;
+    background: #fff;
+    color: #000;
+    border: 2px solid #000000;
 }
 
 .cta-button.secondary:hover {
-    background: #1a2a6c;
-    color: white;
+    background: #000000;
+    color: #fff;
     transform: translateY(-2px);
 }
 
@@ -108,7 +111,7 @@ body {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 2rem;
-    background: #fff;
+    background: linear-gradient(135deg, #fff 60%, #f7f3e8 100%);
 }
 
 .feature-card {
@@ -117,31 +120,32 @@ body {
     border-radius: 16px;
     text-align: center;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-    border: 1px solid #eee;
+    box-shadow: 0 4px 12px rgba(212,175,55,0.07);
+    border: 1px solid #f3e9c7;
+    color: #222;
 }
 
 .feature-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
-    border-color: #1a2a6c;
+    box-shadow: 0 8px 20px rgba(212,175,55,0.13);
+    border-color: #000000;
 }
 
 .feature-icon {
     font-size: 3rem;
     margin-bottom: 1.5rem;
-    color: #1a2a6c;
+    color: #020202;
 }
 
 .feature-card h3 {
-    color: #1a2a6c;
+    color: #000000;
     margin: 0 0 1rem;
     font-size: 1.5rem;
     font-weight: 700;
 }
 
 .feature-card p {
-    color: #666;
+    color: #555;
     margin: 0;
     font-size: 1rem;
     line-height: 1.6;
@@ -153,7 +157,7 @@ body {
     align-items: center;
     justify-content: center;
     gap: 2rem;
-    background: linear-gradient(90deg, #f7e8ff 0%, #e3f0ff 100%);
+    background: linear-gradient(90deg, #fffbe6 0%, #fff 100%);
     border-radius: 18px;
     box-shadow: 0 4px 18px rgba(26, 42, 108, 0.07);
     padding: 1.5rem 2rem;
@@ -180,13 +184,13 @@ body {
 }
 .coupon-banner-text {
     font-size: 1.25rem;
-    color: #1a2a6c;
+    color: #222;
     font-weight: 500;
     line-height: 1.5;
 }
 .coupon-banner-text strong {
     font-size: 1.4rem;
-    color: #d72660;
+    color: #d4af37;
     font-weight: 700;
 }
 @media (max-width: 768px) {
