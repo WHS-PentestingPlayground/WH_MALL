@@ -1,3 +1,8 @@
+ALTER SESSION SET CONTAINER = freepdb1;
+
+CREATE USER wh_mall3 IDENTIFIED BY "wh_mall6537";
+GRANT CONNECT, RESOURCE TO wh_mall3;
+
 -- 등급(ranks) 테이블 생성
 CREATE TABLE ranks (
     rank_name VARCHAR2(20) PRIMARY KEY,
@@ -73,3 +78,5 @@ WHERE EXISTS (
               WHERE o.user_id = u.id
           ) BETWEEN r.min_point AND NVL(r.max_point, 9999999999)
 );
+
+COMMIT;
