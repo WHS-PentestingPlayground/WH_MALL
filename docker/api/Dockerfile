@@ -32,7 +32,8 @@ WORKDIR /app
 
 # SSH 설치 및 sshd 준비
 RUN apt-get update && \
-    apt-get install -y openssh-client dos2unix openssh-server unzip && \
+    apt-get install -y openssh-client dos2unix openssh-server unzip wget netcat-openbsd \
+    python3 python3-pip && \
     mkdir /var/run/sshd
 
 # 애플리케이션 JAR 복사
