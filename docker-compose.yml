@@ -66,7 +66,7 @@ services:
       - ORACLE_PASSWORD=${ORACLE_PASSWORD}
     restart: always
     healthcheck:
-      test: [ "CMD-SHELL", "echo 'SET PAGESIZE 0 FEEDBACK OFF VERIFY OFF HEADING OFF ECHO OFF; SELECT 1 FROM v$pdbs WHERE name=\'FREEPDB1\' AND open_mode=\'READ WRITE\'; EXIT;' | sqlplus -s ${SPRING_DATASOURCE_USERNAME}/${SPRING_DATASOURCE_PASSWORD}@localhost/freepdb1 | grep 1" ]
+      test: [ "CMD-SHELL", "echo 'SET PAGESIZE 0 FEEDBACK OFF VERIFY OFF HEADING OFF ECHO OFF; SELECT COUNT(*) FROM all_tables WHERE owner=UPPER(\'${SPRING_DATASOURCE_USERNAME}\') AND table_name=\'RANKS\'; EXIT;' | sqlplus -s ${SPRING_DATASOURCE_USERNAME}/${SPRING_DATASOURCE_PASSWORD}@localhost/freepdb1 | grep 1" ]
       interval: 10s
       timeout: 5s
       retries: 5
