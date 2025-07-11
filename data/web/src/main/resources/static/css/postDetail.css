@@ -2,9 +2,10 @@
 
 /* 전체 컨테이너 */
 .post-detail-container {
-    background: #ffffff;
+    background: #fff;
+    color: #000;
     border-radius: 12px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08); /* 부드러운 그림자 */
+    box-shadow: none; /* 그림자 제거 */
     padding: 2.5rem; /* 내부 여백 */
     margin: 2rem auto; /* 중앙 정렬, 상하 여백 */
     max-width: 1000px; /* 컨테이너 최대 너비 */
@@ -15,12 +16,12 @@
 .post-detail-header {
     margin-bottom: 1.5rem; /* 제목과 메타 정보 아래 여백 */
     padding-bottom: 1rem;
-    border-bottom: 1px solid #e0e0e0; /* 구분선 */
+    border-bottom: 1px solid #000; /* 구분선 */
 }
 
 .post-detail-title {
     font-size: 2.2rem; /* 제목 폰트 크기 */
-    color: #343a40; /* 제목 색상 */
+    color: #000; /* 제목 색상 */
     font-weight: 700;
     display: flex;
     align-items: center;
@@ -33,12 +34,12 @@
 .post-detail-title::before {
     content: "📝"; /* 연필 이모지 (혹은 "🤖"도 가능) */
     font-size: 2.5rem;
-    color: #007bff; /* 강조 색상 */
+    color: #000; /* 강조 색상 */
 }
 
 /* 게시글 메타 정보 (작성자, 작성일, 조회수) */
 .post-detail-meta {
-    color: #6c757d;
+    color: #555;
     font-size: 0.95rem;
     display: flex;
     flex-wrap: wrap; /* 작은 화면에서 줄 바꿈 */
@@ -71,14 +72,14 @@
 
 /* 게시글 본문 내용 */
 .post-detail-content {
-    color: #343a40;
+    color: #000;
     font-size: 1.1rem;
     line-height: 1.8; /* 줄 간격 */
     margin-top: 2rem; /* 본문 상단 여백 */
     margin-bottom: 2rem;
     padding: 2rem 0; /* 내용 위아래 여백 */
-    border-top: 1px solid #f0f0f0; /* 본문 위 구분선 */
-    border-bottom: 1px solid #f0f0f0; /* 본문 아래 구분선 */
+    border-top: 1px solid #000; /* 본문 위 구분선 */
+    border-bottom: 1px solid #000; /* 본문 아래 구분선 */
     min-height: 200px; /* 최소 높이 설정 (내용이 적을 때 대비) */
     white-space: pre-line; /* 줄 바꿈 유지 */
 }
@@ -91,25 +92,25 @@
     display: flex; /* 아이콘과 텍스트 정렬 */
     align-items: center;
     gap: 0.5rem;
-    color: #555;
+    color: #000;
 }
 
 .post-detail-file::before {
     content: "📎"; /* 클립 아이콘 */
     font-size: 1.3em;
-    color: #007bff;
+    color: #000;
 }
 
 .post-detail-file a {
-    color: #007bff;
+    color: #000;
     text-decoration: none;
     font-weight: 500;
     transition: color 0.2s ease, text-decoration 0.2s ease;
 }
 
 .post-detail-file a:hover {
+    color: #000;
     text-decoration: underline;
-    color: #0056b3;
 }
 
 
@@ -134,6 +135,8 @@
     display: flex;
     align-items: center;
     gap: 0.4rem;
+    background: #fff;
+    color: #000;
 }
 
 /* 삭제 버튼 */
@@ -254,4 +257,20 @@
     .post-detail-content {
         font-size: 0.95rem;
     }
+}
+
+.post-detail-container, .post-detail-header, .post-detail-title, .post-detail-title::before, .post-detail-meta, .post-detail-content, .post-detail-file, .post-detail-file::before, .post-detail-file a, .post-detail-file a:hover, .post-detail-actions button, .post-detail-actions a, .post-detail-actions button:hover, .post-detail-actions a:hover {
+    color: #000 !important;
+    background: #fff !important;
+    border-color: #000 !important;
+    box-shadow: none !important;
+}
+.post-detail-actions button, .post-detail-actions a, .post-detail-actions button:hover, .post-detail-actions a:hover {
+    background: #fff !important;
+    color: #000 !important;
+    border: 1px solid #000 !important;
+}
+.post-detail-actions button:hover, .post-detail-actions a:hover {
+    background: #000 !important;
+    color: #fff !important;
 }

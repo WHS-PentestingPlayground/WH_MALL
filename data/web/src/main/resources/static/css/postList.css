@@ -2,9 +2,10 @@
 
 /* 전체 컨테이너 및 섹션 스타일 */
 .board-container {
-    background: #ffffff;
+    background: #fff;
+    color: #000;
     border-radius: 12px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08); /* 부드러운 그림자 */
+    box-shadow: none;
     padding: 2.5rem; /* 내부 여백 */
     margin: 2rem auto; /* 중앙 정렬, 상하 여백 */
     max-width: 1000px; /* 컨테이너 최대 너비 */
@@ -18,12 +19,12 @@
     align-items: center;
     margin-bottom: 2rem;
     padding-bottom: 1rem;
-    border-bottom: 1px solid #e0e0e0; /* 하단 구분선 */
+    border-bottom: 1px solid #000; /* 하단 구분선 */
 }
 
 .board-title {
     font-size: 2rem;
-    color: #343a40;
+    color: #000;
     font-weight: 700;
     margin: 0;
     display: flex;
@@ -40,8 +41,8 @@
 
 /* 새 글 작성 버튼 */
 .new-post-btn {
-    background-color: #007bff;
-    color: white;
+    background: #000;
+    color: #ffffff;
     padding: 0.75rem 1.25rem;
     border-radius: 8px;
     text-decoration: none;
@@ -50,12 +51,14 @@
     display: flex;
     align-items: center;
     gap: 0.5rem;
+    border: 1px solid #000;
 }
 
 .new-post-btn:hover {
-    background-color: #0056b3;
+    background: #000;
+    color: #d7bf26;
     transform: translateY(-1px);
-    box-shadow: 0 4px 10px rgba(0, 123, 255, 0.25);
+    box-shadow: none;
 }
 
 /* 새 글 작성 버튼 앞 아이콘 */
@@ -72,14 +75,16 @@
 .post-list table {
     width: 100%;
     border-collapse: collapse; /* 테이블 셀 간격 제거 */
-    border: 1px solid #e0e0e0; /* 전체 테이블 테두리 */
+    background: #fff;
+    color: #000;
+    border: 1px solid #000; /* 전체 테이블 테두리 */
     border-radius: 8px; /* 테이블 전체 둥근 모서리 */
     overflow: hidden; /* 둥근 모서리 적용을 위해 필요 */
 }
 
 .post-list thead th {
-    background-color: #f8f9fa; /* 헤더 배경색 */
-    color: #495057; /* 헤더 텍스트 색상 */
+    background-color: #000000;
+    color: #ffffff;
     font-weight: 600;
     font-size: 1.05em;
     padding: 15px 20px;
@@ -94,13 +99,13 @@
 }
 
 .post-list tbody tr:hover {
-    background-color: #f5f5f5; /* 행 호버 시 배경색 */
+    background-color: #d6d6d6;
 }
 
 .post-list tbody td {
     padding: 15px 20px;
     border-bottom: 1px solid #eee; /* 셀 하단 테두리 */
-    color: #343a40;
+    color: #000;
     font-size: 1em;
 }
 
@@ -110,7 +115,7 @@
 
 /* 게시글 제목 링크 */
 .post-title-link {
-    color: #343a40;
+    color: #000;
     text-decoration: none;
     font-weight: 500;
     transition: color 0.2s ease;
@@ -118,7 +123,7 @@
 }
 
 .post-title-link:hover {
-    color: #007bff; /* 호버 시 색상 변경 */
+    color: #d4af37;
     text-decoration: underline;
 }
 
@@ -133,20 +138,20 @@
 .empty-message {
     text-align: center;
     padding: 3rem;
-    color: #6c757d;
+    color: #888888;
     font-size: 1.1rem;
-    background: #f0f2f5; /* 배경색 추가 */
+    background: #dadada; /* 배경색 추가 */
     border-radius: 8px;
     box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.05); /* 내부 그림자 */
     margin-top: 2rem;
 }
 
 .empty-message::before {
-    content: "🤖";
+    content: "";
     font-size: 2.5rem;
     display: block;
     margin-bottom: 1.2rem;
-    color: #ced4da;
+    color: #6a6a6a;
 }
 
 /* 페이드인 애니메이션 */

@@ -3,8 +3,9 @@
     max-width: 520px;
     margin: 60px auto;
     background: #fff;
+    color: #000;
     border-radius: 20px;
-    box-shadow: 0 8px 32px rgba(26, 42, 108, 0.12);
+    box-shadow: 0 8px 32px rgba(212,175,55,0.10);
     padding: 2.5rem;
     text-align: center;
     position: relative;
@@ -18,12 +19,13 @@
     left: 0;
     right: 0;
     height: 4px;
-    background: linear-gradient(90deg, #1a2a6c 0%, #d72660 50%, #1a2a6c 100%);
+    background: linear-gradient(90deg, #e8eaf6 0%, #d7bf26 50%, #e4e4e4 100%);
 }
 
 /* 헤더 섹션 */
 .coupon-header {
     margin-bottom: 2rem;
+    color: #000;
 }
 
 .coupon-issue-image {
@@ -42,7 +44,7 @@
 
 .coupon-issue-title {
     font-size: 1.8rem;
-    color: #1a2a6c;
+    color: #000;
     font-weight: 700;
     margin-bottom: 1rem;
     letter-spacing: -0.02em;
@@ -50,24 +52,25 @@
 
 .coupon-issue-desc {
     font-size: 1.1rem;
-    color: #666;
+    color: #000;
     margin-bottom: 0;
     line-height: 1.6;
     font-weight: 400;
 }
 
 .coupon-issue-desc strong {
-    color: #d72660;
+    color: #e0a800;
     font-weight: 600;
 }
 
 /* 쿠폰 상세 정보 */
 .coupon-details {
-    background: linear-gradient(135deg, #f8f9ff 0%, #f0f4ff 100%);
+    background: #fffbe6;
+    color: #000;
     border-radius: 16px;
     padding: 1.5rem;
     margin-bottom: 2rem;
-    border: 1px solid #e8f0ff;
+    border: 1px solid #000;
 }
 
 .coupon-info {
@@ -75,6 +78,7 @@
     align-items: center;
     justify-content: space-between;
     gap: 1.5rem;
+    color: #000;
 }
 
 .coupon-benefit {
@@ -82,17 +86,18 @@
     flex-direction: column;
     align-items: center;
     gap: 0.5rem;
+    color: #000;
 }
 
 .discount-amount {
     font-size: 2rem;
     font-weight: 700;
-    color: #d72660;
+    color: #000;
 }
 
 .discount-text {
     font-size: 1rem;
-    color: #666;
+    color: #000;
     font-weight: 500;
 }
 
@@ -104,7 +109,7 @@
 .coupon-conditions p {
     margin: 0.5rem 0;
     font-size: 0.95rem;
-    color: #555;
+    color: #000;
     line-height: 1.4;
 }
 
@@ -118,18 +123,17 @@
 }
 
 .issue-btn {
-    background: linear-gradient(135deg, #d72660 0%, #e74c3c 100%);
-    color: #fff;
+    background: #d7bf26;
+    color: #ffffff;
     padding: 1rem 2rem;
     border: none;
-    border-radius: 12px;
     font-size: 1.1rem;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(215, 38, 96, 0.3);
     position: relative;
     overflow: hidden;
+    box-shadow: 0 4px 15px rgba(26, 42, 108, 0.2);
 }
 
 .issue-btn::before {
@@ -149,7 +153,8 @@
 
 .issue-btn:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(215, 38, 96, 0.4);
+    background: #ae9b28;
+    color: #fff;
 }
 
 .issue-btn:disabled {
@@ -163,8 +168,8 @@
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
-    background: linear-gradient(135deg, #1a2a6c 0%, #2a3a7c 100%);
-    color: #fff;
+    background: #fffbe6;
+    color: #000000;
     padding: 0.9rem 2rem;
     border-radius: 12px;
     text-decoration: none;
@@ -194,7 +199,8 @@
 .home-btn:hover {
     transform: translateY(-2px);
     box-shadow: 0 6px 20px rgba(26, 42, 108, 0.3);
-    background: linear-gradient(135deg, #2a3a7c 0%, #3a4a8c 100%);
+    background: #000000;
+    color: #fff;
 }
 
 
