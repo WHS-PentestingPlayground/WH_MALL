@@ -24,9 +24,6 @@ services:
       - .env
     environment:
       - API_SERVER_URL=${API_SERVER_URL}
-      - SPRING_DATASOURCE_URL=${SPRING_DATASOURCE_URL}
-      - SPRING_DATASOURCE_USERNAME=${SPRING_DATASOURCE_USERNAME}
-      - SPRING_DATASOURCE_PASSWORD=${SPRING_DATASOURCE_PASSWORD}
     restart: always
 
   api-server:
