@@ -80,6 +80,13 @@
     font-weight: 700;
     color: #fff;
     margin-right: 0.5rem;
+    text-decoration: none;
+    transition: color 0.3s ease;
+    cursor: pointer;
+}
+
+.header-username:hover {
+    color: #d4af37;
 }
 
 .header-logout-form {

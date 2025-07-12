@@ -43,9 +43,69 @@
         </div>
     </div>
 
+    <!-- VIP 쿠폰 모달 -->
+    <div id="vipCouponModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close" onclick="closeVipCouponModal()">&times;</span>
+            <div class="coupon-container">
+                <div class="coupon-image">
+                    <img src="/img/vip-coupon.png" alt="VIP 쿠폰" style="width: 100%; max-width: 400px;">
+                    <div class="flag-text" id="flagText"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
         function issueCoupon() {
-            alert('VIP 등급 연동 기능이 구현 예정입니다.\n\n추후 VIP 등급 사용자만 쿠폰을 발급받을 수 있도록 구현될 예정입니다.');
+            const token = localStorage.getItem('jwtToken');
+            
+            if (!token) {
+                alert('로그인이 필요합니다.');
+                window.location.href = '/login';
+                return;
+            }
+            
+            fetch('/api/users/vip-coupon', {
+                method: 'GET',
+                headers: {
+                    'Authorization': 'Bearer ' + token,
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    throw new Error('VIP 등급만 쿠폰을 발급받을 수 있습니다.');
+                }
+            })
+            .then(data => {
+                // 플래그 텍스트 업데이트
+                document.getElementById('flagText').textContent = data.flag;
+                
+                // 모달 표시
+                const modal = document.getElementById('vipCouponModal');
+                modal.style.display = 'block';
+            })
+            .catch(error => {
+                console.error('쿠폰 발급 중 오류:', error);
+                alert(error.message);
+            });
+        }
+
+        // VIP 쿠폰 모달 닫기 함수
+        function closeVipCouponModal() {
+            const modal = document.getElementById('vipCouponModal');
+            modal.style.display = 'none';
+        }
+
+        // 모달 외부 클릭 시 닫기
+        window.onclick = function(event) {
+            const modal = document.getElementById('vipCouponModal');
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
         }
     </script>
 </body>

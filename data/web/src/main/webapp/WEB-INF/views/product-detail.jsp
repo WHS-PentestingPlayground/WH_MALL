@@ -125,7 +125,7 @@ function handlePurchase() {
     }
     
     // 로그인된 경우 구매 로직 실행
-    alert('구매 기능은 추후 구현 예정입니다.');
+    alert('잔액이 부족합니다.');
 }
 </script>
 </body>
