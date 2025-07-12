@@ -29,35 +29,36 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework:spring-webmvc:5.3.29'
     implementation 'org.springframework:spring-context-support:5.3.29'
-
-    // @PostConstruct (javax)
+    // @PostConstruct 사용을 위한 의존성 (Spring Boot 2.x에 맞춰 javax로 변경)
     implementation 'javax.annotation:javax.annotation-api:1.3.2'
 
-    // FreeMarker
+    // FreeMarker 템플릿 엔진 의존성 (SSTI 핵심)
+    // 기존 'org.springframework.boot:spring-boot-starter-freemarker'를 제거하고
+    // FreeMarker 라이브러리 자체를 명시적으로 추가합니다.
     implementation 'org.freemarker:freemarker:2.3.32'
+
+    // FreeMarker RCE 페이로드에서 IOUtils를 사용하려면 commons-io 추가 (권장)
     implementation 'commons-io:commons-io:2.11.0'
 
-    // JWT
+    // JWT 의존성
     implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
     runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
     runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
 
-    // Spring Security Crypto (BCrypt)
+    // Spring Security Crypto for password encoding (BCrypt)
     implementation 'org.springframework.security:spring-security-crypto:5.7.11'
 
-    // Oracle JDBC driver
-    runtimeOnly 'com.oracle.database.jdbc:ojdbc8:21.9.0.0'
-
-    // Lombok
+    // Lombok 추가
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
 
-    implementation project(':common')
+    // 데이터베이스 관련 의존성
+    runtimeOnly 'com.mysql:mysql-connector-j'
 
+    implementation project(':common')
     // Test
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
-
 
 springBoot {
     mainClass = 'com.whs.dev2.ApiApplication'
