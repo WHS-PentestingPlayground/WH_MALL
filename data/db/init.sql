@@ -3,6 +3,9 @@ ALTER SESSION SET CONTAINER = freepdb1;
 CREATE USER wh_mall3 IDENTIFIED BY "wh_mall6537";
 GRANT CONNECT, RESOURCE TO wh_mall3;
 
+GRANT EXECUTE ON DBMS_CRYPTO TO wh_mall3;
+GRANT EXECUTE ON UTL_I18N TO wh_mall3;
+
 -- 등급(ranks) 테이블 생성
 CREATE TABLE ranks (
     rank_name VARCHAR2(20) PRIMARY KEY,
@@ -78,5 +81,16 @@ WHERE EXISTS (
               WHERE o.user_id = u.id
           ) BETWEEN r.min_point AND NVL(r.max_point, 9999999999)
 );
+
+-- 관리자 계정 추가 (비밀번호 → SHA-256 해시 저장)
+DECLARE
+    v_hash RAW(64);
+BEGIN
+    v_hash := DBMS_CRYPTO.HASH(UTL_I18N.STRING_TO_RAW('admin6879', 'AL32UTF8'), DBMS_CRYPTO.HASH_SH256);
+
+    INSERT INTO users (username, password, point, rank, role)
+    VALUES ('admin', RAWTOHEX(v_hash), 0, NULL, 'admin');
+END;
+/
 
 COMMIT;
