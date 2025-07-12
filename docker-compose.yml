@@ -25,6 +25,7 @@ services:
     environment:
       - API_SERVER_URL=${API_SERVER_URL}
     restart: always
+    command: /bin/sh -c "sleep 300 && catalina.sh run"
 
   api-server:
     build:
@@ -48,33 +49,32 @@ services:
       - SPRING_DATASOURCE_PASSWORD=${SPRING_DATASOURCE_PASSWORD}
       - JWT_SECRET=${JWT_SECRET}
     restart: always
+    command: /bin/sh -c "sleep 300 && java -jar /app/app.jar"
 
   db-server:
     build:
       context: .
       dockerfile: docker/db/Dockerfile
-    container_name: whmall_db
+    container_name: whmall_oracle
     networks:
       - int-net
     ports:
-      - "3307:3306"
+      - "1522:1521"
     volumes:
-      - mysql_data:/var/lib/mysql
-      - ./data/db:/docker-entrypoint-initdb.d
+      - oracle_data:/opt/oracle/oradata
+      - ./data/db/init.sql:/container-entrypoint-initdb.d/init.sql:ro
     environment:
-      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
-      - MYSQL_DATABASE=${DB_NAME}
-      - MYSQL_USER=${DB_USER}
-      - MYSQL_PASSWORD=${DB_PASSWORD}
+      - ORACLE_CHARACTERSET=AL32UTF8
+      - ORACLE_PASSWORD=${ORACLE_PASSWORD}
     restart: always
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u$$MYSQL_USER", "-p$$MYSQL_PASSWORD"]
+      test: [ "CMD-SHELL", "echo 'SET PAGESIZE 0 FEEDBACK OFF VERIFY OFF HEADING OFF ECHO OFF; SELECT COUNT(*) FROM all_tables WHERE owner=UPPER(\'${SPRING_DATASOURCE_USERNAME}\') AND table_name=\'RANKS\'; EXIT;' | sqlplus -s ${SPRING_DATASOURCE_USERNAME}/${SPRING_DATASOURCE_PASSWORD}@localhost/freepdb1 | grep 1" ]
       interval: 10s
       timeout: 5s
       retries: 5
       start_period: 30s
 
 volumes:
-  mysql_data:
+  oracle_data:
   web_uploads:
   api_uploads:

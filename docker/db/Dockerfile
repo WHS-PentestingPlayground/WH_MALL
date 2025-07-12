@@ -1,12 +1,15 @@
-#docker/db/Dockerfile
-FROM mysql:8.0
+FROM gvenzl/oracle-free:slim
 
-# 문자셋 설정
 ENV LANG=C.UTF-8
 
-# 초기화 스크립트 복사
-COPY ../../data/db/init.sql /docker-entrypoint-initdb.d/
+USER root
 
-EXPOSE 3306
+RUN microdnf install -y gettext
 
-CMD ["mysqld", "--character-set-server=utf8mb4", "--collation-server=utf8mb4_unicode_ci", "--default-authentication-plugin=mysql_native_password"] 
+COPY ./data/db/init.sql /tmp/init.sql
+RUN mkdir -p /opt/oracle/scripts/startup \
+    && envsubst < /tmp/init.sql > /opt/oracle/scripts/startup/init.sql
+
+EXPOSE 1521
+
+USER oracle
