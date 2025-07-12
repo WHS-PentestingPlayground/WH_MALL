@@ -49,7 +49,7 @@ function updateUserMenu(username) {
 
     if (username) {
         userMenu.innerHTML = `
-            <span class="header-username">${username}님</span>
+            <a href="/mypage" class="header-username">${username}님</a>
             <button type="button" class="header-logout-btn" onclick="logout()">로그아웃</button>
         `;
     } else {

@@ -20,4 +20,9 @@ public class UserPageController {
         // JSP에서 /api/users/login 호출
         return "login";
     }
+    
+    @GetMapping("/mypage")
+    public String showMyPage() {
+        return "mypage";
+    }
 }

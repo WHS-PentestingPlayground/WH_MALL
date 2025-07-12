@@ -26,4 +26,10 @@ public class User extends BaseEntity {
 
     @Column(nullable = false)
     private String auth;
+    
+    @Column
+    private Integer point;
+    
+    @Column
+    private String ranks;
 }
