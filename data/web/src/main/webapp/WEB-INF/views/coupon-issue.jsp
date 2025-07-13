@@ -30,7 +30,7 @@
                         <span class="discount-text">할인</span>
                     </div>
                     <div class="coupon-conditions">
-                        <p>• 사용기간: 2024.12.31까지</p>
+                        <p>• 사용기간: 2025.12.31까지</p>
                         <p>• VIP 등급만 발급 가능</p>
                     </div>
                 </div>
