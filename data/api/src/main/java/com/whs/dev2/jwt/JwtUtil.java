@@ -72,7 +72,7 @@ public class JwtUtil {
     /**
      * 토큰 발급 (RS256)
      */
-    public String generateToken(String username) {
+    public String generateToken(String username, String role) {
         if (privateKey == null) {
             throw new IllegalStateException("JWT signing key not initialized");
         }
@@ -81,7 +81,7 @@ public class JwtUtil {
                 .setHeaderParam("alg", "RS256")
                 .setHeaderParam("typ", "JWT")
                 .setSubject(username)
-                .claim("role", "user")
+                .claim("role", role)
                 .setIssuedAt(now)
                 .setExpiration(new Date(now.getTime() + EXPIRATION))
                 .signWith(privateKey, SignatureAlgorithm.RS256)

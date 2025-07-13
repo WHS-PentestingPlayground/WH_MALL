@@ -27,6 +27,7 @@ public class UserService {
         user.setAuth(dto.getAuth());
         user.setPoint(0);
         user.setRanks("normal");
+        user.setRole("guest");
         userRepository.save(user);
     }
 
@@ -81,6 +82,16 @@ public class UserService {
     public String getRankByUsername(String username) {
         User user = findByUsername(username);
         return user.getRanks() != null ? user.getRanks() : "normal";
+    }
+    
+    public String getRoleByUsername(String username) {
+        User user = findByUsername(username);
+        return user.getRole() != null ? user.getRole() : "guest";
+    }
+    
+    public boolean isAdmin(String username) {
+        String role = getRoleByUsername(username);
+        return "admin".equals(role);
     }
 }
 

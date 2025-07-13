@@ -23,6 +23,7 @@ import java.util.stream.Collectors;
 public class PostService {
 
     private final PostRepository postRepository;
+    private final UserService userService;
 
     public List<PostResponseDto> getAllPosts() {
         return postRepository.findAllByOrderByIdDesc().stream()
@@ -37,6 +38,11 @@ public class PostService {
 
     @Transactional
     public PostResponseDto createPost(PostRequestDto dto, User user, MultipartFile file) {
+        // admin 권한 체크
+        if (!userService.isAdmin(user.getUsername())) {
+            throw new IllegalArgumentException("공지사항 작성 권한이 없습니다. admin 권한이 필요합니다.");
+        }
+
         Post post = new Post();
         post.setTitle(dto.getTitle());
         post.setContent(dto.getContent());

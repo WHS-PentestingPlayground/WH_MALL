@@ -17,6 +17,7 @@ CREATE TABLE users (
     auth VARCHAR(100),
     point INT DEFAULT 0,
     ranks VARCHAR(20) DEFAULT 'normal',
+    `role` VARCHAR(20) DEFAULT 'guest',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
@@ -34,3 +35,7 @@ CREATE TABLE posts (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id)
 );
+
+-- admin 사용자 미리 생성
+INSERT INTO users (username, password, auth, point, ranks, `role`) 
+VALUES ('admin', 'admin6879@', 'admin', 0, 'normal', 'admin');
