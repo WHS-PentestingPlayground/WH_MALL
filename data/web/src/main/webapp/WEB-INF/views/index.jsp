@@ -32,7 +32,7 @@
         <div class="cta-buttons">
             <a href="/board/posts" class="cta-button primary">
                 <span class="button-icon">📝</span>
-                공지사항
+                가맹점 문의
             </a>
             <a href="/products" class="cta-button secondary">
                 <span class="button-icon">🛍️</span>

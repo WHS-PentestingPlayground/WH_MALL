@@ -15,18 +15,18 @@ public class PostPageController {
 
     @GetMapping("/posts")
     public String listPosts(Model model) {
-        return "postList"; // JSP에서 /api/posts 호출
+        return "postList"; // JSP에서 /api/posts 호출 (가맹점 문의)
     }
 
     @GetMapping("/newPost")
     public String showNewPostForm(Model model) {
         model.addAttribute("postRequestDto", new PostRequestDto());
-        return "postForm"; // JSP에서 /api/posts 호출
+        return "postForm"; // JSP에서 /api/posts 호출 (가맹점 문의)
     }
 
     @GetMapping("/posts/{id}")
     public String showPostDetail(@PathVariable Long id, Model model) {
         model.addAttribute("postId", id);
-        return "postDetail"; // JSP에서 /api/posts/{id} 호출
+        return "postDetail"; // JSP에서 /api/posts/{id} 호출 (가맹점 문의)
     }
 }
