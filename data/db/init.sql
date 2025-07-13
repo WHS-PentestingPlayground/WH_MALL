@@ -1,12 +1,12 @@
 -- data/db/init.sql
 
 -- 데이터베이스 생성 및 사용
-CREATE DATABASE IF NOT EXISTS login_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-USE login_db;
+CREATE DATABASE IF NOT EXISTS WH_MALL CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE WH_MALL;
 
 -- 사용자 생성 및 권한 부여
-CREATE USER IF NOT EXISTS 'user'@'%' IDENTIFIED BY 'password';
-GRANT ALL PRIVILEGES ON login_db.* TO 'user'@'%';
+CREATE USER IF NOT EXISTS 'vvip'@'%' IDENTIFIED BY 'vvip3mallpassword!';
+GRANT ALL PRIVILEGES ON WH_MALL.* TO 'vvip'@'%';
 FLUSH PRIVILEGES;
 
 -- 사용자 테이블
@@ -17,6 +17,7 @@ CREATE TABLE users (
     auth VARCHAR(100),
     point INT DEFAULT 0,
     ranks VARCHAR(20) DEFAULT 'normal',
+    `role` VARCHAR(20) DEFAULT 'guest',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
