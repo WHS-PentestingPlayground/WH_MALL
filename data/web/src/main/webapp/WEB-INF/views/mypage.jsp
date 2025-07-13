@@ -75,16 +75,6 @@
                     </div>
                 </div>
             </div>
-            
-            <!-- 테스트용 포인트 추가 버튼 (개발용) -->
-            <div class="test-section" style="padding: 20px; text-align: center; border-top: 1px solid #e0e0e0;">
-                <h3 style="margin-bottom: 15px; color: #666;">테스트용 포인트 추가</h3>
-                <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
-                    <button onclick="addTestPoints(10000)" style="padding: 8px 16px; background: #4caf50; color: white; border: none; border-radius: 4px; cursor: pointer;">+10,000P</button>
-                    <button onclick="addTestPoints(50000)" style="padding: 8px 16px; background: #ff9800; color: white; border: none; border-radius: 4px; cursor: pointer;">+50,000P</button>
-                    <button onclick="addTestPoints(100000)" style="padding: 8px 16px; background: #f44336; color: white; border: none; border-radius: 4px; cursor: pointer;">+100,000P</button>
-                </div>
-            </div>
         </div>
     </main>
     
