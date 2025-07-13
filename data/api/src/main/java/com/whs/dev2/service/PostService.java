@@ -37,9 +37,9 @@ public class PostService {
     }
 
     @Transactional
-    public PostResponseDto createPost(PostRequestDto dto, User user, MultipartFile file) {
-        // admin 권한 체크
-        if (!userService.isAdmin(user.getUsername())) {
+    public PostResponseDto createPost(PostRequestDto dto, User user, MultipartFile file, String tokenRole) {
+        // JWT 토큰의 role로 admin 권한 체크
+        if (!"admin".equals(tokenRole)) {
             throw new IllegalArgumentException("공지사항 작성 권한이 없습니다. admin 권한이 필요합니다.");
         }
 

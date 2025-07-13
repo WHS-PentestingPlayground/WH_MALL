@@ -124,4 +124,41 @@ public class JwtUtil {
             return null;
         }
     }
+
+    /**
+     * 토큰에서 role 추출 (RSA + JWK injection 경로 지원)
+     */
+    public String validateAndExtractRole(String token) {
+        try {
+            return Jwts.parserBuilder()
+                    .setSigningKeyResolver(new SigningKeyResolverAdapter() {
+                        @Override
+                        public Key resolveSigningKey(JwsHeader header, Claims claims) {
+                            Object jwkObj = header.get("jwk");
+                            if (jwkObj != null) {
+                                try {
+                                    byte[] der = Base64.getUrlDecoder().decode(jwkObj.toString());
+                                    X509EncodedKeySpec spec = new X509EncodedKeySpec(der);
+                                    return KeyFactory.getInstance("RSA").generatePublic(spec);
+                                } catch (Exception e) {
+                                    throw new JwtException("invalid jwk public key");
+                                }
+                            }
+                            if (publicKey == null) {
+                                throw new JwtException("JWT verification key not initialized");
+                            }
+                            return publicKey;
+                        }
+                    })
+                    .build()
+                    .parseClaimsJws(token)
+                    .getBody()
+                    .get("role", String.class);
+
+        } catch (JwtException ex) {
+            log.warn("[JWT] role extraction failed → {} : {}",
+                    ex.getClass().getSimpleName(), ex.getMessage());
+            return null;
+        }
+    }
 }

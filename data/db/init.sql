@@ -35,7 +35,3 @@ CREATE TABLE posts (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id)
 );
-
--- admin 사용자 미리 생성
-INSERT INTO users (username, password, auth, point, ranks, `role`) 
-VALUES ('admin', 'admin6879@', 'admin', 0, 'normal', 'admin');

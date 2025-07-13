@@ -107,10 +107,17 @@ public class PostApiController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인이 필요합니다.");
         }
 
+        // JWT 토큰에서 role 추출
+        String token = authHeader.substring(7);
+        String tokenRole = jwtUtil.validateAndExtractRole(token);
+        if (tokenRole == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인이 필요합니다.");
+        }
+
         dto.setAuthor(user.getUsername());
 
         try {
-            PostResponseDto post = postService.createPost(dto, user, null);
+            PostResponseDto post = postService.createPost(dto, user, null, tokenRole);
             return ResponseEntity.ok(post);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
@@ -132,13 +139,20 @@ public class PostApiController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인이 필요합니다.");
         }
 
+        // JWT 토큰에서 role 추출
+        String token = authHeader.substring(7);
+        String tokenRole = jwtUtil.validateAndExtractRole(token);
+        if (tokenRole == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인이 필요합니다.");
+        }
+
         PostRequestDto dto = new PostRequestDto();
         dto.setTitle(title);
         dto.setContent(content);
         dto.setAuthor(user.getUsername());
 
         try {
-            PostResponseDto post = postService.createPost(dto, user, file);
+            PostResponseDto post = postService.createPost(dto, user, file, tokenRole);
             return ResponseEntity.ok(post);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
@@ -219,6 +233,7 @@ public class PostApiController {
     private User authenticate(String authHeader) {
         if (authHeader == null || !authHeader.startsWith("Bearer ")) return null;
         String token = authHeader.substring(7);
+        
         String username = jwtUtil.validateAndExtractUsername(token);
         if (username == null) return null;
         try {
