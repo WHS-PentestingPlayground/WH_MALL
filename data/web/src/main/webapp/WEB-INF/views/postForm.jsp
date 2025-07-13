@@ -55,8 +55,8 @@ document.addEventListener('DOMContentLoaded', function() {
     try {
         const base64 = token.split('.')[1].replace(/-/g,'+').replace(/_/g,'/');
         const payload = JSON.parse(atob(base64));
-        if (payload.role !== 'admin') {             // admin이 아니면
-            alert('권한이 없습니다.');
+        if (payload.role !== 'partner') {             // partner가 아니면
+            alert('파트너 회원만 접근 가능합니다');
             return location.href = '/board/posts';  // 메인 or 목록 페이지
         }
     } catch (e) {
@@ -112,12 +112,12 @@ document.addEventListener('DOMContentLoaded', function() {
             return response.json();
         })
         .then(data => {
-            alert('공지사항이 등록되었습니다.');
+            alert('가맹점 문의가 등록되었습니다.');
             window.location.href = '/board/posts';
         })
         .catch(error => {
             console.error('Error:', error);
-            alert('공지사항 등록에 실패했습니다.');
+            alert('가맹점 문의 등록에 실패했습니다.');
         });
     });
 });

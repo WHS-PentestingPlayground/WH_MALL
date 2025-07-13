@@ -62,38 +62,50 @@ public class PostApiController {
 
     // 게시글 상세 조회 - SSTI 취약점 유발을 위해 변경
     @GetMapping("/{id}")
-    public ResponseEntity<?> getPost(@PathVariable Long id) {
+    public ResponseEntity<?> getPost(
+            @PathVariable Long id,
+            @RequestHeader(value = "Authorization", required = false) String authHeader) {
+
+        User user = authenticate(authHeader);
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인이 필요합니다.");
+        }
+
         try {
             PostResponseDto post = postService.getPost(id);
 
-            // --- SSTI 취약점 유발 핵심 로직 변경 시작 ---
-            // 게시글 내용(content)을 FreeMarker 템플릿으로 렌더링
+            // 🔍 디버깅 로그 추가
+            System.out.println("[DEBUG] equals: " + post.getAuthor().equals(user.getUsername()));
+            System.out.println("[DEBUG] trimmed equals: " +
+                    post.getAuthor().trim().equals(user.getUsername().trim()));
+            System.out.println("[DEBUG] ignoreCase trimmed: " +
+                    post.getAuthor().trim().equalsIgnoreCase(user.getUsername().trim()));
+
+            // ✅ 보안 검증
+            if (post.getAuthor() == null ||
+                    !post.getAuthor().trim().equalsIgnoreCase(user.getUsername().trim())) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                        .body("본인이 작성한 게시글만 조회할 수 있습니다!");
+            }
+            // 기존 FreeMarker 렌더링 로직...
             Configuration cfg = freemarkerConfigurer.getConfiguration();
             StringWriter writer = new StringWriter();
-            Map<String, Object> model = new HashMap<>(); // 템플릿에 전달할 데이터 (여기서는 비어있어도 됨)
-
+            Map<String, Object> model = new HashMap<>();
             try {
-                // 사용자가 입력한 게시글 content를 직접 템플릿으로 파싱하여 렌더링
-                // 이 부분이 FreeMarker SSTI의 취약점 포인트
                 Template template = new Template("postContentTemplate", post.getContent(), cfg);
                 template.process(model, writer);
-                String renderedContent = writer.toString();
-                post.setContent(renderedContent); // 렌더링된 내용으로 DTO 업데이트
-
-            } catch (IOException | TemplateException e) {
-                // 템플릿 렌더링 오류 발생 시 (예: 잘못된 FreeMarker 구문)
-                System.err.println("FreeMarker 렌더링 오류: " + e.getMessage());
-                // 오류가 발생해도 원본 내용을 반환하거나, 특정 오류 메시지를 반환하도록 처리
-                // 여기서는 오류 메시지를 포함한 응답을 반환
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("게시글 내용 렌더링 중 오류 발생: " + e.getMessage());
+                post.setContent(writer.toString());
+            } catch (Exception e) {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("렌더링 오류: " + e.getMessage());
             }
-            // --- SSTI 취약점 유발 핵심 로직 변경 끝 ---
 
             return ResponseEntity.ok(post);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("게시글을 찾을 수 없습니다.");
         }
     }
+
+
 
 
     // 게시글 작성 (JSON 요청)

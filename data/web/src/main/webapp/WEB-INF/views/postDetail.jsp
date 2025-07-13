@@ -7,7 +7,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>게시글 상세 - 화햇 로보틱스</title>
+    <title>게시글 상세 </title>
     <link rel="stylesheet" href="/css/header.css">
     <link rel="stylesheet" href="/css/main.css">
     <link rel="stylesheet" href="/css/postDetail.css">
@@ -105,6 +105,16 @@
         fetch(apiUrl)
             .then(response => {
                 console.log("API 응답 수신:", response);
+
+                if (response.status === 403) {
+                    // 서버가 보낸 메시지 표시
+                    response.text().then(msg => {
+                        alert(msg); // "본인이 작성한 게시글만 조회할 수 없습니다!"
+                        window.location.href = '/board/posts';
+                    });
+                    return;
+                }
+
                 if (!response.ok) {
                     if (response.status === 404) {
                         alert('요청하신 게시글을 찾을 수 없습니다.');
@@ -128,26 +138,22 @@
 
                 // HTML 요소에 데이터 삽입
                 document.getElementById('postTitle').textContent = actualPost.title;
-                document.getElementById('postAuthor').textContent = actualPost.author; // 여기에 작성자 정보가 들어감
+                document.getElementById('postAuthor').textContent = actualPost.author;
                 document.getElementById('postDate').textContent = new Date(actualPost.createdAt).toLocaleString();
                 document.getElementById('postContent').textContent = actualPost.content;
 
                 if (actualPost.fileName) {
                     const attachmentDiv = document.getElementById('postAttachment');
                     const attachmentLink = document.getElementById('attachmentLink');
-                    attachmentLink.href = '/api/posts/' + currentPostId + '/file'; // 문자열 연결 사용
+                    attachmentLink.href = '/api/posts/' + currentPostId + '/file';
                     attachmentLink.textContent = actualPost.fileName;
-                    attachmentDiv.style.display = 'flex'; // flex로 변경하여 아이콘과 텍스트 정렬
+                    attachmentDiv.style.display = 'flex';
                 } else {
                     document.getElementById('postAttachment').style.display = 'none';
                 }
 
-                // 수정/삭제 버튼 표시 여부
-                if (actualPost.user && actualPost.user.id === currentUserId) {
-                    document.getElementById('postActions').style.display = 'flex'; // flex로 변경
-                } else {
-                    document.getElementById('postActions').style.display = 'none';
-                }
+                // 버튼은 본인이 쓴 글이므로 항상 보이게 됨
+                document.getElementById('postActions').style.display = 'flex';
             })
             .catch(error => {
                 console.error('게시글 로드 오류:', error);
