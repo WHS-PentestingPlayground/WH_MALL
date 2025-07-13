@@ -27,7 +27,7 @@ public class UserApiController {
         try {
             userService.register(dto);
             User user = userService.authenticate(dto.getUsername(), dto.getPassword());
-            String token = jwtUtil.generateToken(user.getUsername());
+            String token = jwtUtil.generateToken(user.getUsername(), user.getRole());
             return ResponseEntity.ok()
             //.body("회원가입 성공"); 추후 수정 필요
             .body(Map.of(
@@ -46,7 +46,7 @@ public class UserApiController {
         try {
             User user = userService.authenticate(dto.getUsername(), dto.getPassword());
             if (user != null) {
-                String token = jwtUtil.generateToken(user.getUsername());
+                String token = jwtUtil.generateToken(user.getUsername(), user.getRole());
                 return ResponseEntity.ok()
                     .header("Authorization", "Bearer " + token)
                     .body(Map.of(
