@@ -81,7 +81,12 @@ public class UserService {
     
     public String getRankByUsername(String username) {
         User user = findByUsername(username);
-        return user.getRanks() != null ? user.getRanks() : "normal";
+        Integer point = user.getPoint() != null ? user.getPoint() : 0;
+        if (point >= 100000) {
+            return "vip";
+        } else {
+            return "normal";
+        }
     }
     
     public String getRoleByUsername(String username) {
