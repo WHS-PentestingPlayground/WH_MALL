@@ -6,7 +6,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>WHS Dev2 - 메인</title>
+    <title>WH MALL - 메인</title>
     <link rel="stylesheet" href="/css/header.css" />
     <link rel="stylesheet" href="/css/index.css" />
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Playfair+Display:wght@400;700&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
@@ -17,13 +17,13 @@
 <main class="main-content">
     <div class="hero-section">
         <h1 class="hero-title">대한민국이 선택한 최고의 쇼핑몰</h1>
-        <p class="hero-subtitle">WHS MALL에 오신 것을 환영합니다</p>
+        <p class="hero-subtitle">WH MALL에 오신 것을 환영합니다</p>
 
         <!-- 쿠폰 배너 시작 -->
         <a href="/coupon-issue" class="coupon-banner">
             <img src="/img/vip-coupon.png" alt="VIP 쿠폰 배너" class="coupon-banner-img" />
             <div class="coupon-banner-text">
-                <strong>WHS 쇼핑몰 쿠폰 VIP 특별 이벤트!</strong><br/>
+                <strong>WH 쇼핑몰 VIP 쿠폰 특별 이벤트!</strong><br/>
                 지금 바로 쿠폰을 발급받고 다양한 혜택을 누리세요.
             </div>
         </a>

@@ -6,7 +6,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>제품 소개 - WHS 쇼핑몰</title>
+    <title>제품 소개 - WH 쇼핑몰</title>
     <link rel="stylesheet" href="/css/header.css" />
     <link rel="stylesheet" href="/css/main.css" />
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Playfair+Display:wght@400;700&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
@@ -16,7 +16,7 @@
 <%@ include file="header.jsp" %>
 <main class="main-content">
     <div class="products-container">
-        <h1 class="products-title">WHS 쇼핑몰 제품 소개</h1>
+        <h1 class="products-title">WH 쇼핑몰 제품 소개</h1>
         <p class="products-subtitle">최고의 품질과 혁신적인 기술로 만든 프리미엄 제품들을 만나보세요</p>
         
         <div class="product-cards">

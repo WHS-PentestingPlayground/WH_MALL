@@ -6,7 +6,7 @@
     <nav class="header-nav">
         <div class="header-logo">
             <a href="/" class="header-logo-link">
-                <span class="header-logo-text">WHS MALL</span> </a>
+                <span class="header-logo-text">WH MALL</span> </a>
         </div>
 
         <div class="header-user-menu" id="userMenu">

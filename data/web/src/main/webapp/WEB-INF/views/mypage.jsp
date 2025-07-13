@@ -6,7 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>마이페이지 - WHS MALL</title>
+    <title>마이페이지 - WH MALL</title>
     <link rel="stylesheet" href="/css/header.css">
     <link rel="stylesheet" href="/css/mypage.css">
 </head>
