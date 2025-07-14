@@ -127,32 +127,3 @@ function updatePointDisplay(point, rank) {
     }
 }
 
-// 포인트 추가 테스트 함수 (개발용)
-function addTestPoints(points) {
-    const token = localStorage.getItem('jwtToken');
-    
-    fetch('/api/users/point/add', {
-        method: 'POST',
-        headers: {
-            'Authorization': 'Bearer ' + token,
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ point: points })
-    })
-    .then(response => {
-        if (response.ok) {
-            return response.json();
-        } else {
-            throw new Error('포인트 추가에 실패했습니다.');
-        }
-    })
-    .then(data => {
-        console.log('포인트 추가 성공:', data);
-        // 포인트 정보 다시 로드
-        loadPointData();
-    })
-    .catch(error => {
-        console.error('포인트 추가 중 오류:', error);
-        alert('포인트 추가에 실패했습니다.');
-    });
-} 
