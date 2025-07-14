@@ -116,43 +116,6 @@ public class UserApiController {
         }
     }
     
-    // 포인트 추가 API
-    @PostMapping("/point/add")
-    public ResponseEntity<?> addPoint(
-            @RequestHeader("Authorization") String authHeader,
-            @RequestBody Map<String, Integer> request) {
-        
-        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("인증이 필요합니다.");
-        }
-
-        String token = authHeader.substring(7);
-        String username = jwtUtil.validateAndExtractUsername(token);
-        
-        if (username == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("유효하지 않은 토큰입니다.");
-        }
-
-        Integer additionalPoint = request.get("point");
-        if (additionalPoint == null || additionalPoint <= 0) {
-            return ResponseEntity.badRequest().body("유효하지 않은 포인트 값입니다.");
-        }
-
-        try {
-            userService.updatePointByUsername(username, additionalPoint);
-            Integer newPoint = userService.getPointByUsername(username);
-            String newRank = userService.getRankByUsername(username);
-            
-            return ResponseEntity.ok(Map.of(
-                "message", "포인트가 추가되었습니다.",
-                "addedPoint", additionalPoint,
-                "totalPoint", newPoint,
-                "rank", newRank
-            ));
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("사용자를 찾을 수 없습니다.");
-        }
-    }
     
     // VIP 쿠폰 플래그 API
     @GetMapping("/vip-coupon")
