@@ -19,7 +19,7 @@
 <div class="container">
     <div class="form-container">
         <h2 class="form-title">새 글 작성</h2>
-        <form id="postForm" enctype="multipart/form-data">
+        <form id="postForm">
             <div class="form-group">
                 <label for="title" class="form-label">제목</label>
                 <input type="text" id="title" name="title" class="form-input" required>
@@ -28,11 +28,6 @@
             <div class="form-group">
                 <label for="content" class="form-label">내용</label>
                 <textarea id="content" name="content" class="form-input" required></textarea>
-            </div>
-
-            <div class="form-group">
-                <label for="file" class="form-label">파일 첨부</label>
-                <input type="file" id="file" name="file" class="form-input">
             </div>
 
             <div class="form-group">
@@ -90,20 +85,18 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('postForm').addEventListener('submit', function(e) {
         e.preventDefault();
 
-        const formData = new FormData();
-        formData.append('title', document.getElementById('title').value);
-        formData.append('content', document.getElementById('content').value);
-        const fileInput = document.getElementById('file');
-        if (fileInput.files.length > 0) {
-            formData.append('file', fileInput.files[0]);
-        }
+        const postData = {
+            title: document.getElementById('title').value,
+            content: document.getElementById('content').value
+        };
 
-        fetch('/api/posts/create-with-file', {
+        fetch('/api/posts/create', {
             method: 'POST',
             headers: {
-                'Authorization': 'Bearer ' + token
+                'Authorization': 'Bearer ' + token,
+                'Content-Type': 'application/json'
             },
-            body: formData
+            body: JSON.stringify(postData)
         })
         .then(response => {
             if (!response.ok) {

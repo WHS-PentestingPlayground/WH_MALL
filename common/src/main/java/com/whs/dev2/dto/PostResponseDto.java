@@ -14,7 +14,6 @@ public class PostResponseDto {
     private String content;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-    private String fileName;
     private String author;
 
     public PostResponseDto(Post post) {
@@ -24,7 +23,6 @@ public class PostResponseDto {
         this.createdAt = post.getCreatedAt();
         this.author = post.getUser().getUsername();
         this.updatedAt = post.getUpdatedAt() != null ? post.getUpdatedAt() : post.getCreatedAt();
-        this.fileName = post.getFileName();
     }
 
 }

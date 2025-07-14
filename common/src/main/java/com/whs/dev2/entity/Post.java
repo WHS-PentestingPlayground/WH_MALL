@@ -22,19 +22,10 @@ public class Post extends BaseEntity {
     @Column(nullable = false, columnDefinition = "TEXT")
     private String content;
 
-    @Column(nullable = true)
-    private String fileName;  // 첨부 파일 이름
-
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
-
-    @Column(nullable = true)
-    private String encryptedFileName; // 암호화된 파일명
-
-    @Column(columnDefinition = "LONGTEXT", nullable = true)
-    private String encryptedFileData; // 암호화된 파일 데이터
 
 
 }

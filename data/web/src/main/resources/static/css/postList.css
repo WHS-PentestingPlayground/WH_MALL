@@ -127,12 +127,7 @@
     text-decoration: underline;
 }
 
-/* 첨부파일 아이콘 */
-.file-icon {
-    margin-left: 5px;
-    color: #6c757d;
-    font-size: 0.9em;
-}
+
 
 /* 게시글이 없는 경우 메시지 */
 .empty-message {

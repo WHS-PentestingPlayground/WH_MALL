@@ -368,9 +368,7 @@ select.form-input {
 .flex-1 { flex: 1; }
 .textarea-content { width: 100%; min-height: 120px; border-radius: 6px; border: 1px solid #ddd; margin-bottom: 1rem; padding: 10px; }
 
-/* editNotice.jsp, editPost.jsp 분리 스타일 */
-.container-edit { max-width: 600px; margin: 3rem auto; }
-.card-edit { padding: 2rem; }
+
 
 /* register.jsp, newPost.jsp 분리 스타일 */
 .container-register { max-width: 480px; margin: 3rem auto; }

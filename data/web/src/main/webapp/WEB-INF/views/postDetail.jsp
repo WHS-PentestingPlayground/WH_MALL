@@ -27,12 +27,7 @@
 
         <div id="postContent" class="post-detail-content"></div>
 
-        <div id="postAttachment" class="post-detail-file" style="display: none;">
-            <a id="attachmentLink" href="#" target="_blank"></a>
-        </div>
-
         <div id="postActions" class="post-detail-actions" style="display: none;">
-            <button type="button" class="edit-btn" onclick="editPost()">수정</button>
             <button type="button" class="delete-btn" onclick="deletePost()">삭제</button>
             <a href="/board/posts" class="list-btn">목록으로</a>
         </div>
@@ -142,16 +137,6 @@
                 document.getElementById('postDate').textContent = new Date(actualPost.createdAt).toLocaleString();
                 document.getElementById('postContent').textContent = actualPost.content;
 
-                if (actualPost.fileName) {
-                    const attachmentDiv = document.getElementById('postAttachment');
-                    const attachmentLink = document.getElementById('attachmentLink');
-                    attachmentLink.href = '/api/posts/' + currentPostId + '/file';
-                    attachmentLink.textContent = actualPost.fileName;
-                    attachmentDiv.style.display = 'flex';
-                } else {
-                    document.getElementById('postAttachment').style.display = 'none';
-                }
-
                 // 버튼은 본인이 쓴 글이므로 항상 보이게 됨
                 document.getElementById('postActions').style.display = 'flex';
             })
@@ -160,10 +145,6 @@
                 alert('게시글을 불러오는데 실패했습니다.');
                 window.location.href = '/board/posts'; // 오류 시 목록으로 이동
             });
-    }
-
-    function editPost() {
-        window.location.href = '/board/editPost?id=' + currentPostId; // 문자열 연결 사용
     }
 
     function deletePost() {

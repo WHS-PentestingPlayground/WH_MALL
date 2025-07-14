@@ -137,14 +137,13 @@
                 posts.forEach((post, index) => {
                     const createdAt = new Date(post.createdAt).toLocaleDateString('ko-KR');
                     const postNumber = posts.length - index;
-                    const fileAttachmentIcon = post.fileName ? '<span class="file-icon">📎</span>' : '';
 
                     // ⭐⭐⭐ HTML 문자열에 data-label 속성 추가 ⭐⭐⭐
                     const rowHtml = '<tr>' +
                         '<td data-label="번호">' + postNumber + '</td>' +
                         '<td data-label="제목">' +
                         '<a href="/board/posts/' + post.id + '" class="post-title-link">' +
-                        post.title + fileAttachmentIcon +
+                        post.title +
                         '</a>' +
                         '</td>' +
                         '<td data-label="작성자">' + (post.author || '알 수 없음') + '</td>' +

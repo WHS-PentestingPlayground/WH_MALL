@@ -17,11 +17,9 @@ import freemarker.template.TemplateException;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 // import org.springframework.ui.Model; // @RestController 에서는 보통 Model 대신 ResponseEntity 사용
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer; // FreeMarkerConfigurer 임포트
 
 import javax.annotation.PostConstruct; // @PostConstruct 임포트 (javax 또는 jakarta)
@@ -129,7 +127,7 @@ public class PostApiController {
         dto.setAuthor(user.getUsername());
 
         try {
-            PostResponseDto post = postService.createPost(dto, user, null, tokenRole);
+            PostResponseDto post = postService.createPost(dto, user, tokenRole);
             return ResponseEntity.ok(post);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
@@ -138,89 +136,7 @@ public class PostApiController {
         }
     }
 
-    // 게시글 작성 (파일 포함 multipart)
-    @PostMapping(path = "/create-with-file", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<?> createPostWithFile(
-            @RequestPart("title") String title,
-            @RequestPart("content") String content,
-            @RequestPart(value = "file", required = false) MultipartFile file,
-            @RequestHeader("Authorization") String authHeader) {
 
-        User user = authenticate(authHeader);
-        if (user == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인이 필요합니다.");
-        }
-
-        // JWT 토큰에서 role 추출
-        String token = authHeader.substring(7);
-        String tokenRole = jwtUtil.validateAndExtractRole(token);
-        if (tokenRole == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인이 필요합니다.");
-        }
-
-        PostRequestDto dto = new PostRequestDto();
-        dto.setTitle(title);
-        dto.setContent(content);
-        dto.setAuthor(user.getUsername());
-
-        try {
-            PostResponseDto post = postService.createPost(dto, user, file, tokenRole);
-            return ResponseEntity.ok(post);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("게시글 생성 중 오류 발생");
-        }
-    }
-
-    // 게시글 수정 (JSON)
-    @PutMapping("/{id}")
-    public ResponseEntity<?> updatePost(
-            @PathVariable Long id,
-            @RequestBody PostRequestDto dto,
-            @RequestHeader("Authorization") String authHeader) {
-
-        User user = authenticate(authHeader);
-        if (user == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인이 필요합니다.");
-        }
-
-        dto.setAuthor(user.getUsername());
-
-        try {
-            postService.updatePost(id, dto, user, null);
-            return ResponseEntity.ok("게시글이 수정되었습니다.");
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
-        }
-    }
-
-    // 게시글 수정 (파일 포함 multipart)
-    @PostMapping(path = "/{id}/edit", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<?> editPostWithFile(
-            @PathVariable Long id,
-            @RequestPart("title") String title,
-            @RequestPart("content") String content,
-            @RequestPart(value = "file", required = false) MultipartFile file,
-            @RequestHeader("Authorization") String authHeader) {
-
-        User user = authenticate(authHeader);
-        if (user == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인이 필요합니다.");
-        }
-
-        PostRequestDto dto = new PostRequestDto();
-        dto.setTitle(title);
-        dto.setContent(content);
-        dto.setAuthor(user.getUsername());
-
-        try {
-            postService.updatePost(id, dto, user, file);
-            return ResponseEntity.ok("게시글이 수정되었습니다.");
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
-        }
-    }
 
     // 게시글 삭제
     @DeleteMapping("/{id}")
