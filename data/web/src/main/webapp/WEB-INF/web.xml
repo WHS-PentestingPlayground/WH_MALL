@@ -54,17 +54,17 @@
     <!-- 에러 페이지 설정 -->
     <error-page>
         <error-code>404</error-code>
-        <location>/error/404</location>
+        <location>/error</location>
     </error-page>
 
     <error-page>
         <error-code>403</error-code>
-        <location>/error/403</location>
+        <location>/error</location>
     </error-page>
 
     <error-page>
         <error-code>500</error-code>
-        <location>/error/500</location>
+        <location>/error</location>
     </error-page>
 
 </web-app> 
