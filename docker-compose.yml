@@ -8,7 +8,7 @@ services:
     build:
       context: .
       dockerfile: docker/web/Dockerfile
-    container_name: whamll_web
+    container_name: whmall_web
     ports:
       - "80:8080"
     networks:
