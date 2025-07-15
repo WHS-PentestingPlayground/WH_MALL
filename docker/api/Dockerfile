@@ -39,21 +39,42 @@ RUN apt-get update && \
 # 애플리케이션 JAR 복사
 COPY --from=build /app/data/api/build/libs/*.jar app.jar
 
-# 업로드 디렉토리 생성 및 권한 부여
-RUN mkdir -p /tmp/uploads && chmod 777 /tmp/uploads
+# tomcat 사용자 생성 (UID 1000)
+RUN useradd -u 1000 -ms /bin/bash tomcat
 
-# 스크립트 및 SSH 키 복사
+# 업로드 디렉토리 생성 및 권한 최소화 (tomcat만 접근)
+RUN mkdir -p /tmp/uploads && \
+    chown tomcat:tomcat /tmp/uploads && \
+    chmod 700 /tmp/uploads
+
+# 스크립트 디렉토리 생성 및 복사, 권한 최소화
+RUN mkdir -p /app/scripts
 COPY data/api/src/main/resources/scripts/scp_transfer.sh /app/scripts/scp_transfer.sh
-COPY common/ssh-keys/id_rsa /app/scripts/id_rsa
-COPY common/ssh-keys/id_rsa /root/.ssh/id_rsa
-COPY common/ssh-keys/id_rsa.pub /root/.ssh/authorized_keys
+RUN chown tomcat:tomcat /app/scripts/scp_transfer.sh && \
+    chmod 700 /app/scripts/scp_transfer.sh
 
-# SSH 키 권한 및 dos2unix 처리
-RUN dos2unix /app/scripts/id_rsa && dos2unix /root/.ssh/id_rsa && dos2unix /app/scripts/scp_transfer.sh
-RUN chmod 600 /root/.ssh/id_rsa /root/.ssh/authorized_keys
+# SSH 키를 tomcat 홈에 복사, 권한 최소화
+RUN mkdir -p /home/tomcat/.ssh
+COPY common/ssh-keys/id_rsa /home/tomcat/.ssh/id_rsa
+COPY common/ssh-keys/id_rsa.pub /home/tomcat/.ssh/authorized_keys
+RUN dos2unix /home/tomcat/.ssh/id_rsa && \
+    dos2unix /home/tomcat/.ssh/authorized_keys
+RUN chown -R tomcat:tomcat /home/tomcat/.ssh && \
+    chmod 700 /home/tomcat/.ssh && \
+    chmod 600 /home/tomcat/.ssh/id_rsa && \
+    chmod 600 /home/tomcat/.ssh/authorized_keys
 
-# 스크립트 실행 권한 설정
-RUN chmod +x /app/scripts/scp_transfer.sh && chmod 600 /app/scripts/id_rsa
+# jar 파일 권한 최소화
+RUN chown tomcat:tomcat /app/app.jar && chmod 700 /app/app.jar
 
-# 서비스 실행: ssh 데몬 시작 후 java 앱 실행
-CMD ["/bin/bash", "-c", "service ssh start && java -jar app.jar"]
+# 불필요한 setuid/setgid bit 제거, 홈 디렉토리 외 접근 제한(예시)
+RUN chmod -R go-rwx /home/tomcat
+
+# 서비스 실행을 tomcat 계정으로 전환
+USER tomcat
+
+# 포트 노출
+EXPOSE 8081 22
+
+# 서비스 실행: tomcat 계정으로만 동작
+CMD ["/bin/bash", "-c", "service ssh start && java -jar /app/app.jar"]
