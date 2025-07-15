@@ -5,7 +5,7 @@ FROM mysql:8.0
 ENV LANG=C.UTF-8
 
 # 초기화 스크립트 복사
-COPY ../../data/db/init.sql /docker-entrypoint-initdb.d/
+COPY data/db/init.sql /docker-entrypoint-initdb.d/
 
 EXPOSE 3306
 
