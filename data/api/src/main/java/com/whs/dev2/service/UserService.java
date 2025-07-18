@@ -17,6 +17,17 @@ public class UserService {
 
     @Transactional
     public void register(RegisterRequestDto dto) {
+        // 아이디 길이 검증
+        if (dto.getUsername() == null || dto.getUsername().length() < 6) {
+            throw new IllegalArgumentException("아이디는 6글자 이상이어야 합니다.");
+        }
+        
+        // 아이디 정규 표현식 검증 (영문 대소문자, 숫자만 허용, 6-20자)
+        String usernamePattern = "^[A-Za-z0-9]{6,20}$";
+        if (!dto.getUsername().matches(usernamePattern)) {
+            throw new IllegalArgumentException("아이디는 영문 대소문자와 숫자만 사용하여 6~20자로 입력해주세요.");
+        }
+        
         if (userRepository.existsByUsername(dto.getUsername())) {
             throw new IllegalArgumentException("이미 존재하는 사용자명입니다.");
         }
