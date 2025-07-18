@@ -123,6 +123,20 @@
     margin-top: 0.6rem;
 }
 
+.username-requirements {
+    font-size: 0.85rem;
+    color: #bfa133;
+    margin-top: 0.6rem;
+}
+
+.username-requirements.error {
+    color: #e74c3c;
+}
+
+.username-requirements.success {
+    color: #27ae60;
+}
+
 @media (max-width: 480px) {
     .register-container {
         padding: 1.8rem;

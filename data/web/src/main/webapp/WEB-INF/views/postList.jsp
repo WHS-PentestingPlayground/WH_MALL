@@ -76,6 +76,20 @@
         loadPosts();
     });
 
+    // 작성자 ID 마스킹 함수 (앞 2글자 + 마지막 글자만 표시)
+    function maskAuthorId(authorId) {
+        if (!authorId || authorId.length < 6) {
+            return authorId; // 6글자 미만인 경우 그대로 반환 (이론상 발생하지 않아야 함)
+        }
+        
+        const firstTwo = authorId.substring(0, 2);
+        const lastOne = authorId.substring(authorId.length - 1);
+        const middleLength = authorId.length - 3;
+        const stars = '*'.repeat(middleLength);
+        
+        return firstTwo + stars + lastOne;
+    }
+
     function loadPosts() {
         const token = localStorage.getItem('jwtToken');
         const apiUrl = '/api/posts';
@@ -137,6 +151,9 @@
                 posts.forEach((post, index) => {
                     const createdAt = new Date(post.createdAt).toLocaleDateString('ko-KR');
                     const postNumber = posts.length - index;
+                    
+                    // 작성자 ID 마스킹 처리
+                    const maskedAuthor = post.author ? maskAuthorId(post.author) : '알 수 없음';
 
                     // ⭐⭐⭐ HTML 문자열에 data-label 속성 추가 ⭐⭐⭐
                     const rowHtml = '<tr>' +
@@ -146,7 +163,7 @@
                         post.title +
                         '</a>' +
                         '</td>' +
-                        '<td data-label="작성자">' + (post.author || '알 수 없음') + '</td>' +
+                        '<td data-label="작성자">' + maskedAuthor + '</td>' +
                         '<td data-label="작성일">' + createdAt + '</td>' +
                         '</tr>';
 
