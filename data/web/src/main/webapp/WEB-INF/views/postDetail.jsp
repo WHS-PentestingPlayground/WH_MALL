@@ -94,10 +94,15 @@
     });
 
     function loadPostDetail() {
+        const token = localStorage.getItem('jwtToken');
         const apiUrl = '/api/posts/' + currentPostId;
         console.log("loadPostDetail 함수 내부. API 호출 URL:", apiUrl);
 
-        fetch(apiUrl)
+        fetch(apiUrl, {
+            headers: {
+                'Authorization': 'Bearer ' + token
+            }
+        })
             .then(response => {
                 console.log("API 응답 수신:", response);
 
