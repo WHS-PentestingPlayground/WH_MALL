@@ -1,0 +1,337 @@
+/* 쿠폰 발급 페이지 스타일 */
+.coupon-issue-container {
+    max-width: 520px;
+    margin: 60px auto;
+    background: #fff;
+    color: #000;
+    border-radius: 20px;
+    box-shadow: 0 8px 32px rgba(212,175,55,0.10);
+    padding: 2.5rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.coupon-issue-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #e8eaf6 0%, #d7bf26 50%, #e4e4e4 100%);
+}
+
+/* 헤더 섹션 */
+.coupon-header {
+    margin-bottom: 2rem;
+    color: #000;
+}
+
+.coupon-issue-image {
+    width: 200px;
+    height: auto;
+    margin-bottom: 1.5rem;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(26, 42, 108, 0.15);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.coupon-issue-image:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 30px rgba(26, 42, 108, 0.25);
+}
+
+.coupon-issue-title {
+    font-size: 1.8rem;
+    color: #000;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    letter-spacing: -0.02em;
+}
+
+.coupon-issue-desc {
+    font-size: 1.1rem;
+    color: #000;
+    margin-bottom: 0;
+    line-height: 1.6;
+    font-weight: 400;
+}
+
+.coupon-issue-desc strong {
+    color: #e0a800;
+    font-weight: 600;
+}
+
+/* 쿠폰 상세 정보 */
+.coupon-details {
+    background: #fffbe6;
+    color: #000;
+    border-radius: 16px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    border: 1px solid #000;
+}
+
+.coupon-info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    color: #000;
+}
+
+.coupon-benefit {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    color: #000;
+}
+
+.discount-amount {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #000;
+}
+
+.discount-text {
+    font-size: 1rem;
+    color: #000;
+    font-weight: 500;
+}
+
+.coupon-conditions {
+    text-align: left;
+    flex: 1;
+}
+
+.coupon-conditions p {
+    margin: 0.5rem 0;
+    font-size: 0.95rem;
+    color: #000;
+    line-height: 1.4;
+}
+
+
+
+/* 버튼 스타일 */
+.coupon-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.issue-btn {
+    background: #d7bf26;
+    color: #ffffff;
+    padding: 1rem 2rem;
+    border: none;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(26, 42, 108, 0.2);
+}
+
+.issue-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s;
+}
+
+.issue-btn:hover::before {
+    left: 100%;
+}
+
+.issue-btn:hover {
+    transform: translateY(-2px);
+    background: #ae9b28;
+    color: #fff;
+}
+
+.issue-btn:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.home-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    background: #fffbe6;
+    color: #000000;
+    padding: 0.9rem 2rem;
+    border-radius: 12px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(26, 42, 108, 0.2);
+    position: relative;
+    overflow: hidden;
+}
+
+.home-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s;
+}
+
+.home-btn:hover::before {
+    left: 100%;
+}
+
+.home-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(26, 42, 108, 0.3);
+    background: #000000;
+    color: #fff;
+}
+
+
+
+
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+    .coupon-issue-container {
+        margin: 40px 1rem;
+        padding: 2rem 1.5rem;
+        border-radius: 16px;
+    }
+    
+    .coupon-issue-title {
+        font-size: 1.5rem;
+    }
+    
+    .coupon-issue-desc {
+        font-size: 1rem;
+    }
+    
+    .coupon-issue-image {
+        width: 160px;
+    }
+    
+    .coupon-info {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .discount-amount {
+        font-size: 1.8rem;
+    }
+    
+    .coupon-conditions {
+        text-align: center;
+    }
+    
+    .issue-btn, .home-btn {
+        padding: 0.9rem 1.5rem;
+        font-size: 1rem;
+    }
+    
+    .modal-content {
+        padding: 1.5rem;
+        margin: 1rem;
+    }
+}
+
+/* 모달 스타일 */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+    background-color: white;
+    margin: 5% auto;
+    padding: 20px;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 500px;
+    position: relative;
+    text-align: center;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    position: absolute;
+    right: 20px;
+    top: 10px;
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+}
+
+.coupon-container {
+    margin-top: 20px;
+}
+
+.coupon-image {
+    position: relative;
+    display: inline-block;
+}
+
+.flag-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(255, 255, 255, 0.9);
+    padding: 10px 15px;
+    border-radius: 8px;
+    font-family: 'Courier New', monospace;
+    font-size: 18px;
+    font-weight: bold;
+    color: #8b4513;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+@media (max-width: 480px) {
+    .coupon-issue-container {
+        margin: 20px 0.5rem;
+        padding: 1.5rem 1rem;
+    }
+    
+    .coupon-issue-title {
+        font-size: 1.3rem;
+    }
+    
+    .coupon-issue-image {
+        width: 140px;
+    }
+    
+    .discount-amount {
+        font-size: 1.6rem;
+    }
+    
+
+} 

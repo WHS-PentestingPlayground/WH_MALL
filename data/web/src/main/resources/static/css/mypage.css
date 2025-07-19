@@ -1,0 +1,373 @@
+/* 마이페이지 스타일 */
+.mypage-container {
+    max-width: 800px;
+    margin: 80px auto 0;
+    padding: 20px;
+    font-family: 'Arial', sans-serif;
+}
+
+.mypage-content {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.mypage-title {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    margin: 0;
+    padding: 30px;
+    text-align: center;
+    font-size: 28px;
+    font-weight: 600;
+}
+
+/* 사용자 정보 섹션 */
+.user-info-section {
+    padding: 50px 30px 30px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.user-profile {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.profile-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.avatar-text {
+    color: white;
+    font-size: 32px;
+    font-weight: bold;
+}
+
+.profile-info {
+    flex: 1;
+}
+
+.username {
+    margin: 0 0 10px 0;
+    font-size: 24px;
+    color: #333;
+}
+
+.user-rank {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.rank-badge {
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.rank-badge.normal {
+    background: #e3f2fd;
+    color: #1976d2;
+}
+
+.rank-badge.vip {
+    background: linear-gradient(135deg, #ffd700 0%, #ffb300 100%);
+    color: #8b4513;
+    box-shadow: 0 2px 4px rgba(255, 215, 0, 0.3);
+}
+
+/* 포인트 섹션 */
+.point-section {
+    padding: 30px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.section-title {
+    margin: 0 0 20px 0;
+    font-size: 20px;
+    color: #333;
+    font-weight: 600;
+}
+
+.point-info {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.current-point {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 8px;
+}
+
+.point-label {
+    font-size: 16px;
+    color: #666;
+}
+
+.point-value {
+    font-size: 24px;
+    font-weight: bold;
+    color: #1976d2;
+}
+
+.point-unit {
+    font-size: 16px;
+    color: #666;
+}
+
+/* VIP 진행률 */
+.vip-progress {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.progress-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.progress-label {
+    font-size: 16px;
+    color: #666;
+}
+
+.progress-text {
+    font-size: 14px;
+    color: #1976d2;
+    font-weight: 600;
+}
+
+.progress-bar-container {
+    position: relative;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 12px;
+    background: #e0e0e0;
+    border-radius: 6px;
+    overflow: hidden;
+    position: relative;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #4caf50 0%, #8bc34a 100%);
+    border-radius: 6px;
+    transition: width 0.5s ease-in-out;
+    width: 0%;
+}
+
+.progress-percentage {
+    position: absolute;
+    top: 20px;
+    right: 0;
+    font-size: 12px;
+    color: #666;
+    font-weight: 600;
+}
+
+/* 등급 혜택 */
+.rank-benefits {
+    padding: 30px;
+}
+
+.benefits-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.benefit-card {
+    padding: 20px;
+    border-radius: 8px;
+    border: 2px solid #e0e0e0;
+    transition: all 0.3s ease;
+}
+
+.benefit-card h4 {
+    margin: 0 0 15px 0;
+    font-size: 18px;
+    font-weight: 600;
+    text-align: center;
+}
+
+.benefit-card ul {
+    margin: 0;
+    padding-left: 20px;
+    list-style: none;
+}
+
+.benefit-card li {
+    margin-bottom: 8px;
+    position: relative;
+    padding-left: 20px;
+    font-size: 14px;
+    color: #666;
+}
+
+.benefit-card li:before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    color: #4caf50;
+    font-weight: bold;
+}
+
+.normal-benefit {
+    background: #f8f9fa;
+}
+
+.normal-benefit h4 {
+    color: #1976d2;
+}
+
+.vip-benefit {
+    background: linear-gradient(135deg, #fff8e1 0%, #fff3e0 100%);
+    border-color: #ffd700;
+}
+
+.vip-benefit h4 {
+    color: #8b4513;
+}
+
+.vip-benefit.active {
+    background: linear-gradient(135deg, #ffd700 0%, #ffb300 100%);
+    border-color: #ff8f00;
+    color: white;
+}
+
+.vip-benefit.active h4,
+.vip-benefit.active li {
+    color: #8b4513;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+    .mypage-container {
+        padding: 10px;
+    }
+    
+    .user-profile {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .benefits-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .progress-info {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+    }
+}
+
+/* VIP 쿠폰 관련 스타일 */
+.vip-coupon-section {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.coupon-issue-btn {
+    background: linear-gradient(135deg, #ffd700 0%, #ffb300 100%);
+    color: #8b4513;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 25px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px rgba(255, 215, 0, 0.3);
+}
+
+.coupon-issue-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(255, 215, 0, 0.4);
+}
+
+/* 모달 스타일 */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+    background-color: white;
+    margin: 5% auto;
+    padding: 20px;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 500px;
+    position: relative;
+    text-align: center;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    position: absolute;
+    right: 20px;
+    top: 10px;
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+}
+
+.coupon-container {
+    margin-top: 20px;
+}
+
+.coupon-image {
+    position: relative;
+    display: inline-block;
+}
+
+.flag-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(255, 255, 255, 0.9);
+    padding: 10px 15px;
+    border-radius: 8px;
+    font-family: 'Courier New', monospace;
+    font-size: 18px;
+    font-weight: bold;
+    color: #8b4513;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+} 

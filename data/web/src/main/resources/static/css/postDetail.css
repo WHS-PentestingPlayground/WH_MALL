@@ -1,0 +1,276 @@
+/* postDetail.css */
+
+/* 전체 컨테이너 */
+.post-detail-container {
+    background: #fff;
+    color: #000;
+    border-radius: 12px;
+    box-shadow: none; /* 그림자 제거 */
+    padding: 2.5rem; /* 내부 여백 */
+    margin: 2rem auto; /* 중앙 정렬, 상하 여백 */
+    max-width: 1000px; /* 컨테이너 최대 너비 */
+    animation: fadeIn 0.8s ease-out; /* 페이지 로드 시 페이드인 효과 */
+}
+
+/* 게시글 헤더 (제목, 메타 정보 포함) */
+.post-detail-header {
+    margin-bottom: 1.5rem; /* 제목과 메타 정보 아래 여백 */
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #000; /* 구분선 */
+}
+
+.post-detail-title {
+    font-size: 2.2rem; /* 제목 폰트 크기 */
+    color: #000; /* 제목 색상 */
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem; /* 아이콘과 텍스트 간격 */
+    margin-bottom: 0.5rem; /* 제목과 메타 정보 간격 */
+    line-height: 1.3;
+}
+
+/* 제목 앞 아이콘 */
+.post-detail-title::before {
+    content: "📝"; /* 연필 이모지 (혹은 "🤖"도 가능) */
+    font-size: 2.5rem;
+    color: #000; /* 강조 색상 */
+}
+
+/* 게시글 메타 정보 (작성자, 작성일, 조회수) */
+.post-detail-meta {
+    color: #555;
+    font-size: 0.95rem;
+    display: flex;
+    flex-wrap: wrap; /* 작은 화면에서 줄 바꿈 */
+    gap: 1.5rem; /* 각 정보 항목 간 간격 */
+}
+
+.post-detail-meta .post-detail-author,
+.post-detail-meta .post-detail-date,
+.post-detail-meta .post-detail-views {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+/* 작성자 아이콘 */
+.post-detail-meta .post-detail-author::before {
+    content: "👤"; /* 사용자 아이콘 */
+    margin-right: 0.4rem;
+    color: #888;
+}
+
+/* 작성일 아이콘 */
+.post-detail-meta .post-detail-date::before {
+    content: "⏰"; /* 시계 아이콘 */
+    margin-right: 0.4rem;
+    color: #888;
+}
+
+
+
+/* 게시글 본문 내용 */
+.post-detail-content {
+    color: #000;
+    font-size: 1.1rem;
+    line-height: 1.8; /* 줄 간격 */
+    margin-top: 2rem; /* 본문 상단 여백 */
+    margin-bottom: 2rem;
+    padding: 2rem 0; /* 내용 위아래 여백 */
+    border-top: 1px solid #000; /* 본문 위 구분선 */
+    border-bottom: 1px solid #000; /* 본문 아래 구분선 */
+    min-height: 200px; /* 최소 높이 설정 (내용이 적을 때 대비) */
+    white-space: pre-line; /* 줄 바꿈 유지 */
+}
+
+/* 첨부 파일 섹션 */
+.post-detail-file {
+    margin-bottom: 2rem;
+    padding-top: 0.5rem;
+    font-size: 1.05rem;
+    display: flex; /* 아이콘과 텍스트 정렬 */
+    align-items: center;
+    gap: 0.5rem;
+    color: #000;
+}
+
+.post-detail-file::before {
+    content: "📎"; /* 클립 아이콘 */
+    font-size: 1.3em;
+    color: #000;
+}
+
+.post-detail-file a {
+    color: #000;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s ease, text-decoration 0.2s ease;
+}
+
+.post-detail-file a:hover {
+    color: #000;
+    text-decoration: underline;
+}
+
+
+/* 게시글 액션 버튼들 */
+.post-detail-actions {
+    display: flex;
+    gap: 1rem; /* 버튼 간 간격 */
+    margin-top: 2.5rem;
+    justify-content: flex-end; /* 버튼들을 오른쪽으로 정렬 */
+}
+
+.post-detail-actions button,
+.post-detail-actions a {
+    padding: 0.7rem 1.4rem;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    border: none; /* 기본 버튼 테두리 제거 */
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: #fff;
+    color: #000;
+}
+
+/* 삭제 버튼 */
+.post-detail-actions .delete-btn {
+    background-color: #dc3545; /* 빨간색 */
+    color: white;
+}
+
+.post-detail-actions .delete-btn:hover {
+    background-color: #c82333; /* 더 진한 빨간색 */
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(220, 53, 69, 0.25);
+}
+
+.post-detail-actions .delete-btn::before {
+    content: "🗑️"; /* 휴지통 아이콘 */
+    font-size: 1.1em;
+}
+
+/* 수정 버튼 */
+.post-detail-actions .edit-btn { /* 'edit-b'는 오타로 추정, 'edit-btn'으로 수정 */
+    background-color: #ffc107; /* 노란색 (경고) */
+    color: #343a40; /* 어두운 텍스트 */
+}
+
+.post-detail-actions .edit-btn:hover {
+    background-color: #e0a800; /* 더 진한 노란색 */
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(255, 193, 7, 0.25);
+}
+
+.post-detail-actions .edit-btn::before {
+    content: "✏️"; /* 연필 아이콘 */
+    font-size: 1.1em;
+}
+
+/* 목록으로 버튼 */
+.post-detail-actions .list-btn {
+    background-color: #6c757d; /* 회색 */
+    color: white;
+}
+
+.post-detail-actions .list-btn:hover {
+    background-color: #5a6268; /* 더 진한 회색 */
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(108, 117, 125, 0.25);
+}
+
+.post-detail-actions .list-btn::before {
+    content: "📜"; /* 두루마리 아이콘 */
+    font-size: 1.1em;
+}
+
+/* 페이드인 애니메이션 */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+    .post-detail-container {
+        padding: 1.5rem;
+        margin: 1rem auto;
+        border-radius: 8px;
+        box-shadow: none; /* 모바일에서는 그림자 제거 */
+    }
+
+    .post-detail-title {
+        font-size: 1.8rem;
+        gap: 0.6rem;
+    }
+
+    .post-detail-title::before {
+        font-size: 2rem;
+    }
+
+    .post-detail-meta {
+        flex-direction: column; /* 메타 정보 세로 정렬 */
+        align-items: flex-start;
+        gap: 0.8rem;
+        font-size: 0.85rem;
+    }
+
+    .post-detail-content {
+        font-size: 1rem;
+        padding: 1.5rem 0;
+        min-height: 150px;
+    }
+
+    .post-detail-actions {
+        flex-direction: column; /* 버튼들을 세로로 정렬 */
+        align-items: stretch; /* 버튼 너비를 꽉 채움 */
+        gap: 0.8rem;
+    }
+
+    .post-detail-actions button,
+    .post-detail-actions a {
+        width: 100%; /* 버튼 너비 100% */
+        justify-content: center; /* 버튼 내부 텍스트 중앙 정렬 */
+        padding: 0.8rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .post-detail-container {
+        padding: 1rem;
+    }
+
+    .post-detail-title {
+        font-size: 1.6rem;
+    }
+
+    .post-detail-title::before {
+        font-size: 1.8rem;
+    }
+
+    .post-detail-content {
+        font-size: 0.95rem;
+    }
+}
+
+.post-detail-container, .post-detail-header, .post-detail-title, .post-detail-title::before, .post-detail-meta, .post-detail-content, .post-detail-file, .post-detail-file::before, .post-detail-file a, .post-detail-file a:hover, .post-detail-actions button, .post-detail-actions a, .post-detail-actions button:hover, .post-detail-actions a:hover {
+    color: #000 !important;
+    background: #fff !important;
+    border-color: #000 !important;
+    box-shadow: none !important;
+}
+.post-detail-actions button, .post-detail-actions a, .post-detail-actions button:hover, .post-detail-actions a:hover {
+    background: #fff !important;
+    color: #000 !important;
+    border: 1px solid #000 !important;
+}
+.post-detail-actions button:hover, .post-detail-actions a:hover {
+    background: #000 !important;
+    color: #fff !important;
+}

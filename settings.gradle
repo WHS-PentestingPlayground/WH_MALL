@@ -1,0 +1,9 @@
+rootProject.name = 'Net_Robotics-infra'
+
+include ':common'
+include ':data:web'
+include ':data:api'
+
+project(':common').projectDir = file('common')
+project(':data:web').projectDir = file('data/web')
+project(':data:api').projectDir = file('data/api')
