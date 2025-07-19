@@ -3,7 +3,7 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8" />
-    <title>쿠폰 발급 - WH 쇼핑몰</title>
+    <title>WH MALL - 쿠폰 발급</title>
     <link rel="stylesheet" href="/css/main.css" />
     <link rel="stylesheet" href="/css/header.css" />
     <link rel="stylesheet" href="/css/coupon-issue.css" />
@@ -19,7 +19,7 @@
                 <img src="/img/vip-coupon.png" alt="VIP 쿠폰" class="coupon-issue-image" />
                 <div class="coupon-issue-title">VIP 쿠폰 발급</div>
                 <div class="coupon-issue-desc">
-                    WH 쇼핑몰 <strong>VIP 특별 이벤트 쿠폰</strong>을 지금 바로 발급받으세요!
+                    WH MALL <strong>VIP 특별 이벤트 쿠폰</strong>을 지금 바로 발급받으세요!
                 </div>
             </div>
 

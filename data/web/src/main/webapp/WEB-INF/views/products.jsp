@@ -6,7 +6,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>제품 소개 - WH 쇼핑몰</title>
+    <title>WH MALL - 제품 소개</title>
     <link rel="stylesheet" href="/css/header.css" />
     <link rel="stylesheet" href="/css/main.css" />
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Playfair+Display:wght@400;700&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
