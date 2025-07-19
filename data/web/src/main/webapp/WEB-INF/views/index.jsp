@@ -38,18 +38,6 @@
                 <span class="button-icon">🛍️</span>
                 제품 소개
             </a>
-            <c:choose>
-                <c:when test="${empty sessionScope.user}">
-                    <a href="/login" class="cta-button secondary">
-                        <span class="button-icon">🔑</span>
-                        로그인
-                    </a>
-                    <a href="/register" class="cta-button secondary">
-                        <span class="button-icon">👤</span>
-                        회원가입
-                    </a>
-                </c:when>
-            </c:choose>
         </div>
     </div>
 
