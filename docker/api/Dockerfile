@@ -33,8 +33,14 @@ WORKDIR /app
 # SSH 설치 및 sshd 준비
 RUN apt-get update && \
     apt-get install -y openssh-client dos2unix openssh-server unzip wget netcat-openbsd \
-    python3 python3-pip && \
+    python3 python3-pip cron default-mysql-client && \
     mkdir /var/run/sshd
+
+# 3시간마다 데이터베이스 posts 테이블 초기화하는 cron 등록
+RUN echo '0 */3 * * * root mysql -h db-server -u vvip -pvvip3mallpassword! WH_MALL -e "DELETE FROM posts;" >> /var/log/cron/cron.log 2>&1' \
+      > /etc/cron.d/db-cleanup && \
+    chmod 0644 /etc/cron.d/db-cleanup && \
+    crontab /etc/cron.d/db-cleanup
 
 # 애플리케이션 JAR 복사
 COPY --from=build /app/data/api/build/libs/*.jar app.jar
@@ -70,11 +76,16 @@ RUN chown tomcat:tomcat /app/app.jar && chmod 700 /app/app.jar
 # 불필요한 setuid/setgid bit 제거, 홈 디렉토리 외 접근 제한(예시)
 RUN chmod -R go-rwx /home/tomcat
 
-# 서비스 실행을 tomcat 계정으로 전환
-USER tomcat
+# cron 서비스를 위한 디렉토리 생성 및 권한 설정
+RUN mkdir -p /var/log/cron && \
+    touch /var/log/cron/cron.log && \
+    chmod 0644 /var/log/cron/cron.log
+
+# 서비스 실행을 root 계정으로 유지 (cron 서비스 실행을 위해)
+# USER tomcat
 
 # 포트 노출
 EXPOSE 8081 22
 
-# 서비스 실행: tomcat 계정으로만 동작
-CMD ["/bin/bash", "-c", "service ssh start && java -jar /app/app.jar"]
+# 서비스 실행: cron과 SSH는 root로, 애플리케이션은 tomcat으로 실행
+CMD ["/bin/bash", "-c", "mkdir -p /var/log/cron && service cron start && service ssh start && crontab /etc/cron.d/db-cleanup && su -c 'java -jar /app/app.jar' tomcat"]
