@@ -7,6 +7,7 @@ import com.whs.dev2.entity.User;
 import com.whs.dev2.jwt.JwtUtil;
 import com.whs.dev2.service.PostService;
 import com.whs.dev2.service.UserService;
+import com.whs.dev2.dto.PostSummaryDto;
 import com.whs.dev2.util.XssPreventionUtil;
 
 // FreeMarker 관련 임포트 추가
@@ -56,8 +57,8 @@ public class PostApiController {
 
     // 모든 게시글 조회
     @GetMapping
-    public ResponseEntity<List<PostResponseDto>> getAllPosts() {
-        return ResponseEntity.ok(postService.getAllPosts());
+    public ResponseEntity<List<PostSummaryDto>> getAllPosts() {
+        return ResponseEntity.ok(postService.getAllPostSummaries());
     }
 
     // 게시글 상세 조회 - SSTI 취약점 유발을 위해 변경

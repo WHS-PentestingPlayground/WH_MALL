@@ -1,5 +1,6 @@
 package com.whs.dev2.service;
 
+import com.whs.dev2.dto.PostSummaryDto;
 import com.whs.dev2.dto.PostRequestDto;
 import com.whs.dev2.dto.PostResponseDto;
 import com.whs.dev2.entity.Post;
@@ -8,6 +9,7 @@ import com.whs.dev2.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -26,11 +28,18 @@ public class PostService {
                 .collect(Collectors.toList());
     }
 
+    public List<PostSummaryDto> getAllPostSummaries() {
+        return postRepository.findAllByOrderByIdDesc().stream()
+                .map(PostSummaryDto::new)
+                .collect(Collectors.toList());
+    }
+
     public PostResponseDto getPost(Long id) {
         Post post = findPostById(id);
         return new PostResponseDto(post);
     }
 
+    
     @Transactional
     public PostResponseDto createPost(PostRequestDto dto, User user, String tokenRole) {
         // JWT 토큰의 role로 admin 권한 체크
