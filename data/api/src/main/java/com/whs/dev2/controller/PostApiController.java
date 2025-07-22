@@ -7,6 +7,7 @@ import com.whs.dev2.entity.User;
 import com.whs.dev2.jwt.JwtUtil;
 import com.whs.dev2.service.PostService;
 import com.whs.dev2.service.UserService;
+import com.whs.dev2.util.XssPreventionUtil;
 
 // FreeMarker 관련 임포트 추가
 import freemarker.core.TemplateClassResolver;
@@ -39,6 +40,7 @@ public class PostApiController {
     private final UserService userService;
     private final JwtUtil jwtUtil;
     private final FreeMarkerConfigurer freemarkerConfigurer; // FreeMarkerConfigurer 주입
+    private final XssPreventionUtil xssPreventionUtil; // XSS 방지 유틸리티 주입
 
     // FreeMarker의 T() 함수를 통한 클래스 로딩을 허용하기 위한 설정 (주의: 보안 취약점 유발)
     // 이 코드를 추가하면 공격자가 템플릿에서 java.lang.Runtime 등을 직접 호출할 수 있게 됩니다.
@@ -92,7 +94,11 @@ public class PostApiController {
             try {
                 Template template = new Template("postContentTemplate", post.getContent(), cfg);
                 template.process(model, writer);
-                post.setContent(writer.toString());
+                String renderedContent = writer.toString();
+                
+                // XSS 방지: 렌더링된 내용도 추가로 정제
+                String sanitizedContent = xssPreventionUtil.sanitizeContent(renderedContent);
+                post.setContent(sanitizedContent);
             } catch (Exception e) {
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("렌더링 오류: " + e.getMessage());
             }
@@ -124,6 +130,9 @@ public class PostApiController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인이 필요합니다.");
         }
 
+        // XSS 방지: 게시글 데이터 정제
+        xssPreventionUtil.sanitizePostData(dto);
+        
         dto.setAuthor(user.getUsername());
 
         try {

@@ -52,6 +52,12 @@ dependencies {
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
 
+    // XSS 방지 라이브러리
+    implementation 'org.owasp.encoder:encoder:1.2.3'
+    implementation 'org.jsoup:jsoup:1.15.3'
+    implementation 'com.googlecode.owasp-java-html-sanitizer:owasp-java-html-sanitizer:20211018.2'
+    implementation 'com.google.guava:guava:31.1-jre'
+
     // 데이터베이스 관련 의존성
     runtimeOnly 'com.mysql:mysql-connector-j'
 

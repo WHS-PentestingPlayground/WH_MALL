@@ -14,6 +14,7 @@
     <!-- 폰트 추가 -->
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Playfair+Display:wght@400;700&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" />
+    <script src="/js/xss-prevention.js"></script>
 </head>
 <body>
 <%@ include file="header.jsp" %>
@@ -155,19 +156,38 @@
                     // 작성자 ID 마스킹 처리
                     const maskedAuthor = post.author ? maskAuthorId(post.author) : '알 수 없음';
 
-                    // ⭐⭐⭐ HTML 문자열에 data-label 속성 추가 ⭐⭐⭐
-                    const rowHtml = '<tr>' +
-                        '<td data-label="번호">' + postNumber + '</td>' +
-                        '<td data-label="제목">' +
-                        '<a href="/board/posts/' + post.id + '" class="post-title-link">' +
-                        post.title +
-                        '</a>' +
-                        '</td>' +
-                        '<td data-label="작성자">' + maskedAuthor + '</td>' +
-                        '<td data-label="작성일">' + createdAt + '</td>' +
-                        '</tr>';
-
-                    tbody.insertAdjacentHTML('beforeend', rowHtml);
+                    // XSS 방지: 안전한 방법으로 HTML 생성
+                    const row = document.createElement('tr');
+                    
+                    // 번호 셀
+                    const numberCell = document.createElement('td');
+                    numberCell.setAttribute('data-label', '번호');
+                    XssPrevention.setTextContent(numberCell, postNumber);
+                    row.appendChild(numberCell);
+                    
+                    // 제목 셀
+                    const titleCell = document.createElement('td');
+                    titleCell.setAttribute('data-label', '제목');
+                    const titleLink = document.createElement('a');
+                    titleLink.href = '/board/posts/' + post.id;
+                    titleLink.className = 'post-title-link';
+                    XssPrevention.setTextContent(titleLink, XssPrevention.sanitizeTitle(post.title));
+                    titleCell.appendChild(titleLink);
+                    row.appendChild(titleCell);
+                    
+                    // 작성자 셀
+                    const authorCell = document.createElement('td');
+                    authorCell.setAttribute('data-label', '작성자');
+                    XssPrevention.setTextContent(authorCell, maskedAuthor);
+                    row.appendChild(authorCell);
+                    
+                    // 작성일 셀
+                    const dateCell = document.createElement('td');
+                    dateCell.setAttribute('data-label', '작성일');
+                    XssPrevention.setTextContent(dateCell, createdAt);
+                    row.appendChild(dateCell);
+                    
+                    tbody.appendChild(row);
                 });
             })
             .catch(error => {

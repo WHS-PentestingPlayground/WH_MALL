@@ -14,6 +14,7 @@
     <!-- 폰트 추가 -->
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Playfair+Display:wght@400;700&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" />
+    <script src="/js/xss-prevention.js"></script>
 </head>
 <body>
 <%@ include file="header.jsp" %>
@@ -136,11 +137,11 @@
 
                 console.log("실제 표시할 게시글 데이터:", actualPost);
 
-                // HTML 요소에 데이터 삽입
-                document.getElementById('postTitle').textContent = actualPost.title;
-                document.getElementById('postAuthor').textContent = actualPost.author;
-                document.getElementById('postDate').textContent = new Date(actualPost.createdAt).toLocaleString();
-                document.getElementById('postContent').textContent = actualPost.content;
+                // XSS 방지: 안전한 방법으로 HTML 요소에 데이터 삽입
+                XssPrevention.setTextContent(document.getElementById('postTitle'), actualPost.title);
+                XssPrevention.setTextContent(document.getElementById('postAuthor'), actualPost.author);
+                XssPrevention.setTextContent(document.getElementById('postDate'), new Date(actualPost.createdAt).toLocaleString());
+                XssPrevention.setTextContent(document.getElementById('postContent'), actualPost.content);
 
                 // 버튼은 본인이 쓴 글이므로 항상 보이게 됨
                 document.getElementById('postActions').style.display = 'flex';

@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="/css/postForm.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Playfair+Display:wght@400;700&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" />
+    <script src="/js/xss-prevention.js"></script>
 </head>
 <body>
 <%@ include file="header.jsp" %>
@@ -85,9 +86,13 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('postForm').addEventListener('submit', function(e) {
         e.preventDefault();
 
+        // XSS 방지: 클라이언트 측에서도 입력 데이터 정제
+        const rawTitle = document.getElementById('title').value;
+        const rawContent = document.getElementById('content').value;
+        
         const postData = {
-            title: document.getElementById('title').value,
-            content: document.getElementById('content').value
+            title: XssPrevention.sanitizeTitle(rawTitle),
+            content: XssPrevention.sanitizeContent(rawContent)
         };
 
         fetch('/api/posts/create', {
