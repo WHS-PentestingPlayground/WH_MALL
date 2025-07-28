@@ -56,7 +56,7 @@ git clone https://github.com/WHS-PentestingPlayground/WH_MALL.git
         </a>
       </td>
       <td align="center">Project Member</td>
-      <td align="center">SSTI Vulnerability</td>
+      <td align="center">SSTI Vulnerability, Chisel Reverse Tunneling</td>
     </tr>
     <tr>
       <td align="center">
