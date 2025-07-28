@@ -17,7 +17,7 @@
 ---
 
 ## 📑 목차
-1. 설치 방법
+1. 주요 명령어
 2. 기여자
 3. 협업 방식
 4. 개발 기간
@@ -25,14 +25,22 @@
 6. ERD
 ---
 
-## 📌 설치 방법
-아래 단계를 따라 서버를 설치하고 실행할 수 있습니다.
-
-### 1. 저장소 복제
-저장소를 복제합니다.
+## 주요 명령어
 ```
-git clone https://github.com/WHS-PentestingPlayground/WH_MALL.git
- ```
+# 전체 서비스 시작
+docker-compose up -d --build
+
+# 전체 서비스 중지
+docker-compose down
+
+# 로그 확인
+docker-compose logs -f [service-name]
+
+# 특정 모듈만 빌드
+docker-compose build [service-name]
+```
+
+---
 
 
 ## 👏 기여자 표
