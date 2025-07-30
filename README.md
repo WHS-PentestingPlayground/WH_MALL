@@ -129,3 +129,17 @@ docker-compose build [service-name]
 
 ---
 
+## Write-up
+### 침투 흐름 요약 
+1. Web 서버의 클라이언트 측 인증 코드 검증 우회 취약점을 이용해 초기 계정을 생성하고 접근 권한을 확보한다.
+2. JWK Injection을 통해 관리자 권한 토큰을 위조하여 게시글 작성 기능에 접근한다.
+3. Freemarker 기반 게시글 작성 기능에 SSTI 페이로드를 삽입하여 api서버에 chisel을 다운로드 해 연결 할 수 있게 준비한다.
+4. SSTI를 이용하여 DB접속정보를 탈취하고 kali로 리버스 터널링을통해 DB서버에 접속한다.
+5. DB에 접속한 뒤, 사용자 포인트와 등급 정보를 조작하여 VIP 쿠폰 조건을 충족시킨다.
+6. 변조된 계정으로 로그인해 VIP 쿠폰 배너를 클릭하여 플래그를 획득한다.
+
+자세한 설명은 아래의 첨부 파일 확인 하시면됩니다.
+
+[WH MALL롸업](https://docs.google.com/document/d/1u7oIYLdSWtWEitKOsqkKZ5ELOgGtk8bp3lDYrFnZgTM/edit?usp=sharing)
+
+---
