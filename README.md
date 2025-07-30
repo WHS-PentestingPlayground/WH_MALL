@@ -140,6 +140,6 @@ docker-compose build [service-name]
 
 자세한 설명은 아래의 첨부 파일 확인 하시면됩니다.
 
-[📄 WH MALL Write-up 다운로드](./WH%20MALL%20Write-up%20.pdf)
+[📄 WH MALL Write-up](./WH%20MALL%20Write-up%20.pdf)
 
 ---
