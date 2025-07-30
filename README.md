@@ -138,8 +138,19 @@ docker-compose build [service-name]
 5. DB에 접속한 뒤, 사용자 포인트와 등급 정보를 조작하여 VIP 쿠폰 조건을 충족시킨다.
 6. 변조된 계정으로 로그인해 VIP 쿠폰 배너를 클릭하여 플래그를 획득한다.
 
-자세한 설명은 아래의 첨부 파일 확인 하시면됩니다.
+자세한 설명은 아래를 확인해주시면 됩니다.
 
-[📄 WH MALL Write-up](./WH%20MALL%20Write-up%20.pdf)
+<img width="1700" height="2200" alt="Image" src="https://github.com/user-attachments/assets/e0252c61-986a-4557-b566-76e6b5dd48d2" />
+<img width="1700" height="2200" alt="Image" src="https://github.com/user-attachments/assets/33d928b7-67b7-444d-98b6-b3e50a52e0fa" />
+<img width="1700" height="2200" alt="Image" src="https://github.com/user-attachments/assets/19a812ea-7e87-4110-b5fa-75b60c042bf4" />
+<img width="1700" height="2200" alt="Image" src="https://github.com/user-attachments/assets/f6a63f90-36a9-4191-9acf-41d6cac3f3ea" />
+<img width="1700" height="2200" alt="Image" src="https://github.com/user-attachments/assets/a7a1ef2d-c831-448b-b3b6-20a28e298f03" />
+<img width="1700" height="2200" alt="Image" src="https://github.com/user-attachments/assets/9e0671c6-ef7a-4977-9f67-16c37cfa2c76" />
+<img width="1700" height="2200" alt="Image" src="https://github.com/user-attachments/assets/0a279867-e70a-414e-8874-76cb7fd774ca" />
+<img width="1700" height="2200" alt="Image" src="https://github.com/user-attachments/assets/98b1fa08-d682-43c9-ab6f-0239c99b8142" />
+<img width="1700" height="2200" alt="Image" src="https://github.com/user-attachments/assets/035acad9-ca97-4169-b100-584d1b2bc4d1" />
+<img width="1700" height="2200" alt="Image" src="https://github.com/user-attachments/assets/b80a0b4f-ccb9-44e8-9635-2e6bb28e40d1" />
+<img width="1700" height="2200" alt="Image" src="https://github.com/user-attachments/assets/91c16a27-8d26-4c20-90cf-2382ed5599b0" />
+<img width="1700" height="2200" alt="Image" src="https://github.com/user-attachments/assets/9704babd-4e69-4b5c-b291-6c1a2638fae6" />
 
 ---
