@@ -130,27 +130,17 @@ docker-compose build [service-name]
 ---
 
 ## Write-up
-### 침투 흐름 요약 
-1. Web 서버의 클라이언트 측 인증 코드 검증 우회 취약점을 이용해 초기 계정을 생성하고 접근 권한을 확보한다.
-2. JWK Injection을 통해 관리자 권한 토큰을 위조하여 게시글 작성 기능에 접근한다.
-3. Freemarker 기반 게시글 작성 기능에 SSTI 페이로드를 삽입하여 api서버에 chisel을 다운로드 해 연결 할 수 있게 준비한다.
-4. SSTI를 이용하여 DB접속정보를 탈취하고 kali로 리버스 터널링을통해 DB서버에 접속한다.
-5. DB에 접속한 뒤, 사용자 포인트와 등급 정보를 조작하여 VIP 쿠폰 조건을 충족시킨다.
-6. 변조된 계정으로 로그인해 VIP 쿠폰 배너를 클릭하여 플래그를 획득한다.
+<img width="1700" height="2200" alt="WH MALL Write-up -02" src="https://github.com/user-attachments/assets/cf5c715c-f922-49f4-8da1-2893d98b2a02" />
+<img width="1700" height="2200" alt="WH MALL Write-up -03" src="https://github.com/user-attachments/assets/2ab0623f-c71a-4453-8cf0-eb15bf6d0195" />
+<img width="1700" height="2200" alt="WH MALL Write-up -04" src="https://github.com/user-attachments/assets/d91afeba-114e-436d-ad87-8d1b3f42ee25" />
+<img width="1700" height="2200" alt="WH MALL Write-up -05" src="https://github.com/user-attachments/assets/0c5fc295-cc86-466c-a900-f88a1fe662c4" />
+<img width="1700" height="2200" alt="WH MALL Write-up -06" src="https://github.com/user-attachments/assets/e9151116-37e5-4f5f-b44f-8cfffbfcdbaa" />
+<img width="1700" height="2200" alt="WH MALL Write-up -07" src="https://github.com/user-attachments/assets/94acb076-fc0e-4d86-ae8a-5729c3db8417" />
+<img width="1700" height="2200" alt="WH MALL Write-up -08" src="https://github.com/user-attachments/assets/03122969-c9d6-4ec7-bacd-12871ccb2018" />
+<img width="1700" height="2200" alt="WH MALL Write-up -09" src="https://github.com/user-attachments/assets/8f3d48a0-2e89-4cc3-8120-c53506dd15aa" />
+<img width="1700" height="2200" alt="WH MALL Write-up -10" src="https://github.com/user-attachments/assets/878c8c05-95cf-49d9-bbce-1e8d34ec4a0c" />
+<img width="1700" height="2200" alt="WH MALL Write-up -11" src="https://github.com/user-attachments/assets/4acc38f4-f84b-421a-9148-417f88b05f35" />
+<img width="1700" height="2200" alt="WH MALL Write-up -12" src="https://github.com/user-attachments/assets/32cb25b7-c5a2-4e14-a856-ba816e730128" />
 
-자세한 설명은 아래를 확인해주시면 됩니다.
-
-<img width="1700" height="2200" alt="Image" src="https://github.com/user-attachments/assets/36c6fbda-0417-4663-89e5-55545945c22e" />
-<img width="1700" height="2200" alt="Image" src="https://github.com/user-attachments/assets/8c806528-cef5-48b8-a932-ec3bffbeafa2" />
-<img width="1700" height="2200" alt="Image" src="https://github.com/user-attachments/assets/b6e07340-c31c-4819-a6db-c20c362cc4ed" />
-<img width="1700" height="2200" alt="Image" src="https://github.com/user-attachments/assets/796c83a9-9776-4c52-8521-e3f0e0fb84d8" />
-<img width="1700" height="2200" alt="Image" src="https://github.com/user-attachments/assets/26d0973b-1754-4dc2-9921-c3ac68ccfead" />
-<img width="1700" height="2200" alt="Image" src="https://github.com/user-attachments/assets/e30e6000-732c-4898-9f13-b05e80200f2e" />
-<img width="1700" height="2200" alt="Image" src="https://github.com/user-attachments/assets/e6ad1d73-0d9b-462f-abd3-08fa98207a14" />
-<img width="1700" height="2200" alt="Image" src="https://github.com/user-attachments/assets/6554b195-db21-4350-b4a6-5dcf6f31dc37" />
-<img width="1700" height="2200" alt="Image" src="https://github.com/user-attachments/assets/dcf13773-486e-4b9d-a9e2-d3fe74af24de" />
-<img width="1700" height="2200" alt="Image" src="https://github.com/user-attachments/assets/f712e774-b4ec-48be-a6d0-7d3672aa8cfd" />
-<img width="1700" height="2200" alt="Image" src="https://github.com/user-attachments/assets/bdba25bd-9946-49b8-8a3a-5044c4fc79b8" />
-<img width="1700" height="2200" alt="Image" src="https://github.com/user-attachments/assets/d4b0a528-6548-42c1-99dd-5c17f4c93678" />
 
 ---
