@@ -8,11 +8,13 @@
 ---
 
 ## 🛠️ Technology Stack
-- **Frontend**: JSP, CSS, JavaScript  
-- **Backend**: Spring Boot, JWT  
-- **Infra**: Docker, Docker Compose  
-- **DB**: MySQL  
-- **ETC**: NGINX, Tomcat
+![Java](https://img.shields.io/badge/java-%23ED8B00.svg?style=flat-square&logo=openjdk&logoColor=white)
+![MySQL](https://img.shields.io/badge/MySQL-4479A1?style=flat-square&logo=mysql&logoColor=white)
+![JSP](https://img.shields.io/badge/JSP-007396?style=flat-square&logo=openjdk&logoColor=white)
+![Spring Boot](https://img.shields.io/badge/Spring_Boot-6DB33F?style=flat-square&logo=springboot&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-2496ED?style=flat-square&logo=docker&logoColor=white)
+![Docker Compose](https://img.shields.io/badge/Docker_Compose-2496ED?style=flat-square&logo=docker&logoColor=white)
+![NGINX](https://img.shields.io/badge/NGINX-009639?style=flat-square&logo=nginx&logoColor=white)
 
 ---
 
